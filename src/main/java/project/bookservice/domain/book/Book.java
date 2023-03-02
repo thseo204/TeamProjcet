@@ -9,12 +9,13 @@ public class Book {
     private Long id;
     private String title;
     private String description;
-
+    private String image;
     public Book() {
     }
 
-    public Book(String title, String description) {
+    public Book(String title, String description, String image) {
         this.title = title;
         this.description = description;
+        this.image = image;
     }
 }

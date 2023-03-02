@@ -1,6 +1,11 @@
 package project.bookservice.openapi;
 
 // 네이버 검색 API 예제 - 블로그 검색
+import lombok.Getter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
@@ -12,12 +17,25 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.String;
-
+@Getter
 @Repository
 public class ApiExamSearchBook {
-//    private String responseBody;
 
-    public String ApiExamSearchBook(String bookTitle) {
+    private JSONObject object;
+    public ApiExamSearchBook() {
+    }
+
+    public ApiExamSearchBook(String bookTitle) throws ParseException {
+        String responseBody = responseBodyAboutBookApi(bookTitle);
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject)parser.parse(responseBody);
+        JSONArray itemArr = (JSONArray) jsonObject.get("items");
+        object = (JSONObject) itemArr.get(0);
+
+        String jsonString = jsonObject.toJSONString();
+    }
+
+    public String responseBodyAboutBookApi(String bookTitle) {
         String clientId = "6Oj2iCxiyNiG08IN5DMS"; //애플리케이션 클라이언트 아이디
         String clientSecret = "l_PHjfyI90"; //애플리케이션 클라이언트 시크릿
 
