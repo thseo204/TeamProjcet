@@ -50,18 +50,18 @@ public class BookController {
     public String Bestsellser(Model model) {
         GetAPIData gad = new GetAPIData();
         gad.getApiData();
-        ArrayList<Book> b = gad.book;
+        ArrayList<Book> bookList = gad.book;
 
-        for(int i = 0 ; i<b.size(); i++){
-            String title = b.get(i).getTitle();
-            String description = b.get(i).getDescription();
-            String image = b.get(i).getImage();
+        for(int i = 0 ; i<bookList.size(); i++){
+            String title = bookList.get(i).getTitle();
+            String description = bookList.get(i).getDescription();
+            String image = bookList.get(i).getImage();
 
             Book book = new Book(title, description, image);
             bookRepository.save(book);
 
-            model.addAttribute("book", book);
         }
+        model.addAttribute("bookList", bookList);
 
         return "basic/book2";
     }

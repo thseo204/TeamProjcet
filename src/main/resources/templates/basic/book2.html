@@ -59,7 +59,7 @@
       <header class="major" id="suggestion">
         <h4 align="left">추천도서</h4>
         <br/>
-        <section >
+        <section th:each="book : ${bookList}">
           <a>
             <img th:src="@{${book.image}}">
             <br/>
@@ -68,9 +68,6 @@
           </a>
         </section>
 
-        <section >
-          <a><img th:src="@{${book.image}}"></a>
-        </section>
         <br/>
         <p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc ornare<br />
           adipiscing nunc adipiscing. Condimentum turpis massa.</p>
