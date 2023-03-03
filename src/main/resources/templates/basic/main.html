@@ -59,18 +59,27 @@
 						<header class="major" id="suggestion">
 							<h4 align="left">추천도서</h4>
 							<br/>
-							<section >
-								<a>
-									<img th:src="@{${book.image}}">
-									<br/>
-									<span th:value="${book.title}" value="[책제목]"></span>
-									<span style="color:gray" th:value="${book.title}" aria-valuetext="[저자]" ></span>
-								</a>
-							</section>
+							<table>
+								<tr>
+									<td  th:each="book : ${bookList}" >
+										<a th:if="${bookStat.index%2==0}">
+											<img th:src="@{${book.imageUrl}}">
+											<br/>
+											<span th:text="${book.title}" text="[책제목]"></span>
+											<span style="color:gray" th:text="${book.title}" aria-valuetext="[저자]" ></span>
+										</a>
+									</td>
+									<td th:each="book : ${bookList}" >
+										<a th:if="${bookStat.index%2==1}">
+											<img th:src="@{${book.imageUrl}}">
+											<br/>
+											<span th:text="${book.title}" text="[책제목]"></span>
+											<span style="color:gray" th:text="${book.title}" aria-valuetext="[저자]" ></span>
+										</a>
+									</td>
+								</tr>
+							</table>
 
-							<section >
-								<a><img th:src="@{${book.image}}"></a>
-							</section>
 							<br/>
 							<p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc ornare<br />
 							adipiscing nunc adipiscing. Condimentum turpis massa.</p>

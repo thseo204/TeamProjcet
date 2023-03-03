@@ -1,19 +1,16 @@
 package project.bookservice.web.basic;
 
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import project.bookservice.domain.book.Book;
 import project.bookservice.domain.repository.BookRepository;
-import project.bookservice.openapi.ApiExamSearchBook;
-import project.bookservice.openapi.GetAPIData;
+import project.bookservice.openapi.APIParser;
+import project.bookservice.openapi.ApiSearchBook;
+import project.bookservice.openapi.ApiSearchBookList;
 
 import java.util.ArrayList;
 
@@ -27,40 +24,22 @@ public class BookController {
     @GetMapping("/main")
     public String searchBook(Model model) throws ParseException {
         String bookTitle = "사피엔스";
-//        JSONObject object = searchByBookTitle(bookTitle);
-        ApiExamSearchBook apiExamSearchBook = new ApiExamSearchBook(bookTitle);
-        JSONObject object = apiExamSearchBook.getObject();
 
+        APIParser apiParser = new ApiSearchBook();
+        ArrayList<Book> bookList= apiParser.jsonAndXmlParserToArr(bookTitle);
 
-        String title = (String)object.get("title");
-        String description = (String)object.get("description");
-        String image = (String)object.get("image");
-//        System.out.println("title = " + title);
-//        System.out.println("description = " + description);
-        System.out.println("image = " + image);
+//        bookRepository.save(book);
 
-        Book book = new Book(title, description, image);
-        bookRepository.save(book);
-
-        model.addAttribute("book", book);
+        model.addAttribute("bookList", bookList);
         return "basic/main";
     }
 
     @GetMapping("/book")
-    public String Bestsellser(Model model) {
-        GetAPIData gad = new GetAPIData();
-        gad.getApiData();
-        ArrayList<Book> bookList = gad.book;
+    public String BestSeller(Model model) throws ParseException {
+        String bookTitle = "Bestseller";
+        APIParser apiParser = new ApiSearchBookList();
+        ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(bookTitle);
 
-        for(int i = 0 ; i<bookList.size(); i++){
-            String title = bookList.get(i).getTitle();
-            String description = bookList.get(i).getDescription();
-            String image = bookList.get(i).getImage();
-
-            Book book = new Book(title, description, image);
-            bookRepository.save(book);
-
-        }
         model.addAttribute("bookList", bookList);
 
         return "basic/book2";

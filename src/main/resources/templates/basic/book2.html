@@ -61,7 +61,7 @@
         <br/>
         <section th:each="book : ${bookList}">
           <a>
-            <img th:src="@{${book.image}}">
+            <img th:src="@{${book.imageUrl}}">
             <br/>
             <span th:value="${book.title}" value="[책제목]"></span>
             <span style="color:gray" th:value="${book.title}" aria-valuetext="[저자]" ></span>

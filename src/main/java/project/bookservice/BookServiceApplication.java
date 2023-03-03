@@ -2,7 +2,7 @@ package project.bookservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import project.bookservice.openapi.ApiExamSearchBook;
+
 import java.lang.String;
 
 @SpringBootApplication
