@@ -8,8 +8,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import project.bookservice.domain.book.Book;
+
+import java.util.ArrayList;
 
 public class GetAPIData {
+
+    public ArrayList<Book> book = new ArrayList<Book>();
+
     public String getTagvalue(String tag, Element eElement) {
         NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
         Node nValue = (Node) nlList.item(0);
@@ -41,13 +47,19 @@ public class GetAPIData {
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
+                Book b = null;
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    System.out.println("책 제목 : " + getTagvalue("title",eElement));
-                    System.out.println("작가 : " + getTagvalue("author",eElement));
-                    System.out.println("책 링크 : " + getTagvalue("link",eElement));
-                    System.out.println("책 정보 : " + getTagvalue("description",eElement));
+                    b = new Book(getTagvalue("title", eElement),
+                            getTagvalue("description", eElement),
+                            getTagvalue("cover", eElement));
+                    book.add(b);
+                    System.out.println("책 제목 : " + getTagvalue("title", eElement));
+                    System.out.println("작가 : " + getTagvalue("author", eElement));
+                    System.out.println("책 링크 : " + getTagvalue("link", eElement));
+                    System.out.println("책 정보 : " + getTagvalue("description", eElement));
+                    System.out.println("책 이미지 : " + getTagvalue("cover", eElement));
                     System.out.println();
                 }
             }
