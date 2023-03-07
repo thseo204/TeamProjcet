@@ -23,7 +23,7 @@
 							<li>
 								<a href="#" class="icon solid fa-angle-down">Layouts</a>
 								<ul>
-									<li><a href="generic.html">Generic</a></li>
+									<li><a href="generic.html" th:text="#{page.title}">Generic</a></li>
 									<li><a href="contact.html">Contact</a></li>
 									<li><a href="elements.html">Elements</a></li>
 									<li>
@@ -44,7 +44,7 @@
 
 			<!-- Banner -->
 				<section id="banner">
-					<h2>독서노트</h2>
+					<h2 th:text="#{page.title}">독서노트</h2>
 					<p>기록의 기억을 믿어보세요</p>
 					<ul class="actions special">
 						<li><a href="#" class="button primary">로그인</a></li>
@@ -62,7 +62,7 @@
 							<table>
 								<tr>
 									<td  th:each="book : ${bookList}" >
-										<a th:if="${bookStat.index%2==0}">
+										<a th:href="@{|/book/${book.id}|}" th:if="${bookStat.index%2==0}">
 											<img th:src="@{${book.imageUrl}}">
 											<br/>
 											<span th:text="${book.title}" text="[책제목]"></span>
@@ -70,7 +70,7 @@
 										</a>
 									</td>
 									<td th:each="book : ${bookList}" >
-										<a th:if="${bookStat.index%2==1}">
+										<a th:if="${bookStat.index%2==1}" th:href="@{|/book/${book.id}|}">
 											<img th:src="@{${book.imageUrl}}">
 											<br/>
 											<span th:text="${book.title}" text="[책제목]"></span>

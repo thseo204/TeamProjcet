@@ -2,12 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/assets/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="assets/css/main.css" />-->
     <title>Title</title>
 </head>
 <body>
 <div>
-    <img th:src="@{${book.image}}">
-    <input type="image" th:src="@{book.image}" alt="책 이미지" th:alt="|${book.title}이미지|" />
+    <img th:src="@{${book.imageUrl}}">
+    <input type="image" th:src="@{book.imageUrl}" alt="책 이미지" th:alt="|${book.title}이미지|" />
 </div>
 <div>
     <label for="title">책제목</label>

@@ -17,7 +17,8 @@ public class BookRepository {
         return book;
     }
 
-    public Book findById(Long id){
+    public static Book findById(Long id){
         return store.get(id);
     }
+
 }

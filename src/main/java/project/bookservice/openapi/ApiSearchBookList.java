@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import project.bookservice.domain.book.Book;
+import project.bookservice.domain.repository.BookRepository;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
+                BookRepository bookRepository = new BookRepository();
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
@@ -73,6 +75,7 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
                     String isbn = getTagvalue("isbn", eElement);
 
                     Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
+                    bookRepository.save(book);
                     bookList.add(book);
                 }
             }
