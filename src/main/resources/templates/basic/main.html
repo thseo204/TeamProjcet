@@ -16,14 +16,14 @@
 
 			<!-- Header -->
 				<header id="header" class="alt">
-					<h1><a href="index.html">독서노트</a> by HTML5 UP</h1>
+				  <h1 th:text="#{page.title}"><a href="index.html">독서노트</a></h1>
 					<nav id="nav">
 						<ul>
 							<li><a href="index.html">Home</a></li>
 							<li>
 								<a href="#" class="icon solid fa-angle-down">Layouts</a>
 								<ul>
-									<li><a href="generic.html" th:text="#{page.title}">Generic</a></li>
+								 <li><a href="generic.html">Generic</a></li>
 									<li><a href="contact.html">Contact</a></li>
 									<li><a href="elements.html">Elements</a></li>
 									<li>
@@ -37,6 +37,23 @@
 									</li>
 								</ul>
 							</li>
+  <li>
+                    <a href="#" class="icon solid fa-angle-down">언어</a>
+                    <ul>
+                        <li>
+                            <a href="main?lang=ko" th:text="#{page.locale.ko}"
+                               name="lang" value="Locale.KOREA">
+                                한국어
+                            </a>
+                        </li>
+                        <li>
+                            <a href="main?lang=en" th:text="#{page.locale.en}"
+                               name="lang" value="Locale.ENGLISH">
+                                영어
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 							<li><a href="#" class="button">Sign Up</a></li>
 						</ul>
 					</nav>
@@ -62,7 +79,7 @@
 							<table>
 								<tr>
 									<td  th:each="book : ${bookList}" >
-										<a th:href="@{|/book/${book.id}|}" th:if="${bookStat.index%2==0}">
+								<a th:if="${bookStat.index%2==0}">
 											<img th:src="@{${book.imageUrl}}">
 											<br/>
 											<span th:text="${book.title}" text="[책제목]"></span>
@@ -70,7 +87,7 @@
 										</a>
 									</td>
 									<td th:each="book : ${bookList}" >
-										<a th:if="${bookStat.index%2==1}" th:href="@{|/book/${book.id}|}">
+										<a th:if="${bookStat.index%2==1}">
 											<img th:src="@{${book.imageUrl}}">
 											<br/>
 											<span th:text="${book.title}" text="[책제목]"></span>
