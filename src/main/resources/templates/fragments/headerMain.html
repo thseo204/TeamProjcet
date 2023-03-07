@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="headerMainFragment(pageName)">
+  <!-- Header -->
+  <header id="header" th:classappend="${pageName} == 'mainPage' ? 'alt' : _" class="">
+    <h1><a href="main.html">독서노트</a></h1>
+    <nav id="nav">
+      <ul>
+        <li><a href="main.html">Home</a></li>
+        <li>
+          <a href="#" class="icon solid fa-angle-down">Layouts</a>
+          <ul>
+            <li><a href="generic.html">Generic</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="elements.html">Elements</a></li>
+            <li>
+              <a href="#">Submenu</a>
+              <ul>
+                <li><a href="#">Option One</a></li>
+                <li><a href="#">Option Two</a></li>
+                <li><a href="#">Option Three</a></li>
+                <li><a href="#">Option Four</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#" class="icon solid fa-angle-down">언어</a>
+          <ul>
+            <li>
+              <a href="main?lang=ko" th:text="#{page.locale.ko}" name="lang" value="Locale.KOREA">
+                한국어
+              </a>
+            </li>
+            <li>
+              <a href="main?lang=en" th:text="#{page.locale.en}" name="lang" value="Locale.ENGLISH">
+                영어
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li><a href="/joinForm" class="button">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
+</th:block>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<body class="is-preload">
+<div id="page-wrapper">
+	<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+	<!-- Main -->
+	<section id="main" class="container medium">
+		<header>
+			<h2>회원가입</h2>
+			<p>Tell us what you think about our little operation.</p>
+		</header>
+		<div class="box">
+			<form method="post" action="#">
+				<div class="row gtr-50 gtr-uniform">
+
+					<div class="col-9 col-12-mobilep">
+						<input type="text" name="userId" id="userId" value="" placeholder="UserId" />
+					</div>
+					<div class="col-3 col-12-mobilep">
+						<input type="button" value="중복확인" />
+					</div>
+					<div class="col-12">
+						<input type="password" name="password" id="password" value="" placeholder="Password" />
+					</div>
+					<div class="col-12" >
+						<input type="password" name="rePassword" id="rePassword" value="" placeholder="RePassword" />
+					</div>
+					<div class="col-4 col-8-narrower">
+						<input type="radio" id="man" name="gender">
+						<label for="man">남</label>
+					</div>
+					<div class="col-4 col-8-narrower">
+						<input type="radio" id="woman" name="gender">
+						<label for="woman">여</label>
+					</div>
+
+					<div class="col-12">
+						<input type="text" name="name" id="name" value="" placeholder="Name" />
+					</div>
+					<div class="col-12">
+						<input type="email" name="email" id="email" value="" placeholder="Email" />
+					</div>
+					<div class="col-12">
+						<ul class="actions special">
+							<li><input type="submit" value="회원가입" /></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+
+	</th:block>
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>
