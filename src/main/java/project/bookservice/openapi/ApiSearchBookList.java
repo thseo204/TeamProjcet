@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import project.bookservice.domain.book.Book;
-import project.bookservice.domain.repository.BookRepository;
+import project.bookservice.domain.repository.JpaBookRepository;
 
 import java.util.ArrayList;
 

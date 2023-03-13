@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.bookservice.domain.book.Book;
-import project.bookservice.domain.repository.BookRepository;
+import project.bookservice.domain.repository.JpaBookRepository;
 import project.bookservice.openapi.APIParser;
 import project.bookservice.openapi.ApiSearchBook;
 import project.bookservice.openapi.ApiSearchBookList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 @Controller
 @RequiredArgsConstructor
 public class BookController {
-    private final BookRepository bookRepository;
+    private final JpaBookRepository bookRepository;
 
 
     @GetMapping("/test")
@@ -54,9 +54,9 @@ public class BookController {
     }
 
     @GetMapping("/book/{bookId}")
-    public String bookInfo(@PathVariable long bookId, Model model) {
-        Book book = BookRepository.findById(bookId);
-        model.addAttribute("book",book);
+    public String bookInfo(String isbn, Model model) {
+//        Book book = JpaBookRepository.findById(isbn);
+//        model.addAttribute("book",book);
         return "basic/bookinfo";
     }
 

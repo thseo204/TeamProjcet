@@ -13,7 +13,7 @@
 			<p>Tell us what you think about our little operation.</p>
 		</header>
 		<div class="box">
-			<form method="post" action="#">
+			<form method="post" th:action th:object="${member}" action="#">
 				<div class="row gtr-50 gtr-uniform">
 
 					<div class="col-9 col-12-mobilep">
@@ -23,25 +23,32 @@
 						<input type="button" value="중복확인" />
 					</div>
 					<div class="col-12">
-						<input type="password" name="password" id="password" value="" placeholder="Password" />
+						<input type="password" name="userPwd" th:id="userPwd" value="" placeholder="Password" />
 					</div>
 					<div class="col-12" >
-						<input type="password" name="rePassword" id="rePassword" value="" placeholder="RePassword" />
+						<input type="password" name="reUserPwd" th:id="reUserPwd" value="" placeholder="RePassword" />
+					</div>
+					<div class="col-12" >
+						<input type="text" name="userPhone" th:id="userPhone" value="" placeholder="Phone" />
+					</div>
+					<div class="col-12" >
+						<input type="text" name="userBirth" th:id="userBirth" value="" placeholder="Birth yymmdd" />
 					</div>
 					<div class="col-4 col-8-narrower">
-						<input type="radio" id="man" name="gender">
+
+						<input type="radio" id="man" th:name="userGender" value="M">
 						<label for="man">남</label>
 					</div>
 					<div class="col-4 col-8-narrower">
-						<input type="radio" id="woman" name="gender">
+						<input type="radio" id="woman" th:name="userGender" value="F">
 						<label for="woman">여</label>
 					</div>
 
 					<div class="col-12">
-						<input type="text" name="name" id="name" value="" placeholder="Name" />
+						<input type="text" name="userName" th:id="userName" value="" placeholder="Name" />
 					</div>
 					<div class="col-12">
-						<input type="email" name="email" id="email" value="" placeholder="Email" />
+						<input type="email" name="userEmail" th:id="userEmail" value="" placeholder="Email" />
 					</div>
 					<div class="col-12">
 						<ul class="actions special">

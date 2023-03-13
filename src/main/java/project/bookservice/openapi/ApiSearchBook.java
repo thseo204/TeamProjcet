@@ -8,7 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.book.Book;
-import project.bookservice.domain.repository.BookRepository;
+import project.bookservice.domain.repository.JpaBookRepository;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -35,7 +35,7 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
 //        System.out.println("itemArr.size() = " + itemArr.size());
         for(int i = 0; i < itemArr.size(); i++){
 
-            BookRepository bookRepository = new BookRepository();
+            JpaBookRepository bookRepository = new JpaBookRepository();
 
             JSONObject jsonObject1 = (JSONObject)itemArr.get(i);
             String imageUrl = (String)jsonObject1.get("image"); // 이미지 링크
