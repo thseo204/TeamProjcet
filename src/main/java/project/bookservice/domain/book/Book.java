@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Book {
-	private String isbn; // 책의 key 값
     private Long id;
     private String imageUrl; // 이미지 링크
     private String author; //저자
@@ -15,7 +14,7 @@ public class Book {
     private String description;
     private String title;
     private String pubDate; // 출판연도
-    
+    private String isbn; // 책의 key 값
     public Book() {
     }
 
@@ -29,4 +28,5 @@ public class Book {
         this.pubDate = pubDate;
         this.isbn = isbn;
     }
+
 }

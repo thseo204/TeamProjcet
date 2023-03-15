@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import project.bookservice.domain.book.Book;
-import project.bookservice.repository.JpaBookRepository;
+import project.bookservice.repository.book.MybatisBookRepository;
 
 import java.util.ArrayList;
 
@@ -48,9 +48,11 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
 
             System.out.println(nList.getLength() + "개의 데이터 발견");
 
+            MybatisBookRepository mybatisBookRepository = new MybatisBookRepository();
+            mybatisBookRepository.clearStore();
+
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                JpaBookRepository bookRepository = new JpaBookRepository();
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
@@ -72,10 +74,10 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
                     String description = getTagvalue("description", eElement);
                     String title = getTagvalue("title", eElement);
                     String pubDate = getTagvalue("pubDate", eElement);
-                    String isbn = getTagvalue("isbn", eElement);
+                    String isbn = getTagvalue("isbn13", eElement);
 
                     Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
-                    bookRepository.save(book);
+                    mybatisBookRepository.save(book);
                     bookList.add(book);
                 }
             }

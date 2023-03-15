@@ -1,4 +1,4 @@
-package project.bookservice.repository;
+package project.bookservice.repository.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
-
+	 Member save(Member member);
     SignUpForm save(SignUpForm signUpForm);
 
 //    void update(Long itemId, ItemUpdateDto updateParam);
@@ -18,9 +18,9 @@ public interface MemberRepository {
     Optional<Member> findById(String memberId);
 
     int existsByUserEmail(String email);
-
     int existsByUserId(String userId);
-
+	
+	 Optional<Member> findByUserId(String userId);
     List<Member> findAll();
 
 }

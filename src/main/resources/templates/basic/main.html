@@ -44,7 +44,7 @@
                 <section class="box" th:each="book : ${bookList}">
                     <section class="" >
                         <div class="features-row " align="center">
-                            <a>
+                            <a th:href="@{|/book/${book.id}|}">
                                 <image class="image" style="width:100px; height:130px; " th:src="@{${book.imageUrl}}"></image>
                             </a>
                         </div>

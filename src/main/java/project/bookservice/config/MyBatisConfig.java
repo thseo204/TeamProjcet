@@ -3,8 +3,16 @@ package project.bookservice.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import project.bookservice.repository.MemberMapper;
-import project.bookservice.repository.MemberRepositoryImpl;
+
+import project.bookservice.repository.comment.CommentMapper;
+import project.bookservice.repository.comment.CommentRepository;
+import project.bookservice.repository.comment.MybatisCommentRepository;
+import project.bookservice.repository.member.MemberMapper;
+import project.bookservice.repository.member.MemberRepository;
+import project.bookservice.repository.member.MybatisMemberRepository;
+
+import project.bookservice.service.CommentService;
+import project.bookservice.service.CommentServiceV1;
 import project.bookservice.service.MemberService;
 import project.bookservice.service.MemberServiceImpl;
 
@@ -13,6 +21,7 @@ import project.bookservice.service.MemberServiceImpl;
 public class MyBatisConfig {
 
     private final MemberMapper memberMapper;
+    private final CommentMapper commentMapper;
 
     @Bean
     public MemberService memberService(){
@@ -20,7 +29,21 @@ public class MyBatisConfig {
     }
 
     @Bean
-    public MemberRepositoryImpl memberRepository(){
-        return new MemberRepositoryImpl(memberMapper);
+    public MemberRepository memberRepository() {
+        return new MybatisMemberRepository(memberMapper);
     }
+
+    @Bean
+    public CommentService commentService(){
+        return new CommentServiceV1(commentRepository());
+    }
+
+    @Bean
+    public CommentRepository commentRepository(){
+        return new MybatisCommentRepository(commentMapper);
+    }
+
+
+
+
 }

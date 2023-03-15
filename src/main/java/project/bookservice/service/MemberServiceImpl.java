@@ -3,7 +3,7 @@ package project.bookservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.bookservice.domain.member.Member;
-import project.bookservice.repository.MemberRepository;
+import project.bookservice.repository.member.MemberRepository;
 import project.bookservice.web.validation.form.SignUpForm;
 
 import java.util.Optional;

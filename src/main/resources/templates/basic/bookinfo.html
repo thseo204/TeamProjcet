@@ -1,138 +1,95 @@
-<!DOCTYPE HTML>
-<!--
-	Alpha by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>독서노트</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <link rel="stylesheet"
-        href="/assets/css/main.css" />
-</head>
-<body class="landing is-preload">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<body class="is-preload">
 <div id="page-wrapper">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+    <!-- Main -->
+    <section id="main2" class="container">
 
-  <!-- Header -->
-  <header id="header" class="alt">
-    <h1><a href="index.html">독서노트</a> by HTML5 UP</h1>
-    <nav id="nav">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li>
-          <a href="#" class="icon solid fa-angle-down">Layouts</a>
-          <ul>
-            <li><a href="generic.html">Generic</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="elements.html">Elements</a></li>
-            <li>
-              <a href="#">Submenu</a>
-              <ul>
-                <li><a href="#">Option One</a></li>
-                <li><a href="#">Option Two</a></li>
-                <li><a href="#">Option Three</a></li>
-                <li><a href="#">Option Four</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li><a href="#" class="button">Sign Up</a></li>
-      </ul>
-    </nav>
-  </header>
+        <section class="box">
+            <p><span class="image left"><img th:src="@{${book.imageUrl}}" style="width:300px; height:400px;"
+                                             alt=""/></span>
+            <h4>책 제목 </h4><p th:text="${book.title}"></p>
+            <h4>작가</h4> <p th:text="${book.author}"></p>
+            <h4>출간 일</h4> <p th:text="${book.pubDate}"></p>
+            <p>책 카테고리</p><br>
 
-  <!-- Banner -->
-  <section id="banner">
-    <h2>독서노트</h2>
-    <p>기록의 기억을 믿어보세요</p>
-    <ul class="actions special">
-      <li><a href="#" class="button primary">로그인</a></li>
-      <li><a href="#" class="button">회원가입</a></li>
-    </ul>
-  </section>
+            <p>챌 별점 평균</p>
+            <a th:href="@{${book.buyUrl}}">구매 링크</a> <br><br>
 
-  <!-- Main -->
-  <section id="main" class="container">
+            <ul class="actions fit">
+                <li><a href="/loginForm" class="button special fit alt">책 정보</a></li>
+                <li><a href="/main" class="button fit alt">독후감</a></li>
+            </ul>
 
-    <section class="box special">
-      <header class="major">
-        <h4 align="left">책 상세정보</h4>
-        <br/>
-        <section><img th:src="@{${book.imageUrl}}"></section>
-        <section></section>
-        <br/>
-        <section></section>
-        <section></section>
-        <p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc ornare<br />
-          adipiscing nunc adipiscing. Condimentum turpis massa.</p>
-      </header>
-      <span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
-    </section>
+            <h3>책 소개</h3>  <br>
+            <div th:text="${book.description}"></div>  <br>
 
-    <div class="row">
-      <div class="col-12 col-12-narrower">
 
-        <section class="box special">
-          <!-- <span class="image featured"><img src="images/pic02.jpg" alt="" /></span> -->
-          <h3>책 소개</h3>
-          <hr class="my-4">
-          <p th:text="${book.description}"></p>
-          <ul class="actions special">
-            <li><a href="#" class="button alt">Learn More</a></li>
-          </ul>
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">별점을 남겨주세요</h5>
+                <div class="card-body">
+                    <form name="comment-form" method="post" autocomplete="off">
+                        <div class="review_rating">
+                            <div class="warning_msg">별점을 선택해 주세요.</div>
+                            <div class="rating">
+                                <!-- 해당 별점을 클릭하면 해당 별과 그 왼쪽의 모든 별의 체크박스에 checked 적용 -->
+                                <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점">
+                                <label for="rating1"></label>
+                                <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점">
+                                <label for="rating2"></label>
+                                <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" >
+                                <label for="rating3"></label>
+                                <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점">
+                                <label for="rating4"></label>
+                                <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점">
+                                <label for="rating5"></label>
+                                <div id="starRating">
+                                    <input type="hidden" name="starRating"/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <textarea name="content" id="content" placeholder="댓글을 남겨주세요" rows="6" class="review_textarea"></textarea>
+                            <input type="hidden" name="bookisbn" th:value="${book.isbn}"/>
+                            <input type="hidden" name="writerName" th:value="작성자닉네임"/>
+                            <input type="hidden" name="writerID" th:value="작성자ID"/>
+                        </div>
+                        <br>
+                        <div class="col-12">
+                            <ul class="actions small">
+                                <li><input type="submit" name="save" id="save" value="등록"/></li>
+                                <li><input type="reset" value="취소" class="alt"/></li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
         </section>
-
-      </div>
-    </div>
-
-  </section>
-
-  <!-- CTA -->
-  <section id="cta">
-
-    <h2>Sign up for beta access</h2>
-    <p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc.</p>
-
-    <form>
-      <div class="row gtr-50 gtr-uniform">
-        <div class="col-8 col-12-mobilep">
-          <input type="email" name="email" id="email" placeholder="Email Address" />
-        </div>
-        <div class="col-4 col-12-mobilep">
-          <input type="submit" value="Sign Up" class="fit" />
-        </div>
-      </div>
-    </form>
-
-  </section>
-
-  <!-- Footer -->
-  <footer id="footer">
-    <ul class="icons">
-      <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-      <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-      <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-      <li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-      <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-      <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-    </ul>
-    <ul class="copyright">
-      <li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-    </ul>
-  </footer>
+    </section>
 
 </div>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/star.js"></script>
 
 </body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
 </html>

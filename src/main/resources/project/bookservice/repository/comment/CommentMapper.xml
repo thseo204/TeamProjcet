@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.bookservice.repository.comment.CommentMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+
+        insert into comment(content, bookisbn, writerName, writerId, date, starRating)
+        values (#{content}, #{bookisbn}, #{writerName}, #{writerID}, date_format(now(), '%Y%m%d%H%i%s'), #{starRating})
+    </insert>
+
+
+    <!--
+    <update id="update">
+        update item
+        set item_name=#{updateParam.itemName},
+        price=#{updateParam.price},
+        quantity=#{updateParam.quantity}
+        where id = #{id}
+    </update>
+    -->
+
+    <!--
+    <select id="findById" resultType="Member">
+        select id, item_name, price, quantity
+        from member
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="Member">
+        select id, item_name, price, quantity
+        from item
+        <where>
+            <if test="itemName != null and itemName != ''">
+                and item_name like concat('%', #{itemName}, '%')
+            </if>
+            <if test="maxPrice != null">
+                and price $lt;= #{maxPrice}
+            </if>
+        </where>
+    </select>
+    -->
+</mapper>
+

@@ -8,7 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.book.Book;
-import project.bookservice.repository.JpaBookRepository;
+import project.bookservice.repository.book.MybatisBookRepository;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -33,10 +33,10 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
         JSONArray itemArr = (JSONArray) jsonObject.get("items");
 
 //        System.out.println("itemArr.size() = " + itemArr.size());
+
+        MybatisBookRepository mybatisBookRepository = new MybatisBookRepository();
+        mybatisBookRepository.clearStore();
         for(int i = 0; i < itemArr.size(); i++){
-
-            JpaBookRepository bookRepository = new JpaBookRepository();
-
             JSONObject jsonObject1 = (JSONObject)itemArr.get(i);
             String imageUrl = (String)jsonObject1.get("image"); // 이미지 링크
             String author = (String)jsonObject1.get("author"); // 저자
@@ -47,7 +47,7 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
             String pubDate = (String)jsonObject1.get("pubdate"); // 출판연도
             String isbn = (String)jsonObject1.get("isbn"); // key값
             Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
-            bookRepository.save(book);
+            mybatisBookRepository.save(book);
             bookList.add(book);
         }
 //        object = (JSONObject) itemArr.get(0);

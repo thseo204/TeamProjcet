@@ -1,4 +1,4 @@
-package project.bookservice.repository;
+package project.bookservice.repository.member;
 
 import org.apache.ibatis.annotations.Mapper;
 import project.bookservice.domain.member.Member;

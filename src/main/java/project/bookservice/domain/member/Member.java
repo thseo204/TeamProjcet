@@ -1,7 +1,6 @@
 package project.bookservice.domain.member;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 
 @Data

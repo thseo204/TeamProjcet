@@ -1,4 +1,4 @@
-package project.bookservice.service.join;
+package project.bookservice.service.login;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,17 +7,14 @@ import project.bookservice.repository.member.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
-public class JoinService {
+public class LoginService {
 
     private final MemberRepository memberRepository;
 
-    /**
-     * @return null 이면 회원가입 가능한 아이디
-     */
-    public Member idCheck(String memberId){
-        return memberRepository.findById(memberId)
-                .filter(m -> m.getUserId().equals(memberId))
+    public Member login(String userId, String userPwd){
+        return memberRepository.findByUserId(userId)
+                .filter(m->m.getUserPwd().equals(userPwd))
                 .orElse(null);
-    }
 
+    }
 }

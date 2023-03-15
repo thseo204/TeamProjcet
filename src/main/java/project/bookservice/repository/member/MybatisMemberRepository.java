@@ -1,4 +1,4 @@
-package project.bookservice.repository;
+package project.bookservice.repository.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +12,14 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MemberRepositoryImpl implements MemberRepository {
+public class MybatisMemberRepository implements MemberRepository {
     // 대부분 매퍼에 위임하는 코드임
     private final MemberMapper memberMapper;
+
+    @Override
+    public Member save(Member member) {
+        return null;
+    }
 
     @Override
     public SignUpForm save(SignUpForm signUpForm) {
@@ -47,6 +52,11 @@ public class MemberRepositoryImpl implements MemberRepository {
         log.info("existsByUserId info={}", userId);
 //        boolean byUserId = memberMapper.findByUserId(userId);
         return memberMapper.findByUserId(userId);
+    }
+
+    @Override
+    public Optional<Member> findByUserId(String userId) {
+        return Optional.empty();
     }
 
     @Override
