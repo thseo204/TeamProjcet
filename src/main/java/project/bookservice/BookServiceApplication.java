@@ -18,9 +18,4 @@ public class BookServiceApplication {
 
 	}
 
-	@Bean
-	@Profile("local")
-	public TestDataInit testDataInit(MemberRepository memberRepository) {
-		return new TestDataInit(memberRepository);
-	}
 }
