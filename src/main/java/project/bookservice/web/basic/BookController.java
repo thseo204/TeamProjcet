@@ -6,11 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import project.bookservice.domain.book.Book;
-import project.bookservice.domain.repository.JpaBookRepository;
+import project.bookservice.repository.JpaBookRepository;
 import project.bookservice.openapi.APIParser;
 import project.bookservice.openapi.ApiSearchBook;
 import project.bookservice.openapi.ApiSearchBookList;
@@ -24,12 +21,7 @@ public class BookController {
     private final JpaBookRepository bookRepository;
 
 
-    @GetMapping("/test")
-    public String test(){
-        return "basic/test";
-    }
-
-    @GetMapping("/main")
+    @GetMapping("/bookSearch")
     public String searchBook(Model model) throws ParseException {
         String bookTitle = "사피엔스";
 
@@ -39,10 +31,10 @@ public class BookController {
 //        bookRepository.save(book);
 
         model.addAttribute("bookList", bookList);
-        return "basic/main";
+        return "basic/book2";
     }
 
-    @GetMapping("/book")
+    @GetMapping("/main")
     public String BestSeller(Model model) throws ParseException {
         String bookTitle = "Bestseller";
         APIParser apiParser = new ApiSearchBookList();
@@ -50,7 +42,7 @@ public class BookController {
         model.addAttribute("bookList", bookList);
 
 
-        return "basic/book2";
+        return "basic/main";
     }
 
     @GetMapping("/book/{bookId}")
@@ -60,4 +52,9 @@ public class BookController {
         return "basic/bookinfo";
     }
 
+    @GetMapping("/bookReportForm")
+    public String bookReport(String isbn, Model model) {
+
+        return "basic/bookReport";
+    }
 }
