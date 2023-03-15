@@ -22,11 +22,13 @@
 						th:errorclass="field-error" />
 						<div class="field-error" th:errors="*{userId}"/>
 					</div>
-					<div class="col-3 col-12-mobilep">
-						<input type="button" value="중복확인" />
-					</div>
+<!--					<div class="col-3 col-12-mobilep">-->
+<!--						<input type="submit" value="중복확인"-->
+<!--							   th:onclick="|location.href='/joinForm/idCheck(userId=*{userId})'|" />-->
+<!--					</div>-->
 					<div class="col-12">
-						<input type="password" name="userPwd" th:id="userPwd" value="" placeholder="Password" />
+						<input type="password" id="userPwd" th:field="*{userPwd}" placeholder="Password" />
+<!--						<div class="field-error" th:errors="*{userPwd}"/>-->
 					</div>
 					<div class="col-12" >
 						<input type="password" id="userRePwd" th:field="*{userRePwd}" placeholder="RePassword" />
