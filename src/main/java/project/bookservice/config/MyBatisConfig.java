@@ -3,8 +3,8 @@ package project.bookservice.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import project.bookservice.domain.repository.MemberMapper;
-import project.bookservice.domain.repository.MemberRepositoryImpl;
+import project.bookservice.repository.MemberMapper;
+import project.bookservice.repository.MemberRepositoryImpl;
 import project.bookservice.service.MemberService;
 import project.bookservice.service.MemberServiceImpl;
 

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--<head>-->
+<!--    <title>Single - Future Imperfect by HTML5 UP</title>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
+<!--    <link rel="stylesheet" href="assets/css/sub.css" />-->
+<!--</head>-->
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<link rel="stylesheet" href="assets/css/sub.css"/>
+
+<body class="single-2 is-preload">
+<div id="wrapper">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <article class="post-2">
+            <header>
+                <div class="title-2">
+                    <h2><a href="#">Magna sed adipiscing</a></h2>
+                    <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p>
+                </div>
+                <div class="meta-2">
+                    <time class="published-2" datetime="2015-11-01">November 1, 2015</time>
+                    <a href="#" class="author-2">
+                        <span class="name-2">Jane Doe</span>
+                        <img src="images/avatar.jpg" alt="" />
+                    </a>
+                </div>
+            </header>
+            <span class="image-2 featured-2">
+                <img src="images/pic01.jpg" alt="" />
+            </span>
+            <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl.
+                Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna
+                enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non
+                congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed
+                vitae justo condimentum, porta lectus vitae, ultricies congue gravida
+                diam non fringilla.</p>
+            <p>Nunc quis dui scelerisque, scelerisque urna ut, dapibus orci.
+                Sed vitae condimentum lectus, ut imperdiet quam. Maecenas in justo ut
+                nulla aliquam sodales vel at ligula. Sed blandit diam odio, sed
+                fringilla lectus molestie sit amet. Praesent eu tortor viverra lorem
+                mattis pulvinar feugiat in turpis. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos himenaeos. Fusce
+                ullamcorper tellus sit amet mattis dignissim. Phasellus ut metus
+                ligula. Curabitur nec leo turpis. Ut gravida purus quis erat pretium,
+                sed pellentesque massa elementum. Fusce vestibulum porta augue, at
+                mattis justo. Integer sed sapien fringilla, dapibus risus id, faucibus
+                ante. Pellentesque mattis nunc sit amet tortor pellentesque, non
+                placerat neque viverra. </p>
+            <footer>
+                <ul class="stats">
+                    <li><a href="#">General</a></li>
+                    <li><a href="#" class="icon solid fa-heart">28</a></li>
+                    <li><a href="#" class="icon solid fa-comment">128</a></li>
+                </ul>
+            </footer>
+        </article>
+
+    </div>
+
+<!--    &lt;!&ndash; Footer &ndash;&gt;-->
+<!--    <section id="footer">-->
+<!--        <ul class="icons-2">-->
+<!--            <li><a href="#" class="icon-2 brands-2 fa-twitter-2"><span class="label-2">Twitter</span></a></li>-->
+<!--            <li><a href="#" class="icon-2 brands-2 fa-facebook-f-2"><span class="label-2">Facebook</span></a></li>-->
+<!--            <li><a href="#" class="icon-2 brands-2 fa-instagram-2"><span class="label-2">Instagram</span></a></li>-->
+<!--            <li><a href="#" class="icon-2 solid-2 fa-rss-2"><span class="label-2">RSS</span></a></li>-->
+<!--            <li><a href="#" class="icon-2 solid-2 fa-envelope-2"><span class="label-2">Email</span></a></li>-->
+<!--        </ul>-->
+<!--        <p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>-->
+<!--    </section>-->
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

@@ -1,4 +1,4 @@
-package project.bookservice.domain.repository;
+package project.bookservice.repository;
 
 import project.bookservice.domain.book.Book;
 

@@ -1,4 +1,4 @@
-package project.bookservice.domain.repository;
+package project.bookservice.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import project.bookservice.config.MyBatisConfig;
-import project.bookservice.domain.repository.MemberRepository;
+import project.bookservice.repository.MemberRepository;
 
 import java.lang.String;
 @Import(MyBatisConfig.class)

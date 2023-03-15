@@ -3,10 +3,9 @@ package project.bookservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.bookservice.domain.member.Member;
-import project.bookservice.domain.repository.MemberRepository;
-import project.bookservice.domain.repository.MemberRepositoryImpl;
+import project.bookservice.repository.MemberRepository;
+import project.bookservice.web.validation.form.SignUpForm;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +15,8 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
 
     @Override
-    public Member save(Member member) {
-        return memberRepository.save(member);
+    public SignUpForm save(SignUpForm signUpForm) {
+        return memberRepository.save(signUpForm);
     }
 
 //    @Override
@@ -25,10 +24,20 @@ public class MemberServiceImpl implements MemberService{
 //        itemRepository.update(itemId, updateParam);
 //    }
 //
-//    @Override
-//    public Optional<Item> findById(Long id) {
-//        return itemRepository.findById(id);
-//    }
+    @Override
+    public Optional<Member> findById(String memberId) {
+        return memberRepository.findById(memberId);
+    }
+
+    @Override
+    public int existsByEmail(String email) {
+        return memberRepository.existsByUserEmail(email);
+    }
+
+    @Override
+    public int existsByUserId(String userId) {
+        return memberRepository.existsByUserId(userId);
+    }
 //
 //    @Override
 //    public List<Item> findItems(ItemSearchCond cond) {

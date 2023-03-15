@@ -6,18 +6,21 @@
 <body class="is-preload">
 <div id="page-wrapper">
 	<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+	<link rel="stylesheet" href="assets/css/errors.css"/>
 	<!-- Main -->
 	<section id="main" class="container medium">
 		<header>
 			<h2>회원가입</h2>
-			<p>Tell us what you think about our little operation.</p>
+			<p>회원가입 후 다양한 서비스를 이용해보세요:)</p>
 		</header>
 		<div class="box">
 			<form method="post" th:action th:object="${member}" action="#">
 				<div class="row gtr-50 gtr-uniform">
 
-					<div class="col-9 col-12-mobilep">
-						<input type="text" name="userId" id="userId" value="" placeholder="UserId" />
+					<div class="col-12">
+						<input type="text" id="userId" th:field="*{userId}" th:value="*{userId}" placeholder="UserId"
+						th:errorclass="field-error" />
+						<div class="field-error" th:errors="*{userId}"/>
 					</div>
 					<div class="col-3 col-12-mobilep">
 						<input type="button" value="중복확인" />
@@ -26,29 +29,35 @@
 						<input type="password" name="userPwd" th:id="userPwd" value="" placeholder="Password" />
 					</div>
 					<div class="col-12" >
-						<input type="password" name="reUserPwd" th:id="reUserPwd" value="" placeholder="RePassword" />
+						<input type="password" id="userRePwd" th:field="*{userRePwd}" placeholder="RePassword" />
+						<div class="field-error" th:errors="*{userPwd}"/>
 					</div>
 					<div class="col-12" >
-						<input type="text" name="userPhone" th:id="userPhone" value="" placeholder="Phone" />
+						<input type="text" id="userPhone" th:field="*{userPhone}" placeholder="Phone" />
+						<div class="field-error" th:errors="*{userPhone}"/>
 					</div>
 					<div class="col-12" >
-						<input type="text" name="userBirth" th:id="userBirth" value="" placeholder="Birth yymmdd" />
+						<input type="text" id="userBirth" th:field="*{userBirth}" placeholder="Birth yymmdd" />
+						<div class="field-error" th:errors="*{userBirth}"/>
 					</div>
 					<div class="col-4 col-8-narrower">
-
-						<input type="radio" id="man" th:name="userGender" value="M">
+						<input type="radio" id="man" th:field="*{userGender}" value="M">
 						<label for="man">남</label>
 					</div>
 					<div class="col-4 col-8-narrower">
-						<input type="radio" id="woman" th:name="userGender" value="F">
+						<input type="radio" id="woman" th:field="*{userGender}" value="F">
 						<label for="woman">여</label>
+						<div class="field-error" th:errors="*{userGender}"/>
 					</div>
 
 					<div class="col-12">
-						<input type="text" name="userName" th:id="userName" value="" placeholder="Name" />
+						<input type="text" id="userName" th:field="*{userName}" placeholder="Name" />
+						<div class="field-error" th:errors="*{userName}"/>
 					</div>
 					<div class="col-12">
-						<input type="email" name="userEmail" th:id="userEmail" value="" placeholder="Email" />
+						<input type="email" id="userEmail" th:field="*{userEmail}" placeholder="Email"
+							   th:errorclass="field-error"/>
+						<div class="field-error" th:errors="*{userEmail}"/>
 					</div>
 					<div class="col-12">
 						<ul class="actions special">

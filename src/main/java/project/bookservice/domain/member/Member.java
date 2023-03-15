@@ -1,6 +1,7 @@
 package project.bookservice.domain.member;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 
 @Data
@@ -10,6 +11,7 @@ public class Member {
 
     private String userId;
     private String userPwd;
+    private String userRePwd;
     private String userName;
     private String userGender;
     private Integer userBirth;

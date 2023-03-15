@@ -8,7 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.book.Book;
-import project.bookservice.domain.repository.JpaBookRepository;
+import project.bookservice.repository.JpaBookRepository;
 
 import java.io.*;
 import java.net.URLEncoder;

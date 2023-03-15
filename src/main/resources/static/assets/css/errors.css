@@ -1,0 +1,6 @@
+        /* text상자 error field*/
+
+        .field-error{
+            border-color: #dc3545;
+            color: #dc3545;
+        }
