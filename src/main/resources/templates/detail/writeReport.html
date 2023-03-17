@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<body class="is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+<!--<link rel="stylesheet" href="assets/css/errors.css"/>-->
+
+
+<!-- Main -->
+<section id="main" class="container">
+    <header>
+        <h2>독후기록</h2>
+        <p>책에 대한 기록을 남겨보세요</p>
+    </header>
+
+    <div class="row">
+        <div class="col-12">
+
+            <!-- Form -->
+            <section class="box" >
+
+                <form method="get">
+                    <p></p>
+                    <div class="row gtr-uniform gtr-50">
+
+                        <div class="col-9 col-12-mobilep">
+                            <input type="text" name="title" id="title" th:value="${book.title}" placeholder="도서 검색"
+                                   readonly/>
+                        </div>
+                        <div class="col-3 col-12-mobilep">
+                            <!--									<a class="button special icon solid fa-search fit"></a>-->
+                            <input type="button" value="Search" class="button special icon solid fa-search fit"
+                                   onclick="window.open('/searchBookInReportForm', '_blank', 'width=600, height=600', true);"/>
+                        </div>
+
+                        <!--						<ul class="actions">-->
+                        <!--							<li class="col-9 col-12-mobilep"></li>-->
+                        <!--							<li class="col-3 col-12-mobilep"><a href="#" class="button special icon solid fa-search fit">Search</a></li>-->
+                        <!--						</ul>-->
+                    </div>
+                </form>
+
+                <hr/>
+
+                <h3>도서제목 : <span th:text="${book.title}"></span></h3>
+                <span class="image fit"><img src="images/pic04.jpg" alt=""/></span>
+                <form method="post" action="#">
+                    <div class="row gtr-uniform gtr-50">
+
+
+                        <div class="col-12">
+                            <textarea name="message" id="message" placeholder="기록을 남겨보세요." rows="12"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" name="name" id="name" value=""
+                                   placeholder="태그를 입력해주세요.   ex) #독서노트 #오늘의기록 #소설 #000작가님"/>
+                        </div>
+                        <div class="col-4 col-12-narrower">
+                            <input type="radio" id="priority-low" name="priority" checked>
+                            <label for="priority-low">공개</label>
+                        </div>
+                        <div class="col-4 col-12-narrower">
+                            <input type="radio" id="priority-normal" name="priority">
+                            <label for="priority-normal">비공개</label>
+                        </div>
+                        <div class="col-12">
+                            <ul class="actions">
+                                <li><input type="submit" value="올리기"/></li>
+                                <li><input type="reset" value="작성취소" class="alt"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+
+
+            </section>
+
+        </div>
+    </div>
+
+</section>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

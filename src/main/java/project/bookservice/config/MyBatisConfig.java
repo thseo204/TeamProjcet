@@ -8,7 +8,7 @@ import project.bookservice.repository.comment.CommentMapper;
 import project.bookservice.repository.comment.CommentRepository;
 import project.bookservice.repository.comment.MybatisCommentRepository;
 import project.bookservice.repository.member.MemberMapper;
-import project.bookservice.repository.member.MemberRepository;
+
 import project.bookservice.repository.member.MybatisMemberRepository;
 
 import project.bookservice.service.CommentService;
@@ -29,7 +29,7 @@ public class MyBatisConfig {
     }
 
     @Bean
-    public MemberRepository memberRepository() {
+    public MybatisMemberRepository memberRepository(){
         return new MybatisMemberRepository(memberMapper);
     }
 

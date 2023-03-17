@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<!--<head>-->
-<!--    <title>Single - Future Imperfect by HTML5 UP</title>-->
-<!--    <meta charset="utf-8" />-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
-<!--    <link rel="stylesheet" href="assets/css/sub.css" />-->
-<!--</head>-->
+
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
-<link rel="stylesheet" href="assets/css/sub.css"/>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
 
 <body class="single-2 is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+<link rel="stylesheet" href="assets/css/sub.css"/>
+
 <div id="wrapper">
-    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 
 
     <!-- Main -->
@@ -46,14 +43,7 @@
                 Sed vitae condimentum lectus, ut imperdiet quam. Maecenas in justo ut
                 nulla aliquam sodales vel at ligula. Sed blandit diam odio, sed
                 fringilla lectus molestie sit amet. Praesent eu tortor viverra lorem
-                mattis pulvinar feugiat in turpis. Class aptent taciti sociosqu ad
-                litora torquent per conubia nostra, per inceptos himenaeos. Fusce
-                ullamcorper tellus sit amet mattis dignissim. Phasellus ut metus
-                ligula. Curabitur nec leo turpis. Ut gravida purus quis erat pretium,
-                sed pellentesque massa elementum. Fusce vestibulum porta augue, at
-                mattis justo. Integer sed sapien fringilla, dapibus risus id, faucibus
-                ante. Pellentesque mattis nunc sit amet tortor pellentesque, non
-                placerat neque viverra. </p>
+                mattis pulvinar feugiat in turpis. </p>
             <footer>
                 <ul class="stats">
                     <li><a href="#">General</a></li>
@@ -81,10 +71,19 @@
 
 <!-- Scripts -->
 <script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
 <script src="assets/js/browser.min.js"></script>
 <script src="assets/js/breakpoints.min.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
+
+<!-- Scripts -->
+<!--<script src="assets/js/jquery.min.js"></script>-->
+<!--<script src="assets/js/browser.min.js"></script>-->
+<!--<script src="assets/js/breakpoints.min.js"></script>-->
+<!--<script src="assets/js/util.js"></script>-->
+<!--<script src="assets/js/main.js"></script>-->
 
 </body>
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

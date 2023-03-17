@@ -12,4 +12,7 @@ public interface BookRepository {
     List<Book> findAll();
 
     void clearStore();
+
+    Book findByIsbn(String isbn);
+
 }

@@ -10,12 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class MybatisBookRepository implements BookRepository{
-    private static final Map<Long, Book> store = new ConcurrentHashMap<>(); // 실무에서는 ConcurrentHashMap 사용!
+    private static final Map<String, Book> store = new ConcurrentHashMap<>(); // 실무에서는 ConcurrentHashMap 사용!
     private static long sequence = 0L; // 실무에서는 어터믹?
 
     public Book save(Book book){
         book.setId(++sequence);
-        store.put(book.getId(), book);
+        store.put(book.getIsbn(), book);
         return book;
     }
 
@@ -23,8 +23,8 @@ public class MybatisBookRepository implements BookRepository{
         return new ArrayList<>(store.values());
     }
 
-    public static Book findById(Long id){
-        return store.get(id);
+    public Book findByIsbn(String isbn){
+        return store.get(isbn);
     }
 
     public void clearStore() {

@@ -44,7 +44,7 @@
                 <section class="box" th:each="book : ${bookList}">
                     <section class="" >
                         <div class="features-row " align="center">
-                            <a th:href="@{|/book/${book.id}|}">
+                            <a th:href="@{|/book/${book.isbn}|}">
                                 <image class="image" style="width:100px; height:130px; " th:src="@{${book.imageUrl}}"></image>
                             </a>
                         </div>
@@ -70,7 +70,7 @@
                         rutrum
                         phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
                     <ul class="actions special">
-                        <li><a href="#" class="button alt">Learn More</a></li>
+                        <li><a href="/bookReportForm" class="button alt">Learn More</a></li>
                     </ul>
                 </section>
 
@@ -84,7 +84,7 @@
                         rutrum
                         phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
                     <ul class="actions special">
-                        <li><a href="#" class="button alt">Learn More</a></li>
+                        <li><a href="/bookReportForm" class="button alt">Learn More</a></li>
                     </ul>
                 </section>
 

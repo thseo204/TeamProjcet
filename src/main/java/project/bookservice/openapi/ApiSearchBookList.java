@@ -48,11 +48,11 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
 
             System.out.println(nList.getLength() + "개의 데이터 발견");
 
-            MybatisBookRepository mybatisBookRepository = new MybatisBookRepository();
-            mybatisBookRepository.clearStore();
+            
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
+                MybatisBookRepository bookRepository = new MybatisBookRepository();
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
@@ -77,7 +77,7 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
                     String isbn = getTagvalue("isbn13", eElement);
 
                     Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
-                    mybatisBookRepository.save(book);
+                    bookRepository.save(book);
                     bookList.add(book);
                 }
             }

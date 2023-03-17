@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<script>
+    function close1(isbn){
+        opener.location.replace("/writeReportForm/" + isbn);
+        window.close();
+};
+</script>
+<body class="is-preload">
+<!--<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>-->
+<!--<link rel="stylesheet" href="assets/css/errors.css"/>-->
+
+<!-- Main -->
+<section id="main" class="container">
+    <header>
+        <h2>도서검색</h2>
+    </header>
+
+    <!-- Table -->
+    <section class="box" >
+        <form th:action method="get" th:Object="${book}">
+            <div class="row gtr-uniform gtr-50">
+                <div class="col-9 col-12-mobilep">
+                    <input type="text" id="title" name="title" placeholder="도서 검색"/>
+                </div>
+                <div class="col-3 col-12-mobilep">
+                    <input type="submit" class="button special icon solid fa-search fit" value="search" />
+                </div>
+            </div>
+
+        <hr/>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>출판사</th>
+                    <th>책제목</th>
+                    <th>저자</th>
+                </tr>
+                </thead>
+                <tbody>
+<!--                <p th:text="|검색된 도서 수 : ${#lists.size(bookList)}|"></p>-->
+                <tr th:each="books : ${bookList}">
+                    <td><a th:text="${books.publisher}"></a></td>
+                    <td>
+                        <a th:href="|javascript:close1('${books.isbn}');|" th:text="${books.title}"></a>
+                    </td>
+                    <td><a th:text="${books.author}"></a></td>
+                </tr>
+
+                <tfoot>
+<!--                <tr>-->
+<!--&lt;!&ndash;                    <td colspan="2"></td>&ndash;&gt;-->
+<!--                    <td th:text="|검색된 도서 수 : ${#lists.size(bookList)}|">[검색된 도서 수 : ]</td>-->
+<!--                </tr>-->
+                </tfoot>
+            </table>
+        </div>
+        </form>
+    </section>
+
+</section>
+
+<!-- Scripts -->
+<!--<script src="assets/js/jquery.min.js"></script>-->
+<!--<script src="assets/js/jquery.dropotron.min.js"></script>-->
+<!--<script src="assets/js/jquery.scrollex.min.js"></script>-->
+<!--<script src="assets/js/browser.min.js"></script>-->
+<!--<script src="assets/js/breakpoints.min.js"></script>-->
+<!--<script src="assets/js/util.js"></script>-->
+<!--<script src="assets/js/main.js"></script>-->
+
+<!--<script src="assets/js/window.js"></script>-->
+
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

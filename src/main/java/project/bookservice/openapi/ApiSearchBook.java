@@ -21,8 +21,7 @@ import java.lang.String;
 public class ApiSearchBook extends ConnectAPI implements APIParser{
 
 //    private ArrayList<JSONObject> jsonObjectArrayList;
-    public ApiSearchBook() {
-    }
+
 
     @Override
     public ArrayList<Book> jsonAndXmlParserToArr(String bookTitle) throws ParseException {
@@ -34,9 +33,11 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
 
 //        System.out.println("itemArr.size() = " + itemArr.size());
 
-        MybatisBookRepository mybatisBookRepository = new MybatisBookRepository();
-        mybatisBookRepository.clearStore();
+        
         for(int i = 0; i < itemArr.size(); i++){
+
+            MybatisBookRepository bookRepository = new MybatisBookRepository();
+
             JSONObject jsonObject1 = (JSONObject)itemArr.get(i);
             String imageUrl = (String)jsonObject1.get("image"); // 이미지 링크
             String author = (String)jsonObject1.get("author"); // 저자
@@ -47,7 +48,7 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
             String pubDate = (String)jsonObject1.get("pubdate"); // 출판연도
             String isbn = (String)jsonObject1.get("isbn"); // key값
             Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
-            mybatisBookRepository.save(book);
+            bookRepository.save(book);
             bookList.add(book);
         }
 //        object = (JSONObject) itemArr.get(0);
