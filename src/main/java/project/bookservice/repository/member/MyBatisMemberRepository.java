@@ -3,16 +3,16 @@ package project.bookservice.repository.member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
 import project.bookservice.web.validation.form.SignUpForm;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MybatisMemberRepository implements MemberRepository {
+public class MyBatisMemberRepository implements MemberRepository {
     // 대부분 매퍼에 위임하는 코드임
     private final MemberMapper memberMapper;
 
@@ -55,12 +55,13 @@ public class MybatisMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByUserId(String userId) {
-        return Optional.empty();
+    public Optional<Member> findByLoginId(String userId) {
+        log.info("loginId info={}", userId);
+
+        return memberMapper.findByLoginId(userId);
     }
 
-    @Override
-    public List<Member> findAll() {
-        return memberMapper.findAll();
-    }
+
+
+
 }

@@ -36,6 +36,11 @@
         from member
     </select>
 
+    <select id="findByLoginId" resultType="project.bookservice.domain.member.Member">
+        select user_id,user_pwd
+        from member
+        WHERE user_id = #{userId}
+    </select>
 <!--    <select id="findAll" resultType="Member">-->
 <!--        select id, item_name, price, quantity-->
 <!--        from item-->

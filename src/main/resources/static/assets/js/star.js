@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 });
 
- //상품평 작성 글자수 초과 체크 이벤트 리스너
+    //상품평 작성 글자수 초과 체크 이벤트 리스너
     document.querySelector('.review_textarea').addEventListener('keydown',function(){
         //리뷰 400자 초과 안되게 자동 자름
         let review = document.querySelector('.review_textarea');
@@ -50,3 +50,40 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         //폼 서밋
     });
+
+    Rating.prototype.showMessage = function(type){//경고메시지 표시
+        switch(type){
+            case 'rate':
+                //안내메시지 표시
+                document.querySelector('.review_rating .warning_msg').style.display = 'block';
+                //지정된 시간 후 안내 메시지 감춤
+                setTimeout(function(){
+                    document.querySelector('.review_rating .warning_msg').style.display = 'none';
+                },1000);
+                break;
+            case 'review':
+                //안내메시지 표시
+                document.querySelector('.review_contents .warning_msg').style.display = 'block';
+                //지정된 시간 후 안내 메시지 감춤
+                setTimeout(function(){
+                    document.querySelector('.review_contents .warning_msg').style.display = 'none';
+                },1000);
+                break;
+        }
+    }
+
+
+const checkboxes = document.querySelectorAll('input[type="checkbox"][name="starRating"]');
+const checkboxValues = [];
+
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener('change', () => {
+    checkboxValues.length = 0; // clear array
+    checkboxes.forEach((cb) => {
+      if (cb.checked) {
+        checkboxValues.push(cb.value);
+      }
+    });
+    document.getElementById('starRating').value = checkboxValues.length;
+  });
+});

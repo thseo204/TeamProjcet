@@ -17,6 +17,7 @@ import project.bookservice.openapi.ApiSearchBookList;
 import project.bookservice.service.CommentService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -26,10 +27,6 @@ public class BookController {
 
 	 private final CommentService commentService;
 
-    @GetMapping("/star")
-    public String starpage(){
-        return "basic/star";
-    }
     @GetMapping("/bookSearch")
     public String searchBook(Model model) throws ParseException {
         String bookTitle = "사피엔스";
@@ -58,11 +55,20 @@ public class BookController {
     public String bookInfo(@PathVariable String isbn, Model model) {
 
         Book book = bookRepository.findByIsbn(isbn);
+		 List<Comment> comments = commentService.findComments(isbn);
+
+        model.addAttribute("comments", comments);
         model.addAttribute("book",book);
         return "detail/bookinfo";
     }
 
+    @GetMapping("/book/{isbn}/report")
+    public String bookInfoReport(@PathVariable String isbn, Model model){
+        Book book = bookRepository.findByIsbn(isbn);
+        model.addAttribute("book",book);
 
+        return "detail/bookInfoReport";
+    }
     @PostMapping("/book/{isbn}")
     public String insertComment(@ModelAttribute Comment comment , RedirectAttributes redirectAttributes){
         Comment savedComment = commentService.save(comment);

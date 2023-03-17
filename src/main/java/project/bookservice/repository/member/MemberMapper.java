@@ -1,6 +1,7 @@
 package project.bookservice.repository.member;
 
 import org.apache.ibatis.annotations.Mapper;
+import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
 import project.bookservice.web.validation.form.SignUpForm;
 
@@ -21,6 +22,5 @@ public interface MemberMapper {
     // Sign-up email userId check
     int findByUserId(String userId);
 
-    List<Member> findAll();
-
+    Optional<Member> findByLoginId(String userId);
 }

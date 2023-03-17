@@ -9,6 +9,11 @@
         values (#{content}, #{bookisbn}, #{writerName}, #{writerID}, date_format(now(), '%Y%m%d%H%i%s'), #{starRating})
     </insert>
 
+    <select id="findComments" resultType="project.bookservice.domain.comment.Comment">
+        select *
+        from comment
+        where bookisbn = #{bookisbn}
+    </select>
 
     <!--
     <update id="update">

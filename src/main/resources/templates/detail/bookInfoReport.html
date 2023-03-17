@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<body class="is-preload">
+<div id="page-wrapper">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+    <!-- Main -->
+    <section id="main2" class="container">
+
+        <section class="box">
+            <p><span class="image left"><img th:src="@{${book.imageUrl}}" style="width:300px; height:400px;" alt=""/></span>
+            <h4>책 제목 </h4><p th:text="${book.title}"></p>
+            <h4>작가</h4> <p th:text="${book.author}"></p>
+            <h4>출간 일</h4> <p th:text="${book.pubDate}"></p>
+            <p>책 카테고리</p><br>
+
+            <p>챌 별점 평균</p>
+            <a th:href="@{${book.buyUrl}}">구매 링크</a> <br><br>
+
+            <ul class="actions fit">
+                <li><a th:href="@{|/book/${book.isbn}|}" class="button special fit alt">책 정보</a></li>
+                <li><a th:href="@{|/book/${book.isbn}/report|}" class="button fit alt">독후감</a></li>
+            </ul>
+
+        </section>
+    </section>
+
+</div>
+
+<!-- Scripts -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/star.js"></script>
+
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

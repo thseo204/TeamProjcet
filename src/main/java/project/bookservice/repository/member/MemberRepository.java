@@ -2,6 +2,7 @@ package project.bookservice.repository.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
+import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
 import project.bookservice.web.validation.form.SignUpForm;
 
@@ -20,7 +21,8 @@ public interface MemberRepository {
     int existsByUserEmail(String email);
     int existsByUserId(String userId);
 	
-	 Optional<Member> findByUserId(String userId);
-    List<Member> findAll();
+
+    Optional<Member> findByLoginId(String userId);
+
 
 }
