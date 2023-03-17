@@ -5,14 +5,14 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
 
-        insert into comment(content, bookisbn, writerName, writerId, date, starRating)
-        values (#{content}, #{bookisbn}, #{writerName}, #{writerID}, date_format(now(), '%Y%m%d%H%i%s'), #{starRating})
+        insert into comment(content, isbn, writer_id, date, star_rating)
+        values (#{content}, #{bookisbn}, #{writerID}, date_format(now(), '%Y%m%d%H%i%s'), #{starRating})
     </insert>
 
     <select id="findComments" resultType="project.bookservice.domain.comment.Comment">
         select *
         from comment
-        where bookisbn = #{bookisbn}
+        where isbn = #{bookisbn}
     </select>
 
     <!--
