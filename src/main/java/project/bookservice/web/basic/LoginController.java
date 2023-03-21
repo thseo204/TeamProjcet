@@ -69,8 +69,8 @@ public class LoginController {
 
 
 
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,@RequestParam(defaultValue = "/") String redirectURL) {
 
         //세션을 삭제한다.
         HttpSession session = request.getSession(false);
@@ -78,7 +78,8 @@ public class LoginController {
             session.invalidate();
         }
 
-        return "redirect:/main";
+        return "redirect:"+redirectURL;
     }
+
 
 }

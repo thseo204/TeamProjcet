@@ -85,7 +85,9 @@ public class ReportController implements Serializable {
     }
 
     @GetMapping("/writeReportForm")
-    public String writeReportAddTitle(@ModelAttribute("reportInfo") ReportInfo reportInfo, @ModelAttribute Book book) {
+    public String writeReportAddTitle(@ModelAttribute("reportInfo") ReportInfo reportInfo, @ModelAttribute Book book,@SessionAttribute(name= SessionConst.LOGIN_MEMBER,
+            required = false) Member loginMember, Model model) {
+            model.addAttribute("loginMember", loginMember);
 //        model.addAttribute("reportInfo", reportInfo);
         return "detail/writeReport";
     }

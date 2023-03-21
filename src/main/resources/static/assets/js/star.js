@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function(){
     document.querySelector('.review_textarea').addEventListener('keydown',function(){
         //리뷰 400자 초과 안되게 자동 자름
         let review = document.querySelector('.review_textarea');
-        let lengthCheckEx = /^.{400,}$/;
+        let lengthCheckEx = /^.{100,}$/;
         if(lengthCheckEx.test(review.value)){
             //400자 초과 컷
-            review.value = review.value.substr(0,400);
+            review.value = review.value.substr(0,100);
         }
     });
 
@@ -73,17 +73,4 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
 
-const checkboxes = document.querySelectorAll('input[type="checkbox"][name="starRating"]');
-const checkboxValues = [];
 
-checkboxes.forEach((checkbox) => {
-  checkbox.addEventListener('change', () => {
-    checkboxValues.length = 0; // clear array
-    checkboxes.forEach((cb) => {
-      if (cb.checked) {
-        checkboxValues.push(cb.value);
-      }
-    });
-    document.getElementById('starRating').value = checkboxValues.length;
-  });
-});

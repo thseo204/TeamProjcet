@@ -10,10 +10,26 @@
     <section id="banner">
         <h2 th:text="#{page.title}">독서노트</h2>
         <p>기록의 기억을 믿어보세요</p>
-        <ul class="actions special">
-            <li><a href="/loginForm" class="button primary">로그인</a></li>
-            <li><a href="#" class="button">회원가입</a></li>
-        </ul>
+
+        <div th:if ="${loginMember == null}">
+        <form>
+            <ul class="actions special">
+                <li><a href="/loginForm" class="button primary">로그인</a></li>
+                <li><a href="#" class="button">회원가입</a></li>
+            </ul>
+        </form>
+        </div>
+
+        <div th:if ="${loginMember != null}">
+          <form th:action="@{/logout}" method="post">
+            <div class="col-12">
+                <ul class="actions special">
+                    <li><input type="submit" value="로그아웃" /></li>
+                </ul>
+            </div>
+         </form>
+        </div>
+
     </section>
 
     <!-- Main -->

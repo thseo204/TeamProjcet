@@ -4,35 +4,47 @@
 <th:block th:fragment="headerMainFragment(pageName)">
     <!-- Header -->
   <header id="header" th:classappend="${pageName} == 'mainPage' ? 'alt' : _" class="">
-    <h1><a href="/main">Home</a></h1>
+    <h1><a href="/">Home</a></h1>
+    <div th:if ="${loginMember == null}">
     <nav id="nav">
-      <ul>
-        <li><a href="/main">홈</a></li>
-        <li><a href="#">책갈피</a></li>
-        <li>
-          <a href="#">도서검색</a>
-<!--          <ul>-->
-<!--            <li><a href="generic.html">Generic</a></li>-->
-<!--            <li><a href="contact.html">Contact</a></li>-->
-<!--            <li><a href="elements.html">Elements</a></li>-->
-<!--            <li>-->
-<!--              <a href="#">Submenu</a>-->
-<!--              <ul>-->
-<!--                <li><a href="#">Option One</a></li>-->
-<!--                <li><a href="#">Option Two</a></li>-->
-<!--                <li><a href="#">Option Three</a></li>-->
-<!--                <li><a href="#">Option Four</a></li>-->
-<!--              </ul>-->
-<!--            </li>-->
-<!--          </ul>-->
-        </li>
-        <li>
-          <a href="#" class="icon solid fa-angle-down">마이페이지</a>
-        </li>
-        <li><a href="/loginForm" class="button">로그인</a></li>
-        <li><a href="/joinForm" class="button">회원가입</a></li>
-      </ul>
+        <ul>
+          <li><a href="/">홈</a></li>
+          <li><a href="#">책갈피</a></li>
+          <li>
+            <a href="#">도서검색</a>
+
+          </li>
+          <li>
+            <a href="#" class="icon solid fa-angle-down">마이페이지</a>
+          </li>
+          <li><a th:href="@{/loginForm(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그인</a></li>
+          <li><a href="/joinForm" class="button">회원가입</a></li>
+        </ul>
     </nav>
+    </div>
+
+    <!--로그인 세션이 있는경우-->
+    <div th:if="${loginMember != null}">
+      <nav>
+        <ul>
+          <li><a href="/">홈</a></li>
+          <li><a href="#">책갈피</a></li>
+          <li>
+            <a href="#">도서검색</a>
+          </li>
+          <li>
+            <a href="#" class="icon solid fa-angle-down">마이페이지</a>
+          </li>
+          <li>
+            <a href="#" th:text="|${loginMember.userId} 님 환영합니다.|"></a>
+          </li>
+          <li>
+            <a th:href="@{/logout(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그아웃</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
   </header>
 </th:block>
 </html>

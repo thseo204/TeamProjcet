@@ -2,94 +2,119 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
 
 <body class="is-preload">
+<script th:inline="javascript">
+                var isbn = /*[[${book.isbn}]]*/ null;
+
+</script>
+<script>
+   function openWindow() {
+      var newWindow = window.open('/starRating/' + isbn, '_blank', 'width=300, height=150', true);
+    }
+</script>
+<script>
+function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
+</script>
+
+
 <div id="page-wrapper">
     <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
     <!-- Main -->
     <section id="main2" class="container">
-
         <section class="box">
             <p><span class="image left"><img th:src="@{${book.imageUrl}}" style="width:300px; height:400px;" alt=""/></span>
-            <h4>책 제목 </h4><p th:text="${book.title}"></p>
-            <h4>작가</h4> <p th:text="${book.author}"></p>
-            <h4>출간 일</h4> <p th:text="${book.pubDate}"></p>
-            <p>책 카테고리</p><br>
+            <h4>책 제목 </h4>
+            <p th:text="${book.title}"></p>
+            <h4>작가</h4>
+            <p th:text="${book.author}"></p>
+            <h4>출간 일</h4>
+            <p th:text="${book.pubDate}"></p>
+            <h4>
+                <span th:text="|별점 : ${#numbers.formatDecimal(avgStarRating,1,1)}|"></span>
+                <span th:if="${loginMember != null}">
+                    <span th:if="${starId == false}">
+                        <input type="button" value="별점 주기" onclick="openWindow();"/>
+                    </span>
+                    <span th:if="${starId == true}">
+                        <input type="button" value="참여 완료"/>
+                    </span>
+                </span>
+                <span th:if="${loginMember == null}">
+                    <input type="button" value="별점 주기" onclick="openLoginModal()"/>
+                </span>
+            </h4>
 
-            <p>챌 별점 평균</p>
+
+
+            <br>
             <a th:href="@{${book.buyUrl}}">구매 링크</a> <br><br>
-
             <ul class="actions fit">
                 <li><a th:href="@{|/book/${book.isbn}|}" class="button special fit alt">책 정보</a></li>
                 <li><a th:href="@{|/book/${book.isbn}/report|}" class="button fit alt">독후감</a></li>
             </ul>
 
             <h3>책 소개</h3>  <br>
-            <div th:text="${book.description}"></div>  <br>
+            <div th:text="${book.description}"></div>
+            <br>
 
             <div>
                 <table class="table">
                     <thead>
                     <tr>
                         <th>댓글내용</th>
+                        <th>책 고유번호</th>
                         <th>작성자</th>
                         <th>작성날짜</th>
-                        <th>책 고유번호</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="comment : ${comments}">
                         <td th:text="${comment.content}"></td>
+                        <td th:text="${comment.bookisbn}"></td>
                         <td th:text="${comment.writerID}"></td>
                         <td th:text="${comment.date}"></td>
-                        <td th:text="${comment.bookisbn}"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-
-
-
+            <!-- 로그인 세션이 없을 경우-->
+            <div th:if="${loginMember == null}">
+                <section class="box">
+                    <pre>
+                       <a th:href="@{/loginForm(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그인 후 이용해주세요</a>
+                    </pre>
+                </section>
+            </div>
             <!-- Comments Form -->
-            <div class="card my-4">
-                <h5 class="card-header">별점을 남겨주세요</h5>
-                <div class="card-body">
-                    <form name="comment-form" method="post" autocomplete="off">
-                        <div class="review_rating">
-                            <div class="warning_msg">별점을 선택해 주세요.</div>
-                            <div class="rating">
-                                <!-- 해당 별점을 클릭하면 해당 별과 그 왼쪽의 모든 별의 체크박스에 checked 적용 -->
-                                <input type="checkbox" name="starRating" id="rating1" value=1 class="rate_radio" title="1점">
-                                <label for="rating1"></label>
-                                <input type="checkbox" name="starRating" id="rating2" value=2 class="rate_radio" title="2점">
-                                <label for="rating2"></label>
-                                <input type="checkbox" name="starRating" id="rating3" value=3 class="rate_radio" title="3점" >
-                                <label for="rating3"></label>
-                                <input type="checkbox" name="starRating" id="rating4" value=4 class="rate_radio" title="4점">
-                                <label for="rating4"></label>
-                                <input type="checkbox" name="starRating" id="rating5" value=5 class="rate_radio" title="5점">
-                                <label for="rating5"></label>
+            <!-- 로그인 세션이 있을경우 댓글 화면 출력-->
+            <div th:if="${loginMember != null}">
+                <div class="card my-4">
+                    <div class="card-body">
+                        <form id="comment-form" name="comment-form" method="post" autocomplete="off">
+                            <div class="col-12">
+                                <textarea name="content" id="content" placeholder="댓글을 남겨주세요" rows="6"
+                                          class="review_textarea"></textarea>
+                                <input type="hidden" name="bookisbn" th:value="${book.isbn}"/>
+                                <input type="hidden" name="writerID" th:value="${loginMember.userId}"/>
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <textarea name="content" id="content" placeholder="댓글을 남겨주세요" rows="6" class="review_textarea"></textarea>
-                            <input type="hidden" name="bookisbn" th:value="${book.isbn}"/>
-                            <input type="hidden" name="writerName" th:value="작성자닉네임"/>
-                            <input type="hidden" name="writerID" th:value="작성자ID"/>
-<!--                            <input type="hidden" name="starRating" id="starRating" />-->
-                        </div>
-                        <br>
-                        <div class="col-12">
-                            <ul class="actions small">
-                                <li><input type="submit" name="save" id="save" value="등록"/></li>
-                                <li><input type="reset" value="취소" class="alt"/></li>
-                            </ul>
-                        </div>
-                    </form>
+                            <br>
+                            <div class="col-12">
+                                <ul class="actions small">
+                                    <li><input type="submit" name="save" id="save" value="등록"/></li>
+                                    <li><input type="reset" value="취소" class="alt"/></li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            
 
         </section>
     </section>
@@ -105,6 +130,7 @@
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/star.js?ver"></script>
+
 
 </body>
 

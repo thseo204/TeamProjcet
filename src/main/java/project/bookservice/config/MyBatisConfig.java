@@ -14,6 +14,10 @@ import project.bookservice.repository.member.MyBatisMemberRepository;
 import project.bookservice.repository.report.MyBatisReportRepository;
 import project.bookservice.repository.report.ReportInfoMapper;
 import project.bookservice.repository.report.ReportInfoRepository;
+import project.bookservice.repository.starRating.MybatisStarRatingRepository;
+import project.bookservice.repository.starRating.StarRatingMapper;
+import project.bookservice.repository.starRating.StarRatingRepository;
+
 import project.bookservice.service.*;
 
 @Configuration
@@ -24,6 +28,7 @@ public class MyBatisConfig {
     private final CommentMapper commentMapper;
 
     private final ReportInfoMapper reportInfoMapper;
+	private final StarRatingMapper starRatingMapper;
 
     @Bean
     public MemberService memberService(){
@@ -52,6 +57,16 @@ public class MyBatisConfig {
     @Bean
     public ReportInfoRepository reportInfoRepository(){
         return new MyBatisReportRepository(reportInfoMapper);
+    }
+	
+	   @Bean
+    public StarRatingService starRatingService(){
+        return new StarRatingServiceImpl(starRatingRepository());
+    }
+
+    @Bean
+    public StarRatingRepository starRatingRepository(){
+        return new MybatisStarRatingRepository(starRatingMapper);
     }
 
 
