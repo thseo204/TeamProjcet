@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
+    <link rel="stylesheet" href="/assets/css/star.css"/>
+</head>
+<body>
+<div class="card my-4">
+    <h5 class="card-header">별점을 남겨주세요</h5>
+    <div class="card-body">
+        <form id="comment-form" name="comment-form" method="post" autocomplete="off">
+            <div class="review_rating">
+                <div class="warning_msg">별점을 선택해 주세요.</div>
+                <div class="rating">
+                    <!-- 해당 별점을 클릭하면 해당 별과 그 왼쪽의 모든 별의 체크박스에 checked 적용 -->
+                    <input type="checkbox" name="star" id="rating1" value=1 class="rate_radio"
+                           title="1점">
+                    <label for="rating1"></label>
+                    <input type="checkbox" name="star" id="rating2" value=2 class="rate_radio"
+                           title="2점">
+                    <label for="rating2"></label>
+                    <input type="checkbox" name="star" id="rating3" value=3 class="rate_radio"
+                           title="3점">
+                    <label for="rating3"></label>
+                    <input type="checkbox" name="star" id="rating4" value=4 class="rate_radio"
+                           title="4점">
+                    <label for="rating4"></label>
+                    <input type="checkbox" name="star" id="rating5" value=5 class="rate_radio"
+                           title="5점">
+                    <label for="rating5"></label>
+                </div>
+            </div>
+            <div class="col-12">
+                <input type="hidden" name="isbn" th:value="${book.isbn}"/>
+                <input type="hidden" name="userId" th:value="${loginMember.userId}"/>
+                <input type="hidden" name="starRating"/>
+            </div>
+            <br>
+            <div class="col-12">
+                <ul class="actions small">
+                    <li><input type="submit" name="save" id="save" value="등록"/></li>
+                    <li><input type="reset" value="취소" class="alt"/></li>
+                </ul>
+            </div>
+        </form>
+        <script>
+                              const checkboxes = document.querySelectorAll('input[name="star"]');
+                              const submitButton = document.querySelector('#save');
+
+                              let checkedCount = 0;
+                              checkboxes.forEach((checkbox) => {
+                                      if (checkbox.checked) {
+                                        checkedCount++;
+                                      }
+                                });
+
+                             document.querySelector('input[name="starRating"]').value = parseInt(checkedCount);
+                              submitButton.addEventListener('click', (event) => {
+                                event.preventDefault();
+                                let checkedCount = 0;
+                                checkboxes.forEach((checkbox) => {
+                                  if (checkbox.checked) {
+                                    checkedCount++;
+                                  }
+                                });
+
+                                document.querySelector('input[name="starRating"]').value = checkedCount;
+                                document.querySelector('#comment-form').submit();
+                              });
+        </script>
+    </div>
+</div>
+
+<script src="/assets/js/star.js?ver"></script>
+</body>
+</html>
