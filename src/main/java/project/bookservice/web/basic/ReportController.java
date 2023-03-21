@@ -6,23 +6,20 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.bookservice.domain.book.Book;
-import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
 import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.domain.report.UploadFile;
 import project.bookservice.openapi.APIParser;
 import project.bookservice.openapi.ApiSearchBook;
+
 import project.bookservice.repository.book.MyBatisBookRepository;
 import project.bookservice.repository.report.FileStore;
-import project.bookservice.repository.report.MyBatisReportRepository;
-import project.bookservice.repository.report.ReportInfoRepository;
+
 import project.bookservice.service.ReportInfoService;
 import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.form.ReportForm;
