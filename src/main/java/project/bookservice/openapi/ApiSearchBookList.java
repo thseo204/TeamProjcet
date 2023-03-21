@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import project.bookservice.domain.book.Book;
-import project.bookservice.repository.book.MybatisBookRepository;
+import project.bookservice.repository.book.MyBatisBookRepository;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                MybatisBookRepository bookRepository = new MybatisBookRepository();
+                MyBatisBookRepository bookRepository = new MyBatisBookRepository();
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;

@@ -3,57 +3,112 @@
 
 
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
-<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+<style>
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
 
-<body class="single-2 is-preload">
+
+
+</style>
+<body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
-<link rel="stylesheet" href="assets/css/sub.css"/>
-
-<div id="wrapper">
 
 
-    <!-- Main -->
-    <div id="main">
+<!-- Main -->
 
-        <!-- Post -->
-        <article class="post-2">
-            <header>
-                <div class="title-2">
-                    <h2><a href="#">Magna sed adipiscing</a></h2>
-                    <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p>
-                </div>
-                <div class="meta-2">
-                    <time class="published-2" datetime="2015-11-01">November 1, 2015</time>
-                    <a href="#" class="author-2">
-                        <span class="name-2">Jane Doe</span>
-                        <img src="images/avatar.jpg" alt="" />
-                    </a>
-                </div>
-            </header>
-            <span class="image-2 featured-2">
-                <img src="images/pic01.jpg" alt="" />
-            </span>
-            <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl.
-                Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna
-                enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non
-                congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed
-                vitae justo condimentum, porta lectus vitae, ultricies congue gravida
-                diam non fringilla.</p>
-            <p>Nunc quis dui scelerisque, scelerisque urna ut, dapibus orci.
-                Sed vitae condimentum lectus, ut imperdiet quam. Maecenas in justo ut
-                nulla aliquam sodales vel at ligula. Sed blandit diam odio, sed
-                fringilla lectus molestie sit amet. Praesent eu tortor viverra lorem
-                mattis pulvinar feugiat in turpis. </p>
-            <footer>
-                <ul class="stats">
-                    <li><a href="#">General</a></li>
-                    <li><a href="#" class="icon solid fa-heart">28</a></li>
-                    <li><a href="#" class="icon solid fa-comment">128</a></li>
-                </ul>
-            </footer>
-        </article>
+<section id="main" class="container">
+    <!--            <header>-->
+    <!--                <h2>독후기록</h2>-->
+    <!--                <p>...</p>-->
+    <!--            </header>-->
+    <div class="row">
+        <div class="col-12">
+
+            <!-- Image -->
+
+            <section class="box" th:if="${reportInfo.disclosure}">
+                <p>
+                    <span class="image right"><img style="width:70px; height:100px;" th:src="@{${book.imageUrl}}"
+                                                   alt=""/></span>
+                </p>
+                <h3 href="#" th:text="${book.title}"></h3>
+
+                <h4>
+                    <span class="material-symbols-outlined">menu_book</span>
+                    출판사 : <span th:text="${book.publisher}"></span><br/>
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    출판일 : <span th:text="${book.pubDate}"></span><br/>
+                    <span class="material-symbols-outlined">history_edu</span>
+                    저자 : <span th:text="${book.author}"></span><br/>
+                    <span class="material-symbols-outlined">account_circle</span>
+                    작성자 : <span th:text="${reportInfo.writerId}"></span>
+                </h4>
+                <hr/>
+                <span class="image fit"><img th:src="|/image/${reportInfo.getStoreFileName()}|"/></span>
+                <!--                    <div class="box alt">-->
+                <!--                        <div class="row gtr-50 gtr-uniform">-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+
+                <h4><span th:text="${reportInfo.content}"></span></h4>
+                <br/>
+                <hr/>
+                <footer>
+                    <!--                    공개여부 | <span th:text="${reportInfo.disclosure}"></span><br/>-->
+                    <span class="material-symbols-outlined" style="color:pink;">update</span>작성일 | <span
+                        th:text="${reportInfo.date}"></span><br/>
+                    <span class="material-symbols-outlined" style="color:pink;">favorite</span>좋아요 | <span
+                        th:text="${reportInfo.favoriteNum}"></span><br/>
+                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>컬렉션 | <span
+                        class="icon solid fa-comment" th:text="${reportInfo.collectionNum}"></span><br/>
+
+                </footer>
+                <!--                    <h4>Left &amp; Right</h4>-->
+                <!--                    <p><span class="image left"><img src="images/pic05.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>-->
+                <!--                    <p><span class="image right"><img src="images/pic05.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>-->
+            </section>
+
+        </div>
+    </div>
+
+</section>
+
+<section class="box" th:unless="${reportInfo.disclosure}">
+
+    <div class="box">
+
+        <span class="image featured"><img src="images/pic01.jpg" alt=""/></span>
+        <header>
+            <h2 align="center">
+                <span class="material-symbols-outlined">disabled_visible</span>
+                비공개 글입니다.
+            </h2>
+        </header>
+
+        <hr/>
+        <ul class="actions fit">
+            <li><a href="/feedListForm" class="button special fit">FEED LIST</a></li>
+            <li><a href="/main" class="button fit">HOME</a></li>
+        </ul>
 
     </div>
+</section>
 
 <!--    &lt;!&ndash; Footer &ndash;&gt;-->
 <!--    <section id="footer">-->
@@ -67,7 +122,6 @@
 <!--        <p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>-->
 <!--    </section>-->
 
-</div>
 
 <!-- Scripts -->
 <script src="assets/js/jquery.min.js"></script>
@@ -78,14 +132,9 @@
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
 
-<!-- Scripts -->
-<!--<script src="assets/js/jquery.min.js"></script>-->
-<!--<script src="assets/js/browser.min.js"></script>-->
-<!--<script src="assets/js/breakpoints.min.js"></script>-->
-<!--<script src="assets/js/util.js"></script>-->
-<!--<script src="assets/js/main.js"></script>-->
-
+<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
+
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>
 
 </html>

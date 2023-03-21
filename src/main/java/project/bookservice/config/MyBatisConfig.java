@@ -11,10 +11,10 @@ import project.bookservice.repository.member.MemberMapper;
 
 
 import project.bookservice.repository.member.MyBatisMemberRepository;
-import project.bookservice.service.CommentService;
-import project.bookservice.service.CommentServiceV1;
-import project.bookservice.service.MemberService;
-import project.bookservice.service.MemberServiceImpl;
+import project.bookservice.repository.report.MyBatisReportRepository;
+import project.bookservice.repository.report.ReportInfoMapper;
+import project.bookservice.repository.report.ReportInfoRepository;
+import project.bookservice.service.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,6 +22,8 @@ public class MyBatisConfig {
 
     private final MemberMapper memberMapper;
     private final CommentMapper commentMapper;
+
+    private final ReportInfoMapper reportInfoMapper;
 
     @Bean
     public MemberService memberService(){
@@ -43,7 +45,14 @@ public class MyBatisConfig {
         return new MybatisCommentRepository(commentMapper);
     }
 
-
+    @Bean
+    public ReportInfoService reportInfoService(){
+        return new ReportInfoServiceImpl(reportInfoRepository());
+    }
+    @Bean
+    public ReportInfoRepository reportInfoRepository(){
+        return new MyBatisReportRepository(reportInfoMapper);
+    }
 
 
 }

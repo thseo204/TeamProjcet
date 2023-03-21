@@ -50,7 +50,7 @@ public class MemberController {
         }
 
         //회원 정보 등록
-        SignUpForm member = memberService.save(signUpForm);
+        memberService.save(signUpForm);
 
         return "/basic/joinSuccessForm"; // 회원가입 성공 시 축하페이지로 이동
     }

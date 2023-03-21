@@ -1,7 +1,10 @@
 package project.bookservice.repository.book;
 
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.book.Book;
+import project.bookservice.openapi.APIParser;
+import project.bookservice.openapi.ApiSearchBook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class MybatisBookRepository implements BookRepository{
+public class MyBatisBookRepository implements BookRepository{
     private static final Map<String, Book> store = new ConcurrentHashMap<>(); // 실무에서는 ConcurrentHashMap 사용!
     private static long sequence = 0L; // 실무에서는 어터믹?
 
@@ -25,6 +28,13 @@ public class MybatisBookRepository implements BookRepository{
 
     public Book findByIsbn(String isbn){
         return store.get(isbn);
+    }
+
+    @Override
+    public Book findByIsbnInAPI(String isbn) throws ParseException {
+        APIParser apiParser = new ApiSearchBook();
+        ArrayList<Book> bookArrayList = apiParser.jsonAndXmlParserToArr(isbn);
+        return bookArrayList.get(0);
     }
 
     public void clearStore() {

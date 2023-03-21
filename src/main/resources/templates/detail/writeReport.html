@@ -5,9 +5,29 @@
 
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
-<!--<link rel="stylesheet" href="assets/css/errors.css"/>-->
+<link rel="stylesheet" href="assets/css/errors.css"/>
+
+<script>
 
 
+    function loadFile(input){
+        var file = input.files[0];
+        var name = document.getElementById("fileName");
+
+        var newImage = document.createElement("img");
+        newImage.setAttribute("class", "img");
+
+        newImage.src = URL.createObjectURL(file);
+
+        newImage.style.width = "100%";
+        newImage.style.height = "100%";
+        newImage.style.objectFit = "contain";
+
+        var container = document.getElementById('image');
+        container.appendChild(newImage);
+    };
+
+</script>
 <!-- Main -->
 <section id="main" class="container">
     <header>
@@ -19,7 +39,7 @@
         <div class="col-12">
 
             <!-- Form -->
-            <section class="box" >
+            <section class="box">
 
                 <form method="get">
                     <p></p>
@@ -45,26 +65,69 @@
                 <hr/>
 
                 <h3>도서제목 : <span th:text="${book.title}"></span></h3>
-                <span class="image fit"><img src="images/pic04.jpg" alt=""/></span>
-                <form method="post" action="#">
+                <form method="post" enctype="multipart/form-data" th:action >
+<!--                    <form method="get" >-->
+                    <div class="container">
+                        <div class="image-upload" id="image-upload">
+
+                            <div class="button alt">
+                                <label for="attachFile">
+                                    +
+                                    <!--                                    <img src="images/pic04.jpg" alt="">-->
+                                </label>
+                            </div>
+                            <input type="file" id="attachFile" name="attachFile" accept="image/*"
+                                   style="visibility:hidden;" onchange="loadFile(this)">
+<!--                            th:field="${reportInfo.imageFile}" multiple="multiple"-->
+
+                            <div class="fileContainer">
+                                <div class="fileInput">
+                                    <p>FILE NAME : </p>
+                                    <p id="fileName" text></p>
+                                </div>
+                                <!--                            <div class="buttonContainer">-->
+                                <!--                                <div id="submitButton">SUBMIT</div>-->
+                                <!--                            </div>-->
+                            </div>
+                        </div>
+                        <span class="image" id="image"></span>
+                    </div>
+<!--                    </form>-->
+
+                    <!--                <span class="image fit">-->
+                    <!--                    <input type="file" name="attachFile"/>-->
+                    <!--                    <img src="images/pic04.jpg" alt="">-->
+                    <!--                </span>-->
+                    <!--                <form method="post" action="#">-->
+                    <!--                    <span class="image fit">-->
+                    <!--                        <div id="submitButton" class="submitButton">submit</div>-->
+                    <!--                            <label for="attachFile">-->
+                    <!--                                <img id="image-show" src="images/pic04.jpg" alt="" />-->
+                    <!--                            </label>-->
+                    <!--                        <input type="file" id="attachFile" name="attachFile"-->
+                    <!--                               accept="image/*" style="visibility:hidden;" onchange="loadFile(this)"/>-->
+                    <!--                    </span>-->
                     <div class="row gtr-uniform gtr-50">
 
 
                         <div class="col-12">
-                            <textarea name="message" id="message" placeholder="기록을 남겨보세요." rows="12"></textarea>
+                            <textarea name="content" id="content" th:field="${reportInfo.content}" placeholder="기록을 남겨보세요." rows="12"></textarea>
                         </div>
                         <div class="col-12">
-                            <input type="text" name="name" id="name" value=""
+                            <input type="text" name="hashTag" id="hashTag" value="" th:field="${reportInfo.hashTag}"
                                    placeholder="태그를 입력해주세요.   ex) #독서노트 #오늘의기록 #소설 #000작가님"/>
                         </div>
                         <div class="col-4 col-12-narrower">
-                            <input type="radio" id="priority-low" name="priority" checked>
-                            <label for="priority-low">공개</label>
+                            <input type="radio" id="disclosure-true" name="disclosure" th:field="${reportInfo.disclosure}" th:value="true" checked>
+                            <label for="disclosure-true">공개</label>
                         </div>
                         <div class="col-4 col-12-narrower">
-                            <input type="radio" id="priority-normal" name="priority">
-                            <label for="priority-normal">비공개</label>
+                            <input type="radio" id="disclosure-false" th:field="${reportInfo.disclosure}" th:value="false" name="disclosure">
+                            <label for="disclosure-false">비공개</label>
                         </div>
+<!--                        <div>-->
+<!--                            작성자 : <input type="text" name="userId"/>-->
+<!--                        </div>-->
                         <div class="col-12">
                             <ul class="actions">
                                 <li><input type="submit" value="올리기"/></li>
@@ -90,6 +153,8 @@
 <script src="assets/js/breakpoints.min.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
+
+<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>
