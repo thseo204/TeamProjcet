@@ -15,8 +15,6 @@
         where isbn = #{bookisbn}
     </select>
 
-
-
     <!--
     <update id="update">
         update item

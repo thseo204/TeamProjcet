@@ -20,7 +20,7 @@ import java.lang.String;
 @Repository
 public class ApiSearchBook extends ConnectAPI implements APIParser{
 
-//    private ArrayList<JSONObject> jsonObjectArrayList;
+//    private final ArrayList<JSONObject> jsonObjectArrayList;
 
 
     @Override

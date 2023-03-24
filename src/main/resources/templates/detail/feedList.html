@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+<style>
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+</style>
+
+<script>
+function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
+</script>
+<body class="is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+
+
+<!-- Main -->
+<!--로그인 세션정보 없을때-->
+<section id="main" class="container" th:if="${#session} == null">
+    <header>
+        <h2>FEED</h2>
+        <p>
+            <a th:onclick="openLoginModal();">
+                <span class="material-symbols-outlined" style="color:pink;">add_circle</span>
+                새 피드 작성하기
+            </a>
+        </p>
+    </header>
+
+
+    <div class="box" th:each="reportInfo : ${reportInfoList}">
+
+            <span class="image featured">
+                <a th:href="|/bookReportForm/${reportInfo.id}|">
+                    <img th:src="|/image/${reportInfo.storeFileName}|" alt=""/>
+                </a>
+            </span>
+        <hr/>
+
+        <span class="material-symbols-outlined">account_circle</span>
+        작성자 : <span th:text="${reportInfo.writerId}"></span>
+
+        <nav id="nav" style="float:right;">
+            <ul class="actions">
+                <li style="float:left;">
+                    <span class="material-symbols-outlined" style="color:pink;">update</span>
+                    <span th:text="${reportInfo.date}"></span>
+                </li>
+                <a onclick="openLoginModal()">
+                    <li style="float:left;">
+                        <span class="material-symbols-outlined" style="color:pink;">favorite</span>
+                        <span th:text="${reportInfo.favoriteNum}"></span>
+                    </li>
+                    <li style="float:left;">
+                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <span th:text="${reportInfo.collectionNum}"></span>
+                    </li>
+<!--                    <li class="icon solid fa-angle-down" style="float:left;">-->
+<!--                        <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
+<!--                        <ul>-->
+<!--                            <li><a onclick="openLoginModal()">저장</a></li>-->
+<!--                            <li><a onclick="openLoginModal()">수정</a></li>-->
+<!--                            <li><a onclick="openLoginModal()">삭제</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                </a>
+            </ul>
+        </nav>
+
+        <!--        <h3> 도서제목 : </h3>-->
+        <br/>
+        <br/>
+        <br/>
+        <p th:text="${reportInfo.content}"></p>
+        <br/>
+        <br/>
+        <p th:text="${reportInfo.hashTag}"></p>
+    </div>
+</section>
+
+<!--로그인 세션정보 있을 때-->
+<section id="main" class="container" th:if="${#session} != null">
+    <header>
+        <h2>FEED</h2>
+        <p>
+            <a th:href="@{/writeReportForm}">
+                <span class="material-symbols-outlined" style="color:pink;">add_circle</span>
+                새 피드 작성하기
+            </a>
+        </p>
+    </header>
+
+
+    <div class="box" th:each="reportInfo : ${reportInfoList}">
+
+            <span class="image featured">
+                <a th:href="|/bookReportForm/${reportInfo.id}|">
+                    <img th:src="|/image/${reportInfo.storeFileName}|" alt=""/>
+                </a>
+            </span>
+        <hr/>
+
+        <span class="material-symbols-outlined">account_circle</span>
+        작성자 : <span th:text="${reportInfo.writerId}"></span>
+
+        <nav id="nav" style="float:right;" th:each="history : ${historyList}"
+             th:if="${history.reportId}==${reportInfo.id}">
+            <ul class="actions">
+                <li style="float:left;">
+                    <span class="material-symbols-outlined" style="color:pink;">update</span>
+                    <span th:text="${reportInfo.date}"></span>
+                </li>
+                <li style="float:left;">
+                    <a th:href="@{|/feedListForm/${reportInfo.id}/${history.favorite}|}">
+                        <span th:if="${history.favorite}" class="material-symbols-outlined"
+                              style="color:red; ">favorite</span>
+                        <span th:unless="${history.favorite}" class="material-symbols-outlined" style="color:pink;">favorite</span>
+                        <span th:text="${reportInfo.favoriteNum}"></span>
+                    </a>
+                </li>
+                <li style="float:left;">
+                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                    <span th:text="${reportInfo.collectionNum}"></span>
+                </li>
+<!--                피드가 하나 생길때 모든 유저들의 히스토리를 만든다..? -->
+<!--                <li class="icon solid fa-angle-down" style="float:left;">-->
+<!--                    <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
+<!--                    <ul>-->
+<!--                        <li><a>저장</a></li>-->
+<!--                        <li><a>수정</a></li>-->
+<!--                        <li th:if="${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">-->
+<!--                            <a th:href="@{/deleteReportInfo/${reportInfo.id}}">삭제</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+            </ul>
+        </nav>
+
+        <!--        <h3> 도서제목 : </h3>-->
+        <br/>
+        <br/>
+        <br/>
+        <p th:text="${reportInfo.content}"></p>
+        <br/>
+        <br/>
+        <p th:text="${reportInfo.hashTag}"></p>
+    </div>
+</section>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+<!--<script src="assets/js/imageUpload.js"></script>-->
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

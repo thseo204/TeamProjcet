@@ -15,8 +15,18 @@
 }
 
 
-
 </style>
+
+<script>
+function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
+
+
+</script>
+
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 
@@ -28,87 +38,135 @@
     <!--                <h2>독후기록</h2>-->
     <!--                <p>...</p>-->
     <!--            </header>-->
-    <div class="row">
-        <div class="col-12">
+    <!--    <div class="row">-->
+    <!--        <div class="col-12">-->
 
-            <!-- Image -->
+    <!-- Image -->
 
-            <section class="box" th:if="${reportInfo.disclosure}">
-                <p>
-                    <span class="image right"><img style="width:70px; height:100px;" th:src="@{${book.imageUrl}}"
-                                                   alt=""/></span>
-                </p>
-                <h3 href="#" th:text="${book.title}"></h3>
+    <div class="box"
+         th:if="${reportInfo.disclosure} or ${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">
+        <p>
+            <span class="image right"><img style="width:70px; height:100px;" th:src="@{${book.imageUrl}}" alt=""/></span>
+        </p>
+        <h3 href="#" th:text="${book.title}"></h3>
 
-                <h4>
-                    <span class="material-symbols-outlined">menu_book</span>
-                    출판사 : <span th:text="${book.publisher}"></span><br/>
-                    <span class="material-symbols-outlined">calendar_month</span>
-                    출판일 : <span th:text="${book.pubDate}"></span><br/>
-                    <span class="material-symbols-outlined">history_edu</span>
-                    저자 : <span th:text="${book.author}"></span><br/>
-                    <span class="material-symbols-outlined">account_circle</span>
-                    작성자 : <span th:text="${reportInfo.writerId}"></span>
-                </h4>
-                <hr/>
-                <span class="image fit"><img th:src="|/image/${reportInfo.getStoreFileName()}|"/></span>
-                <!--                    <div class="box alt">-->
-                <!--                        <div class="row gtr-50 gtr-uniform">-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                            <div class="col-4"><span class="image fit"><img src="images/pic04.jpg" alt="" /></span></div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
+        <h4>
+            <span class="material-symbols-outlined">menu_book</span>
+            출판사 : <span th:text="${book.publisher}"></span><br/>
+            <span class="material-symbols-outlined">calendar_month</span>
+            출판일 : <span th:text="${book.pubDate}"></span><br/>
+            <span class="material-symbols-outlined">history_edu</span>
+            저자 : <span th:text="${book.author}"></span><br/>
+            <span class="material-symbols-outlined">account_circle</span>
+            작성자 : <span th:text="${reportInfo.writerId}"></span>
 
-                <h4><span th:text="${reportInfo.content}"></span></h4>
-                <br/>
-                <hr/>
-                <footer>
-                    <!--                    공개여부 | <span th:text="${reportInfo.disclosure}"></span><br/>-->
-                    <span class="material-symbols-outlined" style="color:pink;">update</span>작성일 | <span
-                        th:text="${reportInfo.date}"></span><br/>
-                    <span class="material-symbols-outlined" style="color:pink;">favorite</span>좋아요 | <span
-                        th:text="${reportInfo.favoriteNum}"></span><br/>
-                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>컬렉션 | <span
-                        class="icon solid fa-comment" th:text="${reportInfo.collectionNum}"></span><br/>
-
-                </footer>
-                <!--                    <h4>Left &amp; Right</h4>-->
-                <!--                    <p><span class="image left"><img src="images/pic05.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>-->
-                <!--                    <p><span class="image right"><img src="images/pic05.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>-->
-            </section>
-
-        </div>
-    </div>
-
-</section>
-
-<section class="box" th:unless="${reportInfo.disclosure}">
-
-    <div class="box">
-
-        <span class="image featured"><img src="images/pic01.jpg" alt=""/></span>
-        <header>
-            <h2 align="center">
-                <span class="material-symbols-outlined">disabled_visible</span>
-                비공개 글입니다.
-            </h2>
-        </header>
-
+        <span th:if="${reportInfo.disclosure} == false" style="color: red; float:right;">
+            <span class="material-symbols-outlined">disabled_visible</span>
+            비공개
+        </span>
+        </h4>
         <hr/>
-        <ul class="actions fit">
-            <li><a href="/feedListForm" class="button special fit">FEED LIST</a></li>
-            <li><a href="/main" class="button fit">HOME</a></li>
-        </ul>
+        <span class="image fit"><img th:src="|/image/${reportInfo.getStoreFileName()}|"/></span>
 
+        <h4><span th:text="${reportInfo.content}"></span></h4>
+        <br/>
+        <hr/>
+
+        <!--로그인 세션 정보가 없을 때-->
+        <nav id="nav" style="float:right;" th:if="${#session} == null">
+            <ul class="actions">
+                <li style="float:left;">
+                    <span class="material-symbols-outlined" style="color:pink;">update</span>
+                    <span th:text="${reportInfo.date}"></span>
+                </li>
+                <a onclick="openLoginModal()">
+                    <li style="float:left;">
+                        <span th:if="${history.favorite}" class="material-symbols-outlined"
+                              style="color:red; ">favorite</span>
+                        <span th:unless="${history.favorite}" class="material-symbols-outlined"
+                              style="color:pink;">favorite</span>
+                        <span th:text="${reportInfo.favoriteNum}"></span>
+                    </li>
+                    <li style="float:left;">
+                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <span th:text="${reportInfo.collectionNum}"></span>
+                    </li>
+                    <!--                        <li class="icon solid fa-angle-down" style="float:left;">-->
+                    <!--                            <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
+                    <!--                            <ul>-->
+                    <!--                                <li><a onclick="openLoginModal()">저장</a></li>-->
+                    <!--                                <li><a onclick="openLoginModal()">수정</a></li>-->
+                    <!--                                <li><a onclick="openLoginModal()">삭제</a></li>-->
+                    <!--                            </ul>-->
+                    <!--                        </li>-->
+                </a>
+            </ul>
+        </nav>
+
+
+        <!--로그인 세션 정보가 있을 때-->
+        <nav id="nav" style="float:right;" th:if="${#session} != null">
+            <ul class="actions">
+                <li style="float:left;">
+                    <span class="material-symbols-outlined" style="color:pink;">update</span>
+                    <span th:text="${reportInfo.date}"></span>
+                </li>
+                <li style="float:left;">
+                    <a th:href="@{|/bookReportForm/${reportInfo.id}/${history.favorite}|}">
+                        <span th:if="${history.favorite}" class="material-symbols-outlined"
+                              style="color:red; ">favorite</span>
+                        <span th:unless="${history.favorite}" class="material-symbols-outlined"
+                              style="color:pink;">favorite</span>
+                        <span th:text="${reportInfo.favoriteNum}"></span>
+                    </a>
+                </li>
+                <li style="float:left;">
+                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                    <span th:text="${reportInfo.collectionNum}"></span>
+                </li>
+                <li class="icon solid fa-angle-down" style="float:left;"
+                    th:if="${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">
+                    <span class="material-symbols-outlined" style="color:pink;">more_vert</span>
+                    <ul>
+                        <li>
+                            <a th:href="|/editReportInfoForm/${reportInfo.id}/${book.isbn}|">수정</a>
+                        </li>
+                        <li>
+                            <a th:href="|/deleteReportInfoForm/${reportInfo.id}|">삭제</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <br/>
     </div>
+
+                <div class="box"
+                     th:unless="${reportInfo.disclosure} or ${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">
+
+                    <div class="box">
+                        <span class="image featured"><img src="/images/pic01.jpg" alt=""/></span>
+                        <header>
+                            <h2 align="center">
+                                <span class="material-symbols-outlined">disabled_visible</span>
+                                비공개 글입니다.
+                            </h2>
+                        </header>
+                    </div>
+
+                </div>
+
+    <!--            <hr/>-->
+    <ul class="actions fit">
+        <li><a href="/feedListForm" class="button special fit">FEED LIST</a></li>
+        <li><a href="/" class="button fit">HOME</a></li>
+    </ul>
+    <!--        </div>-->
+    <!--    </div>-->
+
+
 </section>
+
 
 <!--    &lt;!&ndash; Footer &ndash;&gt;-->
 <!--    <section id="footer">-->
@@ -124,13 +182,13 @@
 
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
 <!--<script src="assets/js/imageUpload.js"></script>-->
 </body>

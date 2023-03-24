@@ -9,15 +9,43 @@
         values (#{writerId}, #{isbn}, (date_format(now(), '%Y%m%d%H%i%s')), #{uploadFileName}, #{storeFileName}, #{content}, #{hashTag}, 0, 0,  #{disclosure})
     </insert>
 
-    <!--
-    <update id="update">
-        update item
-        set item_name=#{updateParam.itemName},
-        price=#{updateParam.price},
-        quantity=#{updateParam.quantity}
+    <delete id="delete">
+        delete from reportInfo
         where id = #{id}
+    </delete>
+
+    <update id="edit">
+        update reportInfo
+        set content=#{reportInfoParam.content},
+            hash_tag=#{reportInfoParam.hashTag},
+            disclosure=#{reportInfoParam.disclosure}
+        where id=#{reportInfoParam.id}
     </update>
-    -->
+
+    <update id="increaseOfFavoriteNum">
+        update reportInfo
+        set favorite_num = #{reportInfoParam.favoriteNum}+1
+        where id=#{reportInfoParam.id}
+    </update>
+
+    <update id="decreaseOfFavoriteNum">
+        update reportInfo
+        set favorite_num = #{reportInfoParam.favoriteNum}-1
+        where favorite_num > 0 and id=#{reportInfoParam.id}
+    </update>
+
+    <update id="increaseOfCollectionNum">
+        update reportInfo
+        set collection_num = #{reportInfoParam.collectionNum}+1
+        where id=#{reportInfoParam.id}
+    </update>
+
+    <update id="decreaseOfCollectionNum">
+        update reportInfo
+        set collection_num = #{reportInfoParam.collectionNum}-1
+        where collection_num > 0 and id=#{reportInfoParam.id}
+    </update>
+
 
     <select id="findById" resultType="project.bookservice.domain.report.ReportInfo">
         select *
@@ -35,6 +63,16 @@
     <select id="findAll" resultType="project.bookservice.domain.report.ReportInfo">
         select *
         from reportInfo
+        where disclosure = true
+        order by date desc
+    </select>
+
+    <select id="orderByFavoriteNum" resultType="project.bookservice.domain.report.ReportInfo">
+        select *
+        from reportInfo
+        where disclosure = true
+        order by favorite_num desc
+        limit 4
     </select>
 
 <!--    <select id="findAll" resultType="Member">-->

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+
+<body class="is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+<link rel="stylesheet" href="assets/css/errors.css"/>
+
+<script>
+function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
+</script>
+<!-- Main -->
+
+<section id="main" class="container" th:if="${#session} != null">
+    <header>
+        <h2>독후기록 수정</h2>
+        <p>책에 대한 기록을 남겨보세요</p>
+    </header>
+
+    <div class="row">
+        <div class="col-12">
+
+            <!-- Form -->
+            <section class="box">
+
+                <form method="get">
+                    <p></p>
+                    <div class="row gtr-uniform gtr-50">
+
+                        <div class="col-9 col-12-mobilep">
+                            <input type="text" name="title" id="title" th:value="${book.title}" placeholder="도서 검색"
+                                   readonly/>
+                        </div>
+                        <div class="col-3 col-12-mobilep">
+                            <input type="button" disabled value="Search" class="button special icon solid fa-search fit" />
+                        </div>
+
+                    </div>
+                </form>
+
+                <hr/>
+
+<!--                <h3>-->
+<!--                    도서제목 : <span th:text="${book.title}"></span>-->
+<!--                    <span class="alt">-->
+<!--                        <label for="attachFile">-->
+<!--                            <span class="material-symbols-outlined">image</span>-->
+<!--                        </label>-->
+<!--                    </span>-->
+<!--                </h3>-->
+                <form method="post" th:action th:object="${reportInfo}">
+                    <h3>
+                        도서제목 : <span th:text="${book.title}"></span>
+                    </h3>
+
+                    <span class="image fit">
+                        <img th:src="|/image/${reportInfo.getStoreFileName()}|"/>
+                    </span>
+
+
+                    <div class="row gtr-uniform gtr-50">
+                        <div class="col-12">
+                            <textarea name="content" id="content" th:field="*{content}" th:text="*{content}" rows="12"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" name="hashTag" id="hashTag" value="" th:field="*{hashTag}" />
+                        </div>
+                        <div class="col-4 col-12-narrower">
+                            <input type="radio" id="disclosure-true" name="disclosure" th:field="*{disclosure}" th:value="true" checked>
+                            <label for="disclosure-true">공개</label>
+                        </div>
+                        <div class="col-4 col-12-narrower">
+                            <input type="radio" id="disclosure-false" th:field="*{disclosure}" th:value="false" name="disclosure">
+                            <label for="disclosure-false">비공개</label>
+                        </div>
+<!--                        <div>-->
+<!--                            작성자 : <input type="text" name="userId"/>-->
+<!--                        </div>-->
+                        <div class="col-12">
+                            <ul class="actions">
+                                <li><input type="submit" value="수정완료" /></li>
+                                <li><input type="button" value="수정취소" class="alt" th:onclick="|location.href='/bookReportForm/${reportInfo.id}'|"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+
+
+            </section>
+
+        </div>
+    </div>
+
+</section>
+<section th:unlessth="${#session} == null" >
+    <script>
+        function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+    </script>
+</section>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+<!--<script src="assets/js/imageUpload.js"></script>-->
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

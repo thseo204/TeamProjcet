@@ -14,6 +14,7 @@ public interface MemberMapper {
 
 //    void update(@Param("id")Long id, @Param("updateParam")ItemUpdateDto updatePara);
 
+    List<Member> findAll();
     Optional<Member> findById(String memberId);
 
     // Sign-up email exists check

@@ -25,9 +25,9 @@ public class SignUpForm {
     private String userPwd;
     private String userRePwd;
 
-    @NotNull(message = "전화번호는 필수 입력 값입니다.")
+    @NotBlank(message = "전화번호는 필수 입력 값입니다.")
 //    @Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 숫자만 입력해주세요.")
-    private Integer userPhone;
+    private String userPhone;
 
     @NotNull(message = "생년월일은 필수 입력 값입니다.")
 //    @Pattern(regexp = "^[0-9]{6}$", message = "생년월일은 6자리로 숫자만 기입해주세요.")

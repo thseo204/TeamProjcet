@@ -3,6 +3,7 @@ package project.bookservice.repository.report;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import project.bookservice.domain.historyOfReportInfo.HistoryOfReportInfo;
 import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.web.validation.form.ReportForm;
 import project.bookservice.web.validation.form.ReportSaveForm;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MyBatisReportRepository implements ReportInfoRepository, Serializable {
+public class MyBatisReportRepository implements ReportInfoRepository {
     // 매퍼에 위임하는 코드
 
     private final ReportInfoMapper reportInfoMapper;
@@ -24,6 +25,16 @@ public class MyBatisReportRepository implements ReportInfoRepository, Serializab
 
         reportInfoMapper.save(reportSaveForm);
         return reportSaveForm;
+    }
+
+    @Override
+    public void delete(Long id) {
+        reportInfoMapper.delete(id);
+    }
+
+    @Override
+    public void edit(ReportInfo reportInfo) {
+        reportInfoMapper.edit(reportInfo);
     }
 
     @Override
@@ -42,12 +53,33 @@ public class MyBatisReportRepository implements ReportInfoRepository, Serializab
     public List<ReportInfo> findAll() {
         return reportInfoMapper.findAll();
     }
+    /**
+     * 좋아요 수 증감
+     */
+    @Override
+    public void increaseOfFavoriteNum(ReportInfo reportInfo) {
+        reportInfoMapper.increaseOfFavoriteNum(reportInfo);
+    }
 
-    //추후 isbn 과 userId 로 리스트 출력하는 메서드 생성하기!!
-//    @Override
-//    public Optional<Member> findById(String userId) {
-//        log.info("userId info={}", userId);
-//
-//        return reportInfoMapper.findById(userId);
-//    }
+    @Override
+    public void decreaseOfFavoriteNum(ReportInfo reportInfo) {
+        reportInfoMapper.decreaseOfFavoriteNum(reportInfo);
+    }
+    /**
+     * 컬렉션 저장 수 증감
+     */
+    @Override
+    public void increaseOfCollectionNum(ReportInfo reportInfo) {
+        reportInfoMapper.increaseOfCollectionNum(reportInfo);
+    }
+
+    @Override
+    public void decreaseOfCollectionNum(ReportInfo reportInfo) {
+        reportInfoMapper.decreaseOfCollectionNum(reportInfo);
+    }
+
+    @Override
+    public List<ReportInfo> orderByFavoriteNum() {
+        return reportInfoMapper.orderByFavoriteNum();
+    }
 }

@@ -1,4 +1,4 @@
-package project.bookservice.service;
+package project.bookservice.service.comment;
 
 
 import lombok.RequiredArgsConstructor;

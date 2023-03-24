@@ -28,6 +28,11 @@ public class MyBatisMemberRepository implements MemberRepository {
         memberMapper.save(signUpForm);
         return signUpForm;
     }
+	
+    @Override
+    public List<Member> findAll() {
+        return memberMapper.findAll();
+    }
 
 //    @Override
 //    public void update(Long itemId, ItemUpdateDto updateParam) {
@@ -60,8 +65,4 @@ public class MyBatisMemberRepository implements MemberRepository {
 
         return memberMapper.findByLoginId(userId);
     }
-
-
-
-
 }

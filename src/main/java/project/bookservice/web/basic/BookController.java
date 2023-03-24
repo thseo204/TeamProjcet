@@ -13,15 +13,11 @@ import project.bookservice.domain.member.Member;
 
 import project.bookservice.domain.starRating.StarRating;
 import project.bookservice.repository.book.MyBatisBookRepository;
-import project.bookservice.openapi.APIParser;
-import project.bookservice.openapi.ApiSearchBook;
-import project.bookservice.openapi.ApiSearchBookList;
 
-import project.bookservice.service.CommentService;
-import project.bookservice.service.StarRatingService;
+import project.bookservice.service.comment.CommentService;
+import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -33,29 +29,6 @@ public class BookController {
 	 private final CommentService commentService;
      private final StarRatingService starRatingService;
 
-    @GetMapping("/bookSearch")
-    public String searchBook(Model model) throws ParseException {
-        String bookTitle = "사피엔스";
-
-        APIParser apiParser = new ApiSearchBook();
-        ArrayList<Book> bookList= apiParser.jsonAndXmlParserToArr(bookTitle);
-
-//        bookRepository.save(book);
-
-        model.addAttribute("bookList", bookList);
-        return "basic/book2";
-    }
-
-    @GetMapping("/main")
-    public String BestSeller(Model model) throws ParseException {
-        String bookTitle = "Bestseller";
-        APIParser apiParser = new ApiSearchBookList();
-        ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(bookTitle);
-        model.addAttribute("bookList", bookList);
-
-
-        return "basic/main";
-    }
 
     @GetMapping("/book/{isbn}")
     public String bookInfo(@PathVariable String isbn, @SessionAttribute(name= SessionConst.LOGIN_MEMBER,

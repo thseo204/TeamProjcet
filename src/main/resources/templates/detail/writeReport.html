@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 <link rel="stylesheet" href="assets/css/errors.css"/>
 
 <script>
-
-
     function loadFile(input){
         var file = input.files[0];
         var name = document.getElementById("fileName");
@@ -27,9 +27,15 @@
         container.appendChild(newImage);
     };
 
+function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
 </script>
 <!-- Main -->
-<section id="main" class="container">
+
+<section id="main" class="container" th:if="${#session} != null">
     <header>
         <h2>독후기록</h2>
         <p>책에 대한 기록을 남겨보세요</p>
@@ -64,52 +70,46 @@
 
                 <hr/>
 
-                <h3>도서제목 : <span th:text="${book.title}"></span></h3>
+<!--                <h3>-->
+<!--                    도서제목 : <span th:text="${book.title}"></span>-->
+<!--                    <span class="alt">-->
+<!--                        <label for="attachFile">-->
+<!--                            <span class="material-symbols-outlined">image</span>-->
+<!--                        </label>-->
+<!--                    </span>-->
+<!--                </h3>-->
                 <form method="post" enctype="multipart/form-data" th:action >
-<!--                    <form method="get" >-->
-                    <div class="container">
-                        <div class="image-upload" id="image-upload">
+                    <h3>
+                        도서제목 : <span th:text="${book.title}"></span>
+                    </h3>
 
-                            <div class="button alt">
+                    <div class="container">
+                        <div class="image-upload" id="image-upload" >
+                            <div class="alt">
                                 <label for="attachFile">
-                                    +
-                                    <!--                                    <img src="images/pic04.jpg" alt="">-->
+                                    <p class="image fit" id="image"></p><br/>
+<!--                                    <span class="material-symbols-outlined" style="float:right; color:pink;">add_a_photo</span>-->
+                                    <span class="material-symbols-outlined" style="float:right; color:pink;">add_photo_alternate</span>&nbsp;&nbsp;
                                 </label>
                             </div>
                             <input type="file" id="attachFile" name="attachFile" accept="image/*"
                                    style="visibility:hidden;" onchange="loadFile(this)">
 <!--                            th:field="${reportInfo.imageFile}" multiple="multiple"-->
 
-                            <div class="fileContainer">
-                                <div class="fileInput">
-                                    <p>FILE NAME : </p>
-                                    <p id="fileName" text></p>
-                                </div>
-                                <!--                            <div class="buttonContainer">-->
-                                <!--                                <div id="submitButton">SUBMIT</div>-->
-                                <!--                            </div>-->
-                            </div>
+<!--                            <div class="fileContainer">-->
+<!--                                <div class="fileInput">-->
+<!--                                    <p>FILE NAME : </p>-->
+<!--                                    <p id="fileName" text></p>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash;                            <div class="buttonContainer">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                <div id="submitButton">SUBMIT</div>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
-                        <span class="image" id="image"></span>
+<!--                        <span class="image" id="image"></span>-->
                     </div>
-<!--                    </form>-->
 
-                    <!--                <span class="image fit">-->
-                    <!--                    <input type="file" name="attachFile"/>-->
-                    <!--                    <img src="images/pic04.jpg" alt="">-->
-                    <!--                </span>-->
-                    <!--                <form method="post" action="#">-->
-                    <!--                    <span class="image fit">-->
-                    <!--                        <div id="submitButton" class="submitButton">submit</div>-->
-                    <!--                            <label for="attachFile">-->
-                    <!--                                <img id="image-show" src="images/pic04.jpg" alt="" />-->
-                    <!--                            </label>-->
-                    <!--                        <input type="file" id="attachFile" name="attachFile"-->
-                    <!--                               accept="image/*" style="visibility:hidden;" onchange="loadFile(this)"/>-->
-                    <!--                    </span>-->
                     <div class="row gtr-uniform gtr-50">
-
-
                         <div class="col-12">
                             <textarea name="content" id="content" th:field="${reportInfo.content}" placeholder="기록을 남겨보세요." rows="12"></textarea>
                         </div>
@@ -143,6 +143,14 @@
         </div>
     </div>
 
+</section>
+<section th:unlessth="${#session} == null" >
+    <script>
+        function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+    </script>
 </section>
 
 <!-- Scripts -->

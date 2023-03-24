@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.bookservice.repository.historyOfReportInfo.HistoryOfReportInfoMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into historyOfReportInfo(report_id, user_id, favorite, collection)
+        values (#{reportId}, #{userId}, 0, 0)
+    </insert>
+
+    <select id="findByUserId" resultType="project.bookservice.domain.historyOfReportInfo.HistoryOfReportInfo">
+        select *
+        from historyOfReportInfo
+        where user_id = #{userId}
+    </select>
+
+    <select id="hasHistory" resultType="boolean">
+        select if(count(*) = 1, 1, 0)
+        from historyOfReportInfo
+        where user_id=#{userId} and report_id=#{reportInfoParam.id}
+    </select>
+
+
+<!--    <update id="updateFavorite">-->
+<!--        update historyOfReportInfo-->
+<!--        <if test="historyParam.favorite==true">-->
+<!--            set favorite=(#{historyParam.favorite}=1)-->
+<!--        </if>-->
+<!--        <if test="historyParam.favorite==false">-->
+<!--            set favorite=(#{historyParam.favorite}=2)-->
+<!--        </if>-->
+<!--        where report_id=#{reportId} and user_id=#{historyParam.userId}-->
+<!--    </update>-->
+
+<!--    <if test="historyParam.favorite">-->
+<!--        set favorite=0-->
+<!--    </if>-->
+<!--    <if test="!historyParam.favorite">-->
+<!--        set favorite=1-->
+<!--    </if>-->
+
+    <update id="updateFavorite">
+        update historyOfReportInfo
+        set favorite=#{historyParam.favorite}^1
+        where report_id=#{reportId} and user_id=#{historyParam.userId}
+    </update>
+
+<!--    <update id="updateFavorite">-->
+<!--        update historyOfReportInfo-->
+<!--        where reportId=#{historyParam.reportId}-->
+<!--    <if test="historyParam.favorite == false" >-->
+<!--        set favorite = #{historyParam.favorite}^1-->
+<!--    </if>-->
+<!--    <if test="historyParam.favorite == true" >-->
+<!--        set favorite = 0-->
+<!--    </if>-->
+<!--        <if test="historyParam.favorite == false" >-->
+<!--            set favorite = 1-->
+<!--        </if>-->
+<!--        <if test="historyParam.favorite == true" >-->
+<!--            set favorite = 0-->
+<!--        </if>-->
+
+<!--    </update>-->
+
+</mapper>

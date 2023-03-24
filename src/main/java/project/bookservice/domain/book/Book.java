@@ -1,10 +1,14 @@
 package project.bookservice.domain.book;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+
+//@Getter
+//@Setter
+//@Entity
+@Data
 public class Book {
     private Long id;
     private String imageUrl; // 이미지 링크

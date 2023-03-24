@@ -1,4 +1,4 @@
-package project.bookservice.service;
+package project.bookservice.service.starRating;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

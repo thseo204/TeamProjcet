@@ -1,4 +1,4 @@
-package project.bookservice.service;
+package project.bookservice.service.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,8 @@ import project.bookservice.domain.member.Member;
 import project.bookservice.repository.member.MemberRepository;
 import project.bookservice.web.validation.form.SignUpForm;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +29,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Optional<Member> findById(String memberId) {
         return memberRepository.findById(memberId);
+    }
+
+    @Override
+    public List<Member> findAll() {
+        return memberRepository.findAll();
     }
 
     @Override

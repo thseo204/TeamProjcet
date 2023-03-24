@@ -15,7 +15,7 @@ public interface MemberRepository {
     SignUpForm save(SignUpForm signUpForm);
 
 //    void update(Long itemId, ItemUpdateDto updateParam);
-
+    List<Member> findAll();
     Optional<Member> findById(String memberId);
 
     int existsByUserEmail(String email);
