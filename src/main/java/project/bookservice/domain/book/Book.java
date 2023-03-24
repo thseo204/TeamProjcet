@@ -19,10 +19,11 @@ public class Book {
     private String title;
     private String pubDate; // 출판연도
     private String isbn; // 책의 key 값
+    private Double avgStarRating;
     public Book() {
     }
 
-    public Book(String imageUrl, String author, String buyUrl, String publisher, String description, String title, String pubDate, String isbn) {
+    public Book(String imageUrl, String author, String buyUrl, String publisher, String description, String title, String pubDate, String isbn, Double avgStarRating) {
         this.imageUrl = imageUrl;
         this.author = author;
         this.buyUrl = buyUrl;
@@ -31,6 +32,6 @@ public class Book {
         this.title = title;
         this.pubDate = pubDate;
         this.isbn = isbn;
+        this.avgStarRating = avgStarRating;
     }
-
 }

@@ -81,4 +81,9 @@ public class LoginController {
         return "redirect:"+redirectURL;
     }
 
+    @GetMapping("/findId")
+    public String findId(){
+        return "basic/findId";
+    }
+
 }

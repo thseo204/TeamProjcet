@@ -25,4 +25,18 @@ public class MybatisCommentRepository implements CommentRepository{
     public List<Comment> findComments(String isbn) {
         return commentMapper.findComments(isbn);
     }
+
+    @Override
+    public void delete(Long id) {
+        log.info("삭제할 댓글번호 ={}", id);
+        commentMapper.delete(id);
+    }
+
+    @Override
+    public void update(Comment comment) {
+        log.info("수정할 댓글번호 ={}",comment.getId());
+        commentMapper.update(comment);
+    }
+
+
 }

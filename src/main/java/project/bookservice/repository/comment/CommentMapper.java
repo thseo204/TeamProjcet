@@ -11,4 +11,8 @@ public interface CommentMapper {
     void save(Comment comment);
 
     List<Comment> findComments(String isbn);
+
+    void delete(Long id);
+
+    void update(Comment comment);
 }

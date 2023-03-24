@@ -6,13 +6,18 @@
 
 <body class="is-preload">
 <link rel="stylesheet" href="/assets/css/errors.css"/>
+<script>
+   function openWindow() {
+      var newWindow = window.open('/findId/', '_blank', 'width=500, height=500', true);
+    }
+</script>
 
 <div id="page-wrapper">
 	<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 	<section id="main" class="container medium">
 
 		<div class="box">
-			<form method="post" th:action th:object="${loginForm}" >
+			<form method="post" th:object="${loginForm}" >
 				<div th:if="${#fields.hasGlobalErrors()}">
 					<p class="field-error" th:each="err : ${#fields.globalErrors()}"
 					   th:text="${err}">전체 오류 메시지</p>
@@ -42,6 +47,9 @@
 					</div>
 				</div>
 			</form>
+			<a onclick="openWindow();" class="button special icon solid fa-search">아이디/비밀번호 찾기</a>
+
+
 		</div>
 	</section>
 </div>

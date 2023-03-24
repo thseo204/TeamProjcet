@@ -4,6 +4,7 @@ package project.bookservice.openapi;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,12 +12,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import project.bookservice.domain.book.Book;
 import project.bookservice.repository.book.MyBatisBookRepository;
+import project.bookservice.service.starRating.StarRatingService;
 
 import java.util.ArrayList;
 
+
+@RequiredArgsConstructor
 public class ApiSearchBookList extends ConnectAPI implements APIParser{
 
     public ArrayList<Book> book = new ArrayList<Book>();
+
+    private final StarRatingService starRatingService;
+
+
 
     public String getTagvalue(String tag, Element eElement) {
         NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
@@ -75,8 +83,9 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
                     String title = getTagvalue("title", eElement);
                     String pubDate = getTagvalue("pubDate", eElement);
                     String isbn = getTagvalue("isbn13", eElement);
-
-                    Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
+                    Double avgStarRating = starRatingService.findAvgStarRating(isbn);
+            
+                    Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn,avgStarRating);
                     bookRepository.save(book);
                     bookList.add(book);
                 }

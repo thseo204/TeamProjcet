@@ -17,6 +17,7 @@ import project.bookservice.repository.member.MemberRepository;
 
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.report.ReportInfoService;
+import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.session.SessionManager;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class HomeController {
 
     private final MemberRepository memberRepository;
     private final SessionManager sessionManager;
+	 private final StarRatingService starRatingService;
 
     private final HistoryOfReportInfoService historyOfReportInfoService;
     private final ReportInfoService reportInfoService;
@@ -40,7 +42,7 @@ public class HomeController {
             required = false) Member loginMember, Model model) throws ParseException {
         log.info("loginMember {}", loginMember);
         String bookTitle = "Bestseller";
-        APIParser apiParser = new ApiSearchBookList();
+        APIParser apiParser = new ApiSearchBookList(starRatingService);
         ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(bookTitle);
 
         // // 오더바이 좋아요순으로 리밋 4 받아와서 메인 feedList에 뿌리기!!

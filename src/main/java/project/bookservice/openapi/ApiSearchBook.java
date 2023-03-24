@@ -2,6 +2,8 @@ package project.bookservice.openapi;
 
 // 네이버 검색 API 예제 - 블로그 검색
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -9,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.book.Book;
 import project.bookservice.repository.book.MyBatisBookRepository;
+import project.bookservice.service.starRating.StarRatingService;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -18,10 +21,13 @@ import java.util.Map;
 import java.lang.String;
 @Getter
 @Repository
+@RequiredArgsConstructor
+@Slf4j
 public class ApiSearchBook extends ConnectAPI implements APIParser{
 
-//    private final ArrayList<JSONObject> jsonObjectArrayList;
+//    private ArrayList<JSONObject> jsonObjectArrayList;
 
+    private final StarRatingService starRatingService;
 
     @Override
     public ArrayList<Book> jsonAndXmlParserToArr(String bookTitle) throws ParseException {
@@ -47,7 +53,10 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
             String title = (String)jsonObject1.get("title");
             String pubDate = (String)jsonObject1.get("pubdate"); // 출판연도
             String isbn = (String)jsonObject1.get("isbn"); // key값
-            Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn);
+            Double avgStarRating = starRatingService.findAvgStarRating(isbn);
+            log.info("avgStarRating ={}",avgStarRating);
+
+            Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn,avgStarRating);
             bookRepository.save(book);
             bookList.add(book);
         }

@@ -105,7 +105,19 @@ function openLoginModal() {
                     </section>
                     <section>
                         <div>
-                            <h4 class="" style="margin: 1em 0 0em -2em;" th:text="${book.title}"></h4>
+                            <h4 class="" style="margin: 1em 0 0em -2em;" th:if="${book.title.indexOf('-') == -1}" th:text="${book.title}"></h4>
+                            <h4 class="" style="margin: 1em 0 0em -2em;" th:if="${book.title.indexOf('-') != -1}" th:text="${#strings.substringBefore(book.title,'-')}"></h4>
+                            <!--별점이 없을떄-->
+                            <span th:if="${book.avgStarRating == null}" th:style="'font-size: 26px;'">
+                              <span style="color: #FFD700;">★</span>
+                              <span>-</span>
+                            </span>
+
+                            <!--별점이 있을떄-->
+                            <span th:if="${book.avgStarRating != null}" th:style="'font-size: 26px;'">
+                              <span style="color: #FFD700;">★</span>
+                              <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                            </span>
                         </div>
                     </section>
                 </section>

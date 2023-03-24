@@ -34,7 +34,9 @@
             </div>
             <div class="col-12">
                 <input type="hidden" name="isbn" th:value="${book.isbn}"/>
-                <input type="hidden" name="userId" th:value="${loginMember.userId}"/>
+                <!--바꾼부분******************************************-->
+                <input type="hidden" name="userId" th:value="${#session.getAttribute('loginMember').userId}"/>
+                <!--바꾼부분******************************************-->
                 <input type="hidden" name="starRating"/>
             </div>
             <br>
@@ -68,6 +70,7 @@
 
                                 document.querySelector('input[name="starRating"]').value = checkedCount;
                                 document.querySelector('#comment-form').submit();
+                                window.opener.location.reload(); // 부모 창 새로고침
                               });
         </script>
     </div>

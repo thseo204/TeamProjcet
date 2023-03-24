@@ -15,35 +15,13 @@
         where isbn = #{bookisbn}
     </select>
 
-    <!--
+    <delete id="delete">
+        DELETE FROM comment WHERE id = #{id}
+    </delete>
+
     <update id="update">
-        update item
-        set item_name=#{updateParam.itemName},
-        price=#{updateParam.price},
-        quantity=#{updateParam.quantity}
-        where id = #{id}
+        UPDATE comment SET content = #{content} WHERE id = #{id}
     </update>
-    -->
 
-    <!--
-    <select id="findById" resultType="Member">
-        select id, item_name, price, quantity
-        from member
-        where id = #{id}
-    </select>
-
-    <select id="findAll" resultType="Member">
-        select id, item_name, price, quantity
-        from item
-        <where>
-            <if test="itemName != null and itemName != ''">
-                and item_name like concat('%', #{itemName}, '%')
-            </if>
-            <if test="maxPrice != null">
-                and price $lt;= #{maxPrice}
-            </if>
-        </where>
-    </select>
-    -->
 </mapper>
 

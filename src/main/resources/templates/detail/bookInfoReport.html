@@ -1,25 +1,70 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
 
 <body class="is-preload">
+
+<script th:inline="javascript">
+                var isbn = /*[[${book.isbn}]]*/ null;
+
+</script>
+<script>
+   function openWindow() {
+      var newWindow = window.open('/starRating/' + isbn, '_blank', 'width=300, height=150', true);
+    }
+</script>
+<script>
+function openLoginModal() {
+  if (confirm("로그인 후 이용해 주세요.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
+</script>
+
 <div id="page-wrapper">
     <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
     <!-- Main -->
     <section id="main2" class="container">
-
         <section class="box">
             <p><span class="image left"><img th:src="@{${book.imageUrl}}" style="width:300px; height:400px;" alt=""/></span>
-            <h4>책 제목 </h4><p th:text="${book.title}"></p>
-            <h4>작가</h4> <p th:text="${book.author}"></p>
-            <h4>출간 일</h4> <p th:text="${book.pubDate}"></p>
-            <p>책 카테고리</p><br>
+            <h4>책 제목 </h4>
+            <p th:text="${book.title}"></p>
+            <h4>작가</h4>
+            <p th:text="${book.author}"></p>
+            <h4>출간 일</h4>
+            <p th:text="${book.pubDate}"></p>
+            <h4>
+                <!--별점이 없을떄-->
+                <span th:if="${book.avgStarRating == null}" th:style="'font-size: 35px;'">
+                  <span style="color: #FFD700;">★</span>
+                  <span>-</span>
+                </span>
 
-            <p>챌 별점 평균</p>
+                <!--별점이 있을떄-->
+                <span th:if="${book.avgStarRating != null}"
+                      th:style="'font-size: 35px;'">
+                  <span style="color: #FFD700;">★</span>
+                  <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                </span>
+
+                <span th:if="${#session} != null">
+                    <span th:if="${starId == false}">
+                        <input class="rating-btn" type="button" value="별점 주기" onclick="openWindow();"/>
+                    </span>
+                    <span th:if="${starId == true}">
+                        <input  class="rating-btn" type="button" value="참여 완료"/>
+                    </span>
+                </span>
+                <span th:if="${#session} == null">
+                    <input class="rating-btn" type="button" value="별점 주기" onclick="openLoginModal()"/>
+                </span>
+            </h4>
+
+
+
+            <br>
             <a th:href="@{${book.buyUrl}}">구매 링크</a> <br><br>
-
             <ul class="actions fit">
                 <li><a th:href="@{|/book/${book.isbn}|}" class="button special fit alt">책 정보</a></li>
                 <li><a th:href="@{|/book/${book.isbn}/report|}" class="button fit alt">독후감</a></li>

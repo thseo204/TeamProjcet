@@ -23,4 +23,16 @@ public class CommentServiceV1 implements CommentService{
     public List<Comment> findComments(String isbn) {
         return commentRepository.findComments(isbn);
     }
+
+    @Override
+    public void delete(Long id) {
+        commentRepository.delete(id);
+    }
+
+    @Override
+    public void update(Comment comment) {
+        commentRepository.update(comment);
+    }
+
+
 }

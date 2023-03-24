@@ -22,6 +22,7 @@ import project.bookservice.repository.report.FileStore;
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.member.MemberService;
 import project.bookservice.service.report.ReportInfoService;
+import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.form.HistoryOfReportInfoSaveForm;
 import project.bookservice.web.validation.form.ReportForm;
@@ -45,7 +46,8 @@ public class ReportController implements Serializable {
     private final ReportInfoService reportInfoService;
     private final MemberService memberService;
     private final FileStore fileStore;
-    @Value("${file.dir}")
+    private final StarRatingService starRatingService;
+    @Value("${file.dir2}")
     private String fileDir;
 
     @GetMapping("/bookReportForm/{id}")
@@ -61,7 +63,9 @@ public class ReportController implements Serializable {
 
         ReportInfo reportInfo = reportInfoService.findById(id);
         log.info("reportInfo={}", reportInfo.toString());
-        Book book = bookRepository.findByIsbnInAPI(reportInfo.getIsbn());
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
+        Book book = booklist.get(0);
         log.info("book={}", book);
 
         model.addAttribute("book", book);
@@ -117,7 +121,9 @@ public class ReportController implements Serializable {
         ReportInfo reportInfo = reportInfoService.findById(id);
         log.info("reportInfo={}", reportInfo);
 
-        Book book = bookRepository.findByIsbnInAPI(reportInfo.getIsbn());
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
+        Book book = booklist.get(0);
         log.info("book={}", book);
 
         Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
@@ -187,7 +193,7 @@ public class ReportController implements Serializable {
 
         } else {
             //"title 로 검색된 검색 명으로 api 에서 리스트 출력 하여 bookList 에 담기
-            APIParser apiParser = new ApiSearchBook();
+            APIParser apiParser = new ApiSearchBook(starRatingService);
             ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(title);
 
             model.addAttribute("bookList", bookList);
@@ -317,7 +323,11 @@ public class ReportController implements Serializable {
         ReportInfo reportInfo = reportInfoService.findById(id);
         log.info("reportInfo={}", reportInfo);
 
-        Book book = bookRepository.findByIsbnInAPI(reportInfo.getIsbn());
+        //Book book = bookRepository.findByIsbnInAPI(reportInfo.getIsbn());
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
+        Book book = booklist.get(0);
+
         log.info("book={}", book);
 
         Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
@@ -355,7 +365,9 @@ public class ReportController implements Serializable {
     @GetMapping("/editReportInfoForm/{reportId}/{isbn}")
     public String editReportInfoForm(@PathVariable Long reportId, @PathVariable String isbn, Model model) throws ParseException {
 
-        Book book = bookRepository.findByIsbnInAPI(isbn);
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(isbn); //책정보
+        Book book = booklist.get(0);
         ReportInfo reportInfo = reportInfoService.findById(reportId);
 
         model.addAttribute("book", book);
@@ -369,7 +381,9 @@ public class ReportController implements Serializable {
                                  Model model,
                                  RedirectAttributes redirectAttributes) throws ParseException {
 
-        Book book = bookRepository.findByIsbnInAPI(isbn);
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(isbn); //책정보
+        Book book = booklist.get(0);
         ReportInfo reportInfo = reportInfoService.findById(reportId);
         reportInfo.setContent(form.getContent());
         reportInfo.setHashTag(form.getHashTag());

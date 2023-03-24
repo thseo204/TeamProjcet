@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<body class="is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+
+<!-- Main -->
+<section id="main" class="container">
+  <header>
+    <h2>도서검색</h2>
+  </header>
+
+  <!-- Table -->
+  <section class="box" >
+    <form th:action method="get" th:Object="${book}">
+      <div class="row gtr-uniform gtr-50">
+        <div class="col-9 col-12-mobilep">
+          <input type="text" id="title" name="title" placeholder="도서 검색" autocomplete="on"/>
+        </div>
+
+        <div class="col-3 col-12-mobilep">
+          <input type="submit" class="button special icon solid fa-search fit" value="search" />
+        </div>
+      </div>
+    </form>
+      <hr/>
+  </section>
+
+  <section class="box special features">
+    <div class="features-row">
+      <section class="box" th:each="book : ${bookList}">
+        <section class="" >
+          <div class="features-row " align="center">
+            <a th:href="@{|/book/${book.isbn}|}">
+              <image class="image" style="width:100px; height:130px; " th:src="@{${book.imageUrl}}"></image>
+            </a>
+          </div>
+        </section>
+        <section>
+          <div>
+            <h4 class="" style="margin: 1em 0 0em -2em;" th:text="${book.title}" ></h4>
+            <!--별점이 없을떄-->
+            <span th:if="${book.avgStarRating == null}" th:style="'font-size: 26px;'">
+              <span style="color: #FFD700;">★</span>
+              <span>-</span>
+            </span>
+
+            <!--별점이 있을떄-->
+            <span th:if="${book.avgStarRating != null}" th:style="'font-size: 26px;'">
+              <span style="color: #FFD700;">★</span>
+              <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+            </span>
+          </div>
+        </section>
+      </section>
+    </div>
+
+  </section>
+
+</section>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+
+
+
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>
