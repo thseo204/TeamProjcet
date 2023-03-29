@@ -18,6 +18,8 @@ public class ReportSaveForm {
 
     private Long id;
     @NotBlank
+    private String title;
+    @NotBlank
     private String writerId; // 작성자 아이디를 통해 작성자의 닉네임 불러오기
     //    private String bookTitle; // 작성한 도서 제목
 //    private String reportTitle; // 게시글 제목

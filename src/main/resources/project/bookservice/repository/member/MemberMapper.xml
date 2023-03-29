@@ -4,19 +4,28 @@
 <mapper namespace="project.bookservice.repository.member.MemberMapper">
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into member(user_id, user_pwd, user_name, user_gender, user_birth, user_email, user_phone)
-        values (#{userId}, #{userPwd}, #{userName}, #{userGender}, #{userBirth}, #{userEmail}, #{userPhone})
+        insert into member(user_id, user_pwd, user_name, user_gender, user_birth, user_email, user_phone, user_charicon)
+        values (#{userId}, #{userPwd}, #{userName}, #{userGender}, #{userBirth}, #{userEmail}, #{userPhone}, #{userCharIcon})
     </insert>
 
-    <!--
+
     <update id="update">
-        update item
-        set item_name=#{updateParam.itemName},
-        price=#{updateParam.price},
-        quantity=#{updateParam.quantity}
-        where id = #{id}
+        update member
+        set user_pwd = #{userPwd},
+        user_name = #{userName},
+        user_gender = #{userGender},
+        user_birth = #{userBirth},
+        user_email = #{userEmail},
+        user_phone = #{userPhone}
+        where user_id = #{userId}
     </update>
-    -->
+
+    <update id="editCharIcon">
+        update member
+        set user_charicon = #{userCharIcon}
+        where user_id = #{userId}
+    </update>
+
 
     <select id="findByUserId" resultType="int">
         select count(user_id)
@@ -37,21 +46,15 @@
     </select>
 
     <select id="findByLoginId" resultType="project.bookservice.domain.member.Member">
-        select user_id,user_pwd
+        select *
         from member
         WHERE user_id = #{userId}
     </select>
-<!--    <select id="findAll" resultType="Member">-->
-<!--        select id, item_name, price, quantity-->
-<!--        from item-->
-<!--        <where>-->
-<!--            <if test="itemName != null and itemName != ''">-->
-<!--                and item_name like concat('%', #{itemName}, '%')-->
-<!--            </if>-->
-<!--            <if test="maxPrice != null">-->
-<!--                and price $lt;= #{maxPrice}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
+
+    <select id="findId" resultType="project.bookservice.domain.member.Member">
+        select *
+        from member
+        where user_id = #{userId}
+    </select>
 
 </mapper>

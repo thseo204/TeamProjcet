@@ -12,7 +12,9 @@ public interface MemberMapper {
     // 실행할 SQL은 패키지 위치는 이 인터페이스와 동일한 경로로 만들어줘야함.
     void save(SignUpForm signUpForm);
 
-//    void update(@Param("id")Long id, @Param("updateParam")ItemUpdateDto updatePara);
+     void update(SignUpForm signUpForm);
+
+    void editCharIcon(Member loginmember);
 
     List<Member> findAll();
     Optional<Member> findById(String memberId);
@@ -24,4 +26,6 @@ public interface MemberMapper {
     int findByUserId(String userId);
 
     Optional<Member> findByLoginId(String userId);
+
+    Member findId(String userId);
 }

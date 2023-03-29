@@ -5,17 +5,28 @@
 </th:block>
 
 <body class="is-preload">
+<script>
+function openLoginModal() {
+  if (confirm("존재하지 않는 아이디입니다.")) {
+   window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+  }
+}
+</script>
+
 <link rel="stylesheet" href="/assets/css/errors.css"/>
 
 <div id="page-wrapper">
   <section id="main" class="container medium">
 
     <div class="box">
-      <form method="post" >
-        <input type="text" placeholder="아이디" autocomplete="on"/>
+      <form method="post" action="/findIdByEmail">
+        <input type="text" name="userId" id="userId"> <br>
+        <div th:if="${message != null}" class="alert alert-danger">
+          <p th:text="${message}" style="color: #dc3545 !important;"></p>
+        </div>
+
+        <input type="submit" value="이메일로 비밀번호 찾기">
       </form>
-
-
     </div>
   </section>
 </div>

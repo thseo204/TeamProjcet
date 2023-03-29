@@ -15,6 +15,9 @@ public class LoginService {
         return memberRepository.findByLoginId(userId)
                 .filter(m->m.getUserPwd().equals(userPwd))
                 .orElse(null);
+    }
 
+    public Member findId(String userId){
+        return memberRepository.findId(userId);
     }
 }

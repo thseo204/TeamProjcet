@@ -11,6 +11,7 @@ public class ReportInfo {
 
     private String isbn; // 책의 key 값을 통해 도서 제목 가지고 오기
     private Long id;
+    private String title;
     private String writerId; // 작성자 아이디를 통해 작성자의 닉네임 불러오기
 //    private String bookTitle; // 작성한 도서 제목
 //    private String reportTitle; // 게시글 제목

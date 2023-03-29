@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="/assets/css/main.css"/>
+  <link rel="stylesheet" href="/assets/css/star.css"/>
+</head>
+<body>
+<script>
+    function windowClose(){
+
+        window.close();
+};
+</script>
+
+
+<h3>아이콘 변경 완료</h3>
+<ul class="actions">
+  <li><a th:href="|javascript:windowClose();|" class="button special">확인</a></li>
+</ul>
+
+</body>
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</html>

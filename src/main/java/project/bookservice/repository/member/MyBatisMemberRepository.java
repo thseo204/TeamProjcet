@@ -28,7 +28,19 @@ public class MyBatisMemberRepository implements MemberRepository {
         memberMapper.save(signUpForm);
         return signUpForm;
     }
-	
+
+    @Override
+    public void update(SignUpForm signUpForm) {
+        log.info("member info={}", signUpForm);
+
+        memberMapper.update(signUpForm);
+    }
+
+    @Override
+    public void editCharIcon(Member loginmember) {
+        memberMapper.editCharIcon(loginmember);
+    }
+
     @Override
     public List<Member> findAll() {
         return memberMapper.findAll();
@@ -64,5 +76,10 @@ public class MyBatisMemberRepository implements MemberRepository {
         log.info("loginId info={}", userId);
 
         return memberMapper.findByLoginId(userId);
+    }
+
+    @Override
+    public Member findId(String userId) {
+        return memberMapper.findId(userId);
     }
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.bookservice.repository.member.ReportInfoHistoryOfMemberMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into reportInfoHistoryOfMember(user_id, report_id, writer_id, isbn, title, upload_file_name, store_file_name, content, hash_tag)
+        values (#{userId}, #{reportId}, #{writerId}, #{isbn}, #{title}, #{uploadFileName}, #{storeFileName}, #{content}, #{hashTag})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from reportInfoHistoryOfMember
+        where user_id = #{userId} and report_id = #{reportId}
+    </delete>
+
+    <select id="existsByHistory" resultType="int">
+        select count(user_id)
+        from reportInfoHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="findByUserId" resultType="project.bookservice.domain.member.ReportInfoHistoryOfMember">
+        select *
+        from reportInfoHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="findAll" resultType="project.bookservice.domain.member.ReportInfoHistoryOfMember">
+        select *
+        from reportInfoHistoryOfMember
+    </select>
+
+
+
+<!-- 컬렉션에 저장 아래 쿼리로 해서 해보기!!!
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into bookmarkHistoryOfMember(user_id, isbn, image_url, book_title, book_author, collection_name)
+        values (#{userId}, #{isbn}, #{imageUrl}, #{isbn}, #{bookTitle}, #{bookAuthor})
+    </insert>
+
+    <select id="existsByHistory" resultType="int">
+        select count(user_id)
+        from bookmarkHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="findByUserId" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select *
+        from bookmarkHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="findByCollectionName" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select *
+        from bookmarkHistoryOfMember
+        where collection_name = #{collectionName}
+    </select>
+
+    <select id="findAll" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select *
+        from bookmarkHistoryOfMember
+    </select>
+
+-->
+
+
+</mapper>

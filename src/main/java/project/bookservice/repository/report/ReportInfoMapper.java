@@ -23,12 +23,18 @@ public interface ReportInfoMapper {
 
     Optional<ReportInfo> findById(Long id);
 
+    int existsReportInfo(String userId);
+
+    List<ReportInfo> findByUserId(String userId);
+
     List<ReportInfo> findAll();
-
     void increaseOfFavoriteNum(@Param("reportInfoParam")ReportInfo reportInfo);
-    void decreaseOfFavoriteNum(@Param("reportInfoParam")ReportInfo reportInfo);
 
-    void increaseOfCollectionNum(@Param("collectionNum")ReportInfo reportInfo);
-    void decreaseOfCollectionNum(@Param("collectionNum")ReportInfo reportInfo);
+    void decreaseOfFavoriteNum(@Param("reportInfoParam")ReportInfo reportInfo);
+    void increaseOfCollectionNum(@Param("reportInfoParam")ReportInfo reportInfo);
+    void decreaseOfCollectionNum(@Param("reportInfoParam")ReportInfo reportInfo);
+
     List<ReportInfo> orderByFavoriteNum();
+
+    Integer countByWriterId(String userId);
 }

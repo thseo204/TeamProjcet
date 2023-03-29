@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+
+<script>
+    function close1(isbn, collectionName){
+
+        opener.location.replace("/book/" + isbn + "/" + collectionName);
+        window.close();
+};
+
+</script>
+<body class="is-preload">
+<!--<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>-->
+<!--<link rel="stylesheet" href="assets/css/errors.css"/>-->
+
+<!-- Main -->
+<section id="main" class="container">
+    <header>
+        <h2>컬렉션 만들기</h2>
+    </header>
+
+    <!-- Table -->
+    <section class="box" >
+        <form th:action method="get">
+            <div class="row gtr-uniform gtr-50">
+                <div class="col-9 col-12-mobilep">
+                    <input type="text" th:id="collectionName" th:name="collectionName" placeholder="컬렉션 이름을 적어주세요."/>
+                </div>
+                <div class="col-3 col-12-mobilep">
+<!--                    <a onclick="close1();" class="button special icon solid fa-search fit" >-->
+                        <input type="submit" class="button special icon solid fa-search fit" value="만들기" />
+<!--                        th:onclick="$(function(){$('#send').click(function(){$('#send_form').submit(); setTimeout(function(){window.close();},100);});});" />-->
+<!--                    </a>-->
+                </div>
+            </div>
+
+            <hr/>
+            <a th:if="${bookmarkCollection.collectionName}!=null" th:href="|javascript:close1('${isbn}', '${bookmarkCollection.collectionName}');|" >
+                <h4 align="center" th:text="|[${bookmarkCollection.collectionName}] 생성하기|"></h4>
+            </a>
+
+        </form>
+    </section>
+</section>
+
+<!-- Scripts -->
+<!--<script src="assets/js/jquery.min.js"></script>-->
+<!--<script src="assets/js/jquery.dropotron.min.js"></script>-->
+<!--<script src="assets/js/jquery.scrollex.min.js"></script>-->
+<!--<script src="assets/js/browser.min.js"></script>-->
+<!--<script src="assets/js/breakpoints.min.js"></script>-->
+<!--<script src="assets/js/util.js"></script>-->
+<!--<script src="assets/js/main.js"></script>-->
+
+<!--<script src="assets/js/window.js"></script>-->
+
+</body>
+
+<!--<th:block th:replace="fragments/footer :: footerFragment"></th:block>-->
+
+</html>

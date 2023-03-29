@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+<body class="is-preload">
+
+<div id="page-wrapper">
+  <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+
+  <section id="main" class="container medium">
+    <header>
+      <h2>비밀번호 확인</h2>
+      <p>회원님의 소중한 정보 보호를 위해, [독서노트] 계정의 현재 비밀번호를 확인해 주세요</p>
+    </header>
+
+    <div th:if="${error != null}">
+      <script th:inline="javascript">
+            alert([[${error}]]);
+        </script>
+    </div>
+
+    <form method="post" th:action>
+      <div class="row gtr-50 gtr-uniform">
+        <div class="col-12">
+          <input type="text" name="userId" id="userId"  readonly th:value="${#session.getAttribute('loginMember').userId}"/>
+        </div>
+        <div class="col-12">
+          <input type="password" name="userPwd" id="userPwd" placeholder="비밀번호" />
+        </div>
+
+        <div class="col-12">
+          <ul class="actions special">
+
+            <li><input type="submit" value="확인" /></li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </section>
+
+
+</div>
+
+
+
+
+
+<!-- Scripts -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/star.js?ver"></script>
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</html>

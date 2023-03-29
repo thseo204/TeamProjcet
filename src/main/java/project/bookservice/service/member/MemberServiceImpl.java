@@ -21,11 +21,16 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.save(signUpForm);
     }
 
-//    @Override
-//    public void update(Long itemId, ItemUpdateDto updateParam) {
-//        itemRepository.update(itemId, updateParam);
-//    }
-//
+    @Override
+    public void update(SignUpForm signUpForm) {
+        memberRepository.update(signUpForm);
+    }
+
+    @Override
+    public void editCharIcon(Member loginmember) {
+        memberRepository.editCharIcon(loginmember);
+    }
+
     @Override
     public Optional<Member> findById(String memberId) {
         return memberRepository.findById(memberId);

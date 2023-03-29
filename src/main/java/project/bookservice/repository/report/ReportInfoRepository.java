@@ -17,12 +17,17 @@ public interface ReportInfoRepository {
     ReportInfo findById(Long id);
 //    Optional<ReportInfo> findById(Long id);
 //    Optional<ReportInfo> findByUserId(String userId, String isbn);
+    int existsReportInfo(String userId);
+    List<ReportInfo> findByUserId(String userId);
+
     List<ReportInfo> findAll();
-
     void increaseOfFavoriteNum(ReportInfo reportInfo);
-    void decreaseOfFavoriteNum(ReportInfo reportInfo);
 
+    void decreaseOfFavoriteNum(ReportInfo reportInfo);
     void increaseOfCollectionNum(ReportInfo reportInfo);
     void decreaseOfCollectionNum(ReportInfo reportInfo);
+
     List<ReportInfo> orderByFavoriteNum();
+
+    Integer countByWriterId(String userId);
 }

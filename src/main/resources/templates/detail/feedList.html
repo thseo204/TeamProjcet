@@ -67,14 +67,6 @@ function openLoginModal() {
                         <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
                         <span th:text="${reportInfo.collectionNum}"></span>
                     </li>
-<!--                    <li class="icon solid fa-angle-down" style="float:left;">-->
-<!--                        <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
-<!--                        <ul>-->
-<!--                            <li><a onclick="openLoginModal()">저장</a></li>-->
-<!--                            <li><a onclick="openLoginModal()">수정</a></li>-->
-<!--                            <li><a onclick="openLoginModal()">삭제</a></li>-->
-<!--                        </ul>-->
-<!--                    </li>-->
                 </a>
             </ul>
         </nav>
@@ -123,7 +115,7 @@ function openLoginModal() {
                     <span th:text="${reportInfo.date}"></span>
                 </li>
                 <li style="float:left;">
-                    <a th:href="@{|/feedListForm/${reportInfo.id}/${history.favorite}|}">
+                    <a th:href="@{|/feedListForm/${reportInfo.id}/favorite/${history.favorite}|}">
                         <span th:if="${history.favorite}" class="material-symbols-outlined"
                               style="color:red; ">favorite</span>
                         <span th:unless="${history.favorite}" class="material-symbols-outlined" style="color:pink;">favorite</span>
@@ -131,20 +123,12 @@ function openLoginModal() {
                     </a>
                 </li>
                 <li style="float:left;">
-                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
-                    <span th:text="${reportInfo.collectionNum}"></span>
+                    <a th:href="@{|/feedListForm/${reportInfo.id}/collection/${history.collection}|}">
+                        <span th:if="${history.collection}" class="material-symbols-outlined" style="color:red; ">bookmark</span>
+                        <span th:unless="${history.collection}" class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <span th:text="${reportInfo.collectionNum}"></span>
+                    </a>
                 </li>
-<!--                피드가 하나 생길때 모든 유저들의 히스토리를 만든다..? -->
-<!--                <li class="icon solid fa-angle-down" style="float:left;">-->
-<!--                    <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
-<!--                    <ul>-->
-<!--                        <li><a>저장</a></li>-->
-<!--                        <li><a>수정</a></li>-->
-<!--                        <li th:if="${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">-->
-<!--                            <a th:href="@{/deleteReportInfo/${reportInfo.id}}">삭제</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </li>-->
             </ul>
         </nav>
 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+<body class="is-preload">
+
+
+<div id="page-wrapper">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+    <link rel="stylesheet" href="assets/css/errors.css"/>
+
+
+    <!-- Main -->
+    <section id="main" class="container medium">
+        <header>
+            <h2>회원 정보 수정</h2>
+        </header>
+        <section class="box">
+            <form method="post" th:action th:object="${loginMember}" >
+                <div class="row gtr-50 gtr-uniform">
+
+                    <div class="col-12">
+                        <input type="text" id="userId" th:field="*{userId}" readonly th:value="*{userId}"
+                               th:errorclass="field-error" />
+                        <div class="field-error" th:errors="*{userId}"/>
+                    </div>
+                    <div class="col-12">
+                        <input type="password" id="userPwd" th:field="*{userPwd}" placeholder="New Password" />
+                    </div>
+                    <div class="col-12" >
+                        <input type="password" id="userRePwd" th:field="*{userRePwd}" placeholder="Repassword" />
+                        <div class="field-error" th:errors="*{userPwd}"/>
+                    </div>
+                    <div class="col-12" >
+                        <input type="text" id="userPhone" th:field="*{userPhone}" placeholder="Phone" />
+                        <div class="field-error" th:errors="*{userPhone}"/>
+                    </div>
+                    <div class="col-12" >
+                        <input type="text" id="userBirth" th:field="*{userBirth}" placeholder="Birth yymmdd" />
+                        <div class="field-error" th:errors="*{userBirth}"/>
+                    </div>
+                    <div class="col-4 col-8-narrower">
+                        <input type="radio" id="man" th:field="*{userGender}" value="M">
+                        <label for="man">남</label>
+                    </div>
+                    <div class="col-4 col-8-narrower">
+                        <input type="radio" id="woman" th:field="*{userGender}" value="F">
+                        <label for="woman">여</label>
+                        <div class="field-error" th:errors="*{userGender}"/>
+                    </div>
+
+                    <div class="col-12">
+                        <input type="text" id="userName" th:field="*{userName}" placeholder="Name" />
+                        <div class="field-error" th:errors="*{userName}"/>
+                    </div>
+                    <div class="col-12">
+                        <input type="email" id="userEmail" th:field="*{userEmail}" placeholder="Email"
+                               th:errorclass="field-error"/>
+                        <div class="field-error" th:errors="*{userEmail}"/>
+                    </div>
+                    <div class="col-12">
+                        <ul class="actions special">
+                            <li><input type="submit" value="수정 완료"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </section>
+
+</div>
+
+<!-- Scripts -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/star.js?ver"></script>
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</html>

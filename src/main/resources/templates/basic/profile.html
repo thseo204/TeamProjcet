@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<body class="is-preload">
+
+<div id="page-wrapper">
+  <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+      <section id="main2" class="container" th:object="${loginMember}">
+
+          <!-- Lists -->
+          <section class="box">
+            <style>
+              .material-symbols-outlined {
+                font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 48
+              }
+              </style>
+            <div class="row">
+              <div class="col-6 col-12-mobilep">
+
+                <h3 th:text="|독서노트 아이디 : *{userId}|"></h3>
+                <ul style="list-style: none;">
+                  <li><span class="material-symbols-outlined">account_circle</span>&nbsp;<span th:text="|별명 : *{userName}|"></span></li><br>
+                  <li><span class="material-symbols-outlined">phone_iphone</span>&nbsp;<span th:text="|핸드폰 번호 : *{userPhone}|"></span></li><br>
+                  <li><span class="material-symbols-outlined">mail</span>&nbsp;<span th:text="|이메일 : *{userEmail}|"></span></li><br>
+                  <li><span class="material-symbols-outlined">male</span><span class="material-symbols-outlined">female</span>&nbsp;<span th:text="|성별 : *{userGender}|"></span></li><br>
+                </ul>
+
+                <h3>Alternate</h3>
+                <ul class="alt">
+                  <li>Dolor pulvinar etiam magna etiam.</li>
+                  <li>Sagittis adipiscing lorem eleifend.</li>
+                  <li>Felis enim feugiat dolore viverra.</li>
+                </ul>
+
+              </div>
+              <div class="col-6 col-12-mobilep">
+
+                <h4>캐릭터 아이콘</h4>
+                <ul style="list-style: none;">
+                  <li>기본으로 지급되는 아이콘이에요<img src="/images/icons/F.png" alt="image"  width="30" height="30"/></li>
+                  <li>독후감 피드를 5개이상 작성시 지급되는 아이콘이에요 &nbsp;<img src="/images/icons/D.png" alt="image"  width="30" height="30"/></li>
+                  <li>독후감 피드를 10개이상 작성시 지급되는 아이콘이에요&nbsp;<img src="/images/icons/C.png" alt="image"  width="30" height="30"/></li>
+                  <li>독후감 피드를 20개이상 작성시 지급되는 아이콘이에요&nbsp;<img src="/images/icons/B.png" alt="image"  width="30" height="30"/></li>
+                  <li>독후감 피드를 30개이상 작성시 지급되는 아이콘이에요&nbsp;<img src="/images/icons/A.png" alt="image"  width="30" height="30"/></li>
+                  <li>독후감 피드를 50개이상 작성시 지급되는 아이콘이에요&nbsp;<img src="/images/icons/S.png" alt="image"  width="30" height="30"/></li>
+                </ul>
+
+                <h4>보유한 캐릭터 아이콘</h4>
+                <ul class="icons">
+                  <li>
+                    <img src="/images/icons/F.png" alt="image"  width="30" height="30"/>
+                  </li>
+                  <li>
+                    <div th:if="${reportCount >= 5}">
+                      <img src="/images/icons/D.png" alt="image"  width="30" height="30"/>
+                    </div>
+                  </li>
+                  <li>
+                    <div th:if="${reportCount >= 10}">
+                      <img src="/images/icons/C.png" alt="image"  width="30" height="30"/>
+                    </div>
+                  </li>
+                  <li>
+                    <div th:if="${reportCount >= 20}">
+                      <img src="/images/icons/B.png" alt="image"  width="30" height="30"/>
+                    </div>
+                  </li>
+                  <li>
+                    <div th:if="${reportCount >= 30}">
+                      <img src="/images/icons/A.png" alt="image"  width="30" height="30"/>
+                    </div>
+                  </li>
+                  <li>
+                    <div th:if="${reportCount >= 50}">
+                      <img src="/images/icons/S.png" alt="image"  width="30" height="30"/>
+                    </div>
+                  </li>
+
+                </ul>
+
+              </div>
+            </div>
+            <ul class="actions">
+              <li><a href="/pwdCheck" class="button special">회원 정보 수정</a></li>
+            </ul>
+
+          </section>
+
+      </section>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>
+

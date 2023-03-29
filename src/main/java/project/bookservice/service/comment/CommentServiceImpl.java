@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceV1 implements CommentService{
+public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
     @Override

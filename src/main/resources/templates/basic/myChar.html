@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+
+<body class="is-preload">
+
+<div id="page-wrapper">
+    <section id="main2" class="container">
+        <section class="box">
+            <a href="https://www.flaticon.com/free-icons/character" title="character icons">Character icons created by Freepik - Flaticon</a>
+            <div class="col-6 col-12-mobilep">
+                <h4>보유중인 캐릭터 아이콘</h4>
+                <ul class="icons">
+                    <li>
+                        <a href="/editCharIcon?imagePath=/images/icons/F.png">
+                            <img src="/images/icons/F.png" alt="image"  width="30" height="30"/>
+                        </a>
+                    </li>
+                    <li>
+                        <div th:if="${reportCount >= 5}">
+                            <a href="/editCharIcon?imagePath=/images/icons/D.png">
+                                <img src="/images/icons/D.png" alt="image"  width="30" height="30"/>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div th:if="${reportCount >= 10}">
+                            <img src="/images/icons/C.png" alt="image"  width="30" height="30"/>
+                        </div>
+                    </li>
+                    <li>
+                        <div th:if="${reportCount >= 20}">
+                            <img src="/images/icons/B.png" alt="image"  width="30" height="30"/>
+                        </div>
+                    </li>
+                    <li>
+                        <div th:if="${reportCount >= 30}">
+                            <img src="/images/icons/A.png" alt="image"  width="30" height="30"/>
+                        </div>
+                    </li>
+                    <li>
+                        <div th:if="${reportCount >= 50}">
+                            <img src="/images/icons/S.png" alt="image"  width="30" height="30"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('img').click(function() {
+            window.opener.location.reload();
+        });
+    });
+</script>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+</html>
+

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.bookservice.domain.book.Book;
 import project.bookservice.domain.historyOfReportInfo.HistoryOfReportInfo;
 import project.bookservice.domain.member.Member;
+import project.bookservice.domain.member.ReportInfoHistoryOfMember;
 import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.domain.report.UploadFile;
 import project.bookservice.openapi.APIParser;
@@ -21,11 +22,13 @@ import project.bookservice.repository.book.MyBatisBookRepository;
 import project.bookservice.repository.report.FileStore;
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.member.MemberService;
+import project.bookservice.service.member.ReportInfoHistoryOfMemberService;
 import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.form.HistoryOfReportInfoSaveForm;
 import project.bookservice.web.validation.form.ReportForm;
+import project.bookservice.web.validation.form.ReportInfoHistoryOfMemberSaveForm;
 import project.bookservice.web.validation.form.ReportSaveForm;
 
 import javax.servlet.http.HttpSession;
@@ -47,6 +50,10 @@ public class ReportController implements Serializable {
     private final MemberService memberService;
     private final FileStore fileStore;
     private final StarRatingService starRatingService;
+
+    private final ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService;
+
+    //@Value("${file.dir}")
     @Value("${file.dir2}")
     private String fileDir;
 
@@ -54,7 +61,7 @@ public class ReportController implements Serializable {
     public String bookReport(
             @PathVariable Long id,
             Model model, RedirectAttributes redirectAttributes,
-            @SessionAttribute(name= SessionConst.LOGIN_MEMBER,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
                     required = false) Member loginMember
 //            @Valid @ModelAttribute("member") SignUpForm signUpForm,
 //            String isbn,
@@ -62,6 +69,7 @@ public class ReportController implements Serializable {
     ) throws ParseException {
 
         ReportInfo reportInfo = reportInfoService.findById(id);
+
         log.info("reportInfo={}", reportInfo.toString());
         APIParser apiParser = new ApiSearchBook(starRatingService);
         ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
@@ -72,11 +80,11 @@ public class ReportController implements Serializable {
         model.addAttribute("reportInfo", reportInfo);
 
         // 로그인상태 확인
-        if(loginMember == null){
+        if (loginMember == null) {
             HistoryOfReportInfo history = new HistoryOfReportInfo();
             history.setCollection(false);
             history.setFavorite(false);
-            model.addAttribute("history",history);
+            model.addAttribute("history", history);
 
             return "detail/bookReport";
         }
@@ -88,15 +96,15 @@ public class ReportController implements Serializable {
                 .findAny();
 
         HistoryOfReportInfo history = null;
-        if(historyOptional.isPresent()){
+        if (historyOptional.isPresent()) {
             history = historyOptional.get();
 
-        } else if(historyOptional.isEmpty()){
+        } else if (historyOptional.isEmpty()) {
             history = new HistoryOfReportInfo();
             history.setCollection(false);
             history.setFavorite(false);
         }
-        model.addAttribute("history",history);
+        model.addAttribute("history", history);
 
         return "detail/bookReport";
     }
@@ -104,17 +112,18 @@ public class ReportController implements Serializable {
 
     /**
      * 좋아요 버튼 클릭시 실행 로직
-     * @param id -> 레포트의 아이디
-     * @param favorite -> 파라매터로 넘어온 좋아요 값의 상태 true/false
+     *
+     * @param id          -> 레포트의 아이디
+     * @param favorite    -> 파라매터로 넘어온 좋아요 값의 상태 true/false
      * @param loginMember -> 세션에 로그인 정보 확인
      * @return -> 레포트인포 기본 폼으로 리다이렉트
      */
-    @GetMapping("/bookReportForm/{id}/{favorite}")
+    @GetMapping("/bookReportForm/{id}/favorite/{favorite}")
     public String favoriteClick(
             @PathVariable Long id,
             @PathVariable boolean favorite,
             Model model,
-            @SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false)
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) throws ParseException {
 
 
@@ -133,12 +142,12 @@ public class ReportController implements Serializable {
                 .filter(b -> b.getReportId() == id)
                 .findAny();
 
-        if(hasHistory == true && historyOptional.isPresent()){//  해당 히스토리가 있으면 업데이트 쿼리 실행
+        if (hasHistory == true && historyOptional.isPresent()) {//  해당 히스토리가 있으면 업데이트 쿼리 실행
             HistoryOfReportInfo history = historyOptional.get();
 
             log.info("hasHistory={}", history);
 
-            if(favorite == false){ // 좋아요 안눌린 상태였을때
+            if (favorite == false) { // 좋아요 안눌린 상태였을때
                 reportInfoService.increaseOfFavoriteNum(reportInfo); // 좋아요 수 1 증가 db 반영
             } else { // 좋아요 눌린 상태였을 때
                 reportInfoService.decreaseOfFavoriteNum(reportInfo); // 좋아요 수 1 감소 db 반영
@@ -151,7 +160,93 @@ public class ReportController implements Serializable {
 
             return "redirect:/bookReportForm/{id}";
 
-        } else{ //해당 히스토리가 없으면 insert 쿼리 실행
+        } else { //해당 히스토리가 없으면 insert 쿼리 실행
+            // 새로운 히스토리 db에 생성
+            HistoryOfReportInfoSaveForm historyOfReportInfoSaveForm = new HistoryOfReportInfoSaveForm();
+            historyOfReportInfoSaveForm.setUserId(loginMember.getUserId());
+            historyOfReportInfoSaveForm.setReportId(reportInfo.getId());
+            historyOfReportInfoService.save(historyOfReportInfoSaveForm);
+
+            // 히스토리가 없다는 것은 좋아요를 누르지 않은 상태이기때문에 감소 불가. 증가만 가능.
+            reportInfoService.increaseOfFavoriteNum(reportInfo);
+            // 방금 저장한 히스토리 꺼내와서 모델 속성에 반영
+            List<HistoryOfReportInfo> newHistoryList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
+            HistoryOfReportInfo history = newHistoryList.get(0);
+            historyOfReportInfoSaveForm.setUserId(loginMember.getUserId());
+            history.setReportId(reportInfo.getId());
+            history.setFavorite(false);
+            history.setCollection(false);
+
+            historyOfReportInfoService.updateFavorite(id, history); // 좋아요 눌린 상태 db 반영 false 를 true로
+
+            log.info("hasNotHistory={}", history);
+            model.addAttribute("history", history);
+            model.addAttribute("book", book);
+            model.addAttribute("reportInfo", reportInfo);
+
+            return "redirect:/bookReportForm/{id}";
+        }
+    }
+
+    @GetMapping("/bookReportForm/{id}/collection/{collection}")
+    public String collectionClick(
+            @PathVariable Long id,
+            @PathVariable boolean collection,
+            Model model,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+            Member loginMember) throws ParseException {
+
+
+        ReportInfo reportInfo = reportInfoService.findById(id);
+        log.info("reportInfo={}", reportInfo);
+
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
+        Book book = booklist.get(0);
+        log.info("book={}", book);
+
+        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
+        List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
+
+        Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
+                .filter(b -> b.getReportId() == id)
+                .findAny();
+
+        if (hasHistory == true && historyOptional.isPresent()) {//  해당 히스토리가 있으면 업데이트 쿼리 실행
+            HistoryOfReportInfo history = historyOptional.get();
+
+            log.info("hasHistory={}", history);
+
+            if (collection == false) { // 컬렉션 안눌린 상태였을때
+                reportInfoService.increaseOfCollectionNum(reportInfo); // 컬렉션 저장 수 1 증가 db 반영
+                ReportInfoHistoryOfMemberSaveForm form = new ReportInfoHistoryOfMemberSaveForm();
+                form.setUserId(loginMember.getUserId());
+                form.setReportId(reportInfo.getId());
+                form.setWriterId(reportInfo.getWriterId());
+                form.setIsbn(reportInfo.getIsbn());
+                form.setTitle(reportInfo.getTitle());
+                form.setUploadFileName(reportInfo.getUploadFileName());
+                form.setStoreFileName(reportInfo.getStoreFileName());
+                form.setContent(reportInfo.getContent());
+                form.setHashTag(reportInfo.getHashTag());
+                reportInfoHistoryOfMemberService.save(form);
+            } else { // 좋아요 눌린 상태였을 때
+                reportInfoService.decreaseOfCollectionNum(reportInfo); // 컬렉션 저장 수 1 감소 db 반영
+                List<ReportInfoHistoryOfMember> reportInfoHistoryOfMembers = reportInfoHistoryOfMemberService.findByUserId(loginMember.getUserId());
+                Optional<ReportInfoHistoryOfMember> reportInfoHistoryOfMemberOptional = reportInfoHistoryOfMembers.stream().filter(r -> r.getReportId() == id).findAny();
+                ReportInfoHistoryOfMember reportInfoHistoryOfMember = reportInfoHistoryOfMemberOptional.get();
+                reportInfoHistoryOfMemberService.delete(reportInfoHistoryOfMember);
+            }
+
+            historyOfReportInfoService.updateCollection(id, history); // 좋아요 눌린 상태 db 반영
+            //false -> true 로 true -> false
+            model.addAttribute("history", history);
+            model.addAttribute("book", book);
+            model.addAttribute("reportInfo", reportInfo);
+
+            return "redirect:/bookReportForm/{id}";
+
+        } else { //해당 히스토리가 없으면 insert 쿼리 실행
             // 새로운 히스토리 db에 생성
             HistoryOfReportInfoSaveForm historyOfReportInfoSaveForm = new HistoryOfReportInfoSaveForm();
             historyOfReportInfoSaveForm.setUserId(loginMember.getUserId());
@@ -204,7 +299,7 @@ public class ReportController implements Serializable {
 
     @GetMapping("/writeReportForm")
     public String writeReportAddTitle(@ModelAttribute("reportInfo") ReportInfo reportInfo,
-                                      @ModelAttribute Book book){
+                                      @ModelAttribute Book book) {
 
         return "detail/writeReport";
     }
@@ -236,12 +331,14 @@ public class ReportController implements Serializable {
             @ModelAttribute("reportInfo") ReportForm form,
             @ModelAttribute("book") Book book,
             RedirectAttributes redirectAttributes,
-            @SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false)
-            Member loginMember) throws IOException {
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+            Member loginMember) throws IOException, ParseException {
+
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(isbn); //책정보
+        book = booklist.get(0);
 
         UploadFile attachFile = fileStore.storeFile(form.getAttachFile());
-
-        log.info("loginMember.getUserId()={}", loginMember.getUserId());
 
         //데이터베이스에 report 저장
         ReportSaveForm reportInfo = new ReportSaveForm();
@@ -252,11 +349,11 @@ public class ReportController implements Serializable {
         reportInfo.setStoreFileName(attachFile.getStoreFileName());
         log.info("form.getUploadFileName={}", attachFile.getUploadFileName());
         log.info("form.getUploadFileName={}", attachFile.getStoreFileName());
-
+        reportInfo.setTitle(book.getTitle());
         reportInfo.setContent(form.getContent());
         reportInfo.setDisclosure(form.getDisclosure());
         reportInfo.setHashTag(form.getHashTag());
-
+        // 책 타이틀 레포트 인포와 레포트인포오브 멤버 테이블에 넣기!
         log.info("reportForm ={}", reportInfo);
         reportInfoService.save(reportInfo);
 
@@ -286,13 +383,13 @@ public class ReportController implements Serializable {
 
     @GetMapping("/feedListForm")
     public String feedList(Model model,
-                           @SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false)
-                           Member loginMember){
+                           @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                           Member loginMember) {
 
         // 리포트 리스트 받아와서 feedListForm에 뿌리기!!
         List<ReportInfo> reportInfoList = reportInfoService.findAll();
         model.addAttribute("reportInfoList", reportInfoList);
-        if(loginMember == null){
+        if (loginMember == null) {
 
             return "detail/feedList";
         }
@@ -306,17 +403,18 @@ public class ReportController implements Serializable {
 
     /**
      * 좋아요 버튼 클릭시 실행 로직
-     * @param id -> 레포트의 아이디
-     * @param favorite -> 파라매터로 넘어온 좋아요 값의 상태 true/false
+     *
+     * @param id          -> 레포트의 아이디
+     * @param favorite    -> 파라매터로 넘어온 좋아요 값의 상태 true/false
      * @param loginMember -> 세션에 로그인 정보 확인
      * @return -> 레포트인포 기본 폼으로 리다이렉트
      */
-    @GetMapping("/feedListForm/{id}/{favorite}")
+    @GetMapping("/feedListForm/{id}/favorite/{favorite}")
     public String favoriteClickInFeed(
             @PathVariable Long id,
             @PathVariable boolean favorite,
             Model model,
-            @SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false)
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) throws ParseException {
 
 
@@ -330,38 +428,45 @@ public class ReportController implements Serializable {
 
         log.info("book={}", book);
 
-        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
+//        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
         List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
 
         Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
                 .filter(b -> b.getReportId() == id)
                 .findAny();
 
-            HistoryOfReportInfo history = historyOptional.get();
+        HistoryOfReportInfo history = historyOptional.get();
 
-            log.info("hasHistory={}", history);
+        log.info("hasHistory={}", history);
 
-            if(favorite == false){ // 좋아요 안눌린 상태였을때
-                reportInfoService.increaseOfFavoriteNum(reportInfo); // 좋아요 수 1 증가 db 반영
-            } else { // 좋아요 눌린 상태였을 때
-                reportInfoService.decreaseOfFavoriteNum(reportInfo); // 좋아요 수 1 감소 db 반영
-            }
-            historyOfReportInfoService.updateFavorite(id, history); // 좋아요 눌린 상태 db 반영
-            //false -> true 로 true -> false
-            model.addAttribute("history", history);
-            model.addAttribute("book", book);
-            model.addAttribute("reportInfo", reportInfo);
+        if (favorite == false) { // 좋아요 안눌린 상태였을때
+            reportInfoService.increaseOfFavoriteNum(reportInfo); // 좋아요 수 1 증가 db 반영
+        } else { // 좋아요 눌린 상태였을 때
+            reportInfoService.decreaseOfFavoriteNum(reportInfo); // 좋아요 수 1 감소 db 반영
+        }
+        historyOfReportInfoService.updateFavorite(id, history); // 좋아요 눌린 상태 db 반영
+        //false -> true 로 true -> false
+        if(history.getCollection() == true){
 
-            return "redirect:/feedListForm";
+        } else{
+            //
+        }
+
+        model.addAttribute("history", history);
+        model.addAttribute("book", book);
+        model.addAttribute("reportInfo", reportInfo);
+
+        return "redirect:/feedListForm";
 
     }
 
     @GetMapping("/deleteReportInfoForm/{id}")
-    public String deleteReportInfo(@PathVariable Long id){
+    public String deleteReportInfo(@PathVariable Long id) {
         reportInfoService.delete(id);
 
         return "/basic/deleteReportSuccessForm"; // 해당게시물이 삭제되었습니다. 페이지로 이동.
     }
+
     @GetMapping("/editReportInfoForm/{reportId}/{isbn}")
     public String editReportInfoForm(@PathVariable Long reportId, @PathVariable String isbn, Model model) throws ParseException {
 
@@ -374,6 +479,7 @@ public class ReportController implements Serializable {
         model.addAttribute("reportInfo", reportInfo);
         return "detail/editReport"; // 수정하지않고 취소 눌렀을 경우
     }
+
     @PostMapping("/editReportInfoForm/{reportId}/{isbn}")
     public String editReportInfo(@PathVariable Long reportId,
                                  @PathVariable String isbn,
@@ -394,4 +500,70 @@ public class ReportController implements Serializable {
         redirectAttributes.addAttribute("id", reportId);
         return "redirect:/bookReportForm/{id}"; // 게시글 수정 후 수정완료하였을 경우
     }
+
+    /**
+     * 컬렉션에 저장 클릭했을 때
+     */
+    @GetMapping("/feedListForm/{id}/collection/{collection}")
+    public String collectionClickInFeed(
+            @PathVariable Long id,
+            @PathVariable boolean collection,
+            Model model,
+            @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+            Member loginMember) throws ParseException {
+
+
+        ReportInfo reportInfo = reportInfoService.findById(id);
+        log.info("reportInfo={}", reportInfo);
+
+        APIParser apiParser = new ApiSearchBook(starRatingService);
+        ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
+        Book book = booklist.get(0);
+
+        log.info("book={}", book);
+
+//        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
+        List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
+
+        Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
+                .filter(b -> b.getReportId() == id)
+                .findAny();
+
+        HistoryOfReportInfo history = historyOptional.get();
+
+        log.info("hasHistory={}", history);
+        log.info("reportInfo={}", reportInfo);
+        if (collection == false) { // 컬렉션 안눌린 상태였을때
+            reportInfoService.increaseOfCollectionNum(reportInfo); // 컬렉션 저장 수 1 증가 db 반영
+            ReportInfoHistoryOfMemberSaveForm form = new ReportInfoHistoryOfMemberSaveForm();
+            form.setUserId(loginMember.getUserId());
+            form.setReportId(reportInfo.getId());
+            form.setWriterId(reportInfo.getWriterId());
+            form.setIsbn(reportInfo.getIsbn());
+            form.setTitle(reportInfo.getTitle());
+            form.setUploadFileName(reportInfo.getUploadFileName());
+            form.setStoreFileName(reportInfo.getStoreFileName());
+            form.setContent(reportInfo.getContent());
+            form.setHashTag(reportInfo.getHashTag());
+            reportInfoHistoryOfMemberService.save(form);
+        } else { // 좋아요 눌린 상태였을 때
+            reportInfoService.decreaseOfCollectionNum(reportInfo); // 컬렉션 저장 수 1 감소 db 반영
+            List<ReportInfoHistoryOfMember> reportInfoHistoryOfMembers = reportInfoHistoryOfMemberService.findByUserId(loginMember.getUserId());
+            Optional<ReportInfoHistoryOfMember> reportInfoHistoryOfMemberOptional = reportInfoHistoryOfMembers.stream().filter(r -> r.getReportId() == id).findAny();
+            ReportInfoHistoryOfMember reportInfoHistoryOfMember = reportInfoHistoryOfMemberOptional.get();
+            reportInfoHistoryOfMemberService.delete(reportInfoHistoryOfMember);
+        }
+
+        // 컬렉션 저장을 reportInfoHistoryOfMember 클래스에 반영 하는 코드
+
+        historyOfReportInfoService.updateCollection(id, history); // 좋아요 눌린 상태 db 반영
+        //false -> true 로 true -> false
+        model.addAttribute("history", history);
+        model.addAttribute("book", book);
+        model.addAttribute("reportInfo", reportInfo);
+
+        return "redirect:/feedListForm";
+
+    }
+
 }

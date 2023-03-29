@@ -27,7 +27,7 @@ function openLoginModal() {
 
 </script>
 
-<body class="is-preload" >
+<body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 
 
@@ -91,14 +91,6 @@ function openLoginModal() {
                         <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
                         <span th:text="${reportInfo.collectionNum}"></span>
                     </li>
-                    <!--                        <li class="icon solid fa-angle-down" style="float:left;">-->
-                    <!--                            <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
-                    <!--                            <ul>-->
-                    <!--                                <li><a onclick="openLoginModal()">저장</a></li>-->
-                    <!--                                <li><a onclick="openLoginModal()">수정</a></li>-->
-                    <!--                                <li><a onclick="openLoginModal()">삭제</a></li>-->
-                    <!--                            </ul>-->
-                    <!--                        </li>-->
                 </a>
             </ul>
         </nav>
@@ -112,7 +104,7 @@ function openLoginModal() {
                     <span th:text="${reportInfo.date}"></span>
                 </li>
                 <li style="float:left;">
-                    <a th:href="@{|/bookReportForm/${reportInfo.id}/${history.favorite}|}">
+                    <a th:href="@{|/bookReportForm/${reportInfo.id}/favorite/${history.favorite}|}">
                         <span th:if="${history.favorite}" class="material-symbols-outlined"
                               style="color:red; ">favorite</span>
                         <span th:unless="${history.favorite}" class="material-symbols-outlined"
@@ -121,8 +113,11 @@ function openLoginModal() {
                     </a>
                 </li>
                 <li style="float:left;">
-                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
-                    <span th:text="${reportInfo.collectionNum}"></span>
+                    <a th:href="@{|/bookReportForm/${reportInfo.id}/collection/${history.collection}|}">
+                        <span th:if="${history.collection}" class="material-symbols-outlined" style="color:red;">bookmark</span>
+                        <span th:unless="${history.collection}" class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <span th:text="${reportInfo.collectionNum}"></span>
+                    </a>
                 </li>
                 <li class="icon solid fa-angle-down" style="float:left;"
                     th:if="${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">
@@ -190,7 +185,6 @@ function openLoginModal() {
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
 
-<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

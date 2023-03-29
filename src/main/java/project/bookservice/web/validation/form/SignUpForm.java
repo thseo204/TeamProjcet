@@ -43,4 +43,6 @@ public class SignUpForm {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "올바른 이메일 형식이 아닙니다.")
     private String userEmail;
+
+    private String userCharIcon;
 }

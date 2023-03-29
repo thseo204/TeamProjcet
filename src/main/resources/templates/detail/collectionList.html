@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+<style>
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+</style>
+
+<body class="is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+
+<!-- Main -->
+<section id="main" class="container">
+    <header>
+        <br/>
+        <br/>
+        <h3> 나의 컬렉션 </h3>
+
+        <p th:text="|[컬렉션명 : ${collectionName}]|"></p>
+    </header>
+
+    <!-- 도서 컬렉션 -->
+    <section>
+        <!-- 저장한 도서 -->
+        <section class="box">
+            <div th:if="${existsByHistory} == 0">
+                <h4 align="center">
+                    <span class="material-symbols-outlined">collections_bookmark</span>
+                    해당 컬렉션에 저장된 도서내역이 없습니다.
+                </h4>
+            </div>
+            <div th:unless="${existsByHistory} == 0" class="box alt">
+                <h4>저장한 도서
+                    <a th:href="@{|/editCollectionListForm/${collectionName}|}">
+                        <span style="float:right; color:pink;">수정모드</span>
+                    </a>
+                </h4>
+                <hr/>
+                <div class="row gtr-50 gtr-uniform">
+                    <div class="col-3" th:each="bookmark : ${bookmarkList}">
+                        <a th:href="@{|/book/${bookmark.isbn}|}">
+                            <span class="image fit"><img th:src="@{${bookmark.imageUrl}}" alt=""/></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="box">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <!--                            <th>생성일</th>-->
+                        <th style="text-align:center;">컬렉션명 [생성일]</th>
+                        <!--                            <th>도서수</th>-->
+                    </tr>
+                    </thead>
+                    <tbody th:each="myCollection : ${myCollectionList}">
+                    <tr>
+                        <!--                            <td><span th:text="${myCollection.date}"></span></td>-->
+                        <td style="text-align:center;">
+                            <a class="special fit alt" th:href="@{|/collectionListForm/${myCollection.collectionName}|}">
+                                <span th:text="|${myCollection.collectionName} [${myCollection.date}]|"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </section>
+
+    </section>
+</section>
+
+
+<!--</section>-->
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+<!--<script src="assets/js/imageUpload.js"></script>-->
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>

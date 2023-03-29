@@ -14,7 +14,10 @@ public interface MemberRepository {
 	 Member save(Member member);
     SignUpForm save(SignUpForm signUpForm);
 
-//    void update(Long itemId, ItemUpdateDto updateParam);
+    void update(SignUpForm signUpForm);
+
+    void editCharIcon(Member loginmember);
+
     List<Member> findAll();
     Optional<Member> findById(String memberId);
 
@@ -23,6 +26,8 @@ public interface MemberRepository {
 	
 
     Optional<Member> findByLoginId(String userId);
+
+    Member findId(String userId);
 
 
 }

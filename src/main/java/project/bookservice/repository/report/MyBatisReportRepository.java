@@ -50,6 +50,16 @@ public class MyBatisReportRepository implements ReportInfoRepository {
     }
 
     @Override
+    public int existsReportInfo(String userId) {
+        return reportInfoMapper.existsReportInfo(userId);
+    }
+
+    @Override
+    public List<ReportInfo> findByUserId(String userId) {
+        return reportInfoMapper.findByUserId(userId);
+    }
+
+    @Override
     public List<ReportInfo> findAll() {
         return reportInfoMapper.findAll();
     }
@@ -81,5 +91,9 @@ public class MyBatisReportRepository implements ReportInfoRepository {
     @Override
     public List<ReportInfo> orderByFavoriteNum() {
         return reportInfoMapper.orderByFavoriteNum();
+    }
+    @Override
+    public Integer countByWriterId(String userId) {
+        return reportInfoMapper.countByWriterId(userId);
     }
 }

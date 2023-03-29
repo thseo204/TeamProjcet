@@ -79,9 +79,9 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
         }
 
 
-        String apiURL = "https://openapi.naver.com/v1/search/book?query=" + text;    // JSON 결과
+        String apiURL = "https://openapi.naver.com/v1/search/book?query=" + text+"&display=100";    // JSON 결과
         //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // XML 결과
-
+        System.out.println(text);
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
