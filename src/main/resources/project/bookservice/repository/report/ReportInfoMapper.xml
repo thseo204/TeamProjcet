@@ -5,8 +5,8 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
 
-        insert into reportInfo(writer_id, isbn, date, upload_file_name, store_file_name, content, hash_tag, favorite_num, collection_num, disclosure)
-        values (#{writerId}, #{isbn}, (date_format(now(), '%Y%m%d%H%i%s')), #{uploadFileName}, #{storeFileName}, #{content}, #{hashTag}, 0, 0,  #{disclosure})
+        insert into reportInfo(writer_id, isbn, title, date, upload_file_name, store_file_name, content, hash_tag, favorite_num, collection_num, disclosure)
+        values (#{writerId}, #{isbn}, #{title}, (date_format(now(), '%Y%m%d%H%i%s')), #{uploadFileName}, #{storeFileName}, #{content}, #{hashTag}, 0, 0,  #{disclosure})
     </insert>
 
     <delete id="delete">
@@ -53,11 +53,20 @@
         where id = #{id}
     </select>
 
-<!--    <select id="findByEmail" resultType="int">-->
-<!--        select count(user_email)-->
-<!--        from member-->
-<!--        where user_email = #{userEmail}-->
-<!--    </select>-->
+    <select id="findByUserId" resultType="project.bookservice.domain.report.ReportInfo">
+        select *
+        from reportInfo
+        where writer_id = #{userId}
+        order by date desc
+    </select>
+
+    <select id="existsReportInfo" resultType="int">
+        select count(*)
+        from reportInfo
+        where writer_id = #{userId}
+    </select>
+
+
 
 
     <select id="findAll" resultType="project.bookservice.domain.report.ReportInfo">
@@ -75,17 +84,5 @@
         limit 4
     </select>
 
-<!--    <select id="findAll" resultType="Member">-->
-<!--        select id, item_name, price, quantity-->
-<!--        from item-->
-<!--        <where>-->
-<!--            <if test="itemName != null and itemName != ''">-->
-<!--                and item_name like concat('%', #{itemName}, '%')-->
-<!--            </if>-->
-<!--            <if test="maxPrice != null">-->
-<!--                and price $lt;= #{maxPrice}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
 
 </mapper>

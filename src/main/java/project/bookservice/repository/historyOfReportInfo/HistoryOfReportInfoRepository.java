@@ -14,6 +14,6 @@ public interface HistoryOfReportInfoRepository {
 
     Boolean hasHistory(String userId, ReportInfo reportInfo);
     void updateFavorite(Long reportId, HistoryOfReportInfo history);
-    void updateCollection(HistoryOfReportInfo history);
+    void updateCollection(Long reportId, HistoryOfReportInfo history);
 
 }

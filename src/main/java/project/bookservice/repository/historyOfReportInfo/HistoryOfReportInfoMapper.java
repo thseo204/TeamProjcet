@@ -17,6 +17,6 @@ public interface HistoryOfReportInfoMapper {
     Boolean hasHistory(@Param("userId") String userId, @Param("reportInfoParam") ReportInfo reportInfo);
     void updateFavorite(@Param("reportId") Long id, @Param("historyParam") HistoryOfReportInfo history);
 
-    void updateCollection(@Param("historyParam") HistoryOfReportInfo history);
+    void updateCollection(@Param("reportId") Long id, @Param("historyParam") HistoryOfReportInfo history);
 
 }

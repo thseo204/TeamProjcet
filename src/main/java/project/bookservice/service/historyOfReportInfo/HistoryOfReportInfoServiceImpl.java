@@ -38,8 +38,8 @@ public class HistoryOfReportInfoServiceImpl implements HistoryOfReportInfoServic
     }
 
     @Override
-    public void updateCollection(HistoryOfReportInfo history) {
-        historyOfReportInfoRepository.updateCollection(history);
+    public void updateCollection(Long reportId, HistoryOfReportInfo history) {
+        historyOfReportInfoRepository.updateCollection(reportId, history);
     }
 
 

@@ -86,7 +86,7 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
                     Double avgStarRating = starRatingService.findAvgStarRating(isbn);
             
                     Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn,avgStarRating);
-                    bookRepository.save(book);
+//                    bookRepository.save(book);
                     bookList.add(book);
                 }
             }

@@ -37,8 +37,8 @@ public class MyBatisHistoryOfReportInfoRepository implements HistoryOfReportInfo
     }
 
     @Override
-    public void updateCollection(HistoryOfReportInfo history) {
-        historyOfReportInfoMapper.updateCollection(history);
+    public void updateCollection(Long reportId, HistoryOfReportInfo history) {
+        historyOfReportInfoMapper.updateCollection(reportId, history);
     }
 
 

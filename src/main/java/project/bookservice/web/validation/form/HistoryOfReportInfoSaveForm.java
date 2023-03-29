@@ -10,6 +10,7 @@ public class HistoryOfReportInfoSaveForm {
     private Long id;
     @NotNull
     private Long reportId;
+
     @NotBlank
     private String userId;
     private Boolean favorite;

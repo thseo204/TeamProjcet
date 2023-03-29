@@ -21,23 +21,6 @@
     </select>
 
 
-<!--    <update id="updateFavorite">-->
-<!--        update historyOfReportInfo-->
-<!--        <if test="historyParam.favorite==true">-->
-<!--            set favorite=(#{historyParam.favorite}=1)-->
-<!--        </if>-->
-<!--        <if test="historyParam.favorite==false">-->
-<!--            set favorite=(#{historyParam.favorite}=2)-->
-<!--        </if>-->
-<!--        where report_id=#{reportId} and user_id=#{historyParam.userId}-->
-<!--    </update>-->
-
-<!--    <if test="historyParam.favorite">-->
-<!--        set favorite=0-->
-<!--    </if>-->
-<!--    <if test="!historyParam.favorite">-->
-<!--        set favorite=1-->
-<!--    </if>-->
 
     <update id="updateFavorite">
         update historyOfReportInfo
@@ -45,22 +28,12 @@
         where report_id=#{reportId} and user_id=#{historyParam.userId}
     </update>
 
-<!--    <update id="updateFavorite">-->
-<!--        update historyOfReportInfo-->
-<!--        where reportId=#{historyParam.reportId}-->
-<!--    <if test="historyParam.favorite == false" >-->
-<!--        set favorite = #{historyParam.favorite}^1-->
-<!--    </if>-->
-<!--    <if test="historyParam.favorite == true" >-->
-<!--        set favorite = 0-->
-<!--    </if>-->
-<!--        <if test="historyParam.favorite == false" >-->
-<!--            set favorite = 1-->
-<!--        </if>-->
-<!--        <if test="historyParam.favorite == true" >-->
-<!--            set favorite = 0-->
-<!--        </if>-->
+    <update id="updateCollection">
+        update historyOfReportInfo
+        set collection=#{historyParam.collection}^1
+        where report_id=#{reportId} and user_id=#{historyParam.userId}
+    </update>
 
-<!--    </update>-->
+
 
 </mapper>

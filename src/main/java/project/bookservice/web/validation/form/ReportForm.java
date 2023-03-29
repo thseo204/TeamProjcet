@@ -18,6 +18,7 @@ public class ReportForm {
     private String isbn; // 책의 key 값을 통해 도서 제목 가지고 오기
 
     private Long id;
+    private String title;
 
     @NotBlank
     private String writerId;

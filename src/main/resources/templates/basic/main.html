@@ -70,15 +70,72 @@ function openLoginModal() {
 
     <!-- Main -->
     <section id="main" class="container">
+<!--   [추천도서 리스트 부분]     -->
+        <h4 align="left">추천도서</h4>
 
-        <section class="box special scroll_box">
+        <section class="box">
+            <div>
+                <h4>베스트셀러</h4>
+                <hr/>
+
+                <div class="row">
+<!--                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">-->
+<!--                    <div class="col-6 gtr-25" th:each="book : ${bookList}">-->
+                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">
+                        <a th:href="@{|/book/${book.isbn}|}">
+<!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
+                            <section class="box special" style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;" >
+                                <span class="image left"><img th:src="@{${book.imageUrl}}" alt=""/></span>
+
+                                    <p th:if="${book.title.indexOf('-') == -1}">
+                                        <br/>
+                                        <b th:text="|[${book.title}]|"></b><br/>
+                                        <span th:text="${#strings.substringBefore(book.author,'(')}"
+                                              style="color:gray;"></span><br/>
+<!--                                        <br/>-->
+                                        <!--                                별점이 없을떄-->
+                                        <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                                          <span >★</span>
+                                          <span>0.0</span>
+                                        </span>
+
+                                        <!--별점이 있을떄-->
+                                        <span th:if="${book.avgStarRating != null}" >
+                                          <span style="color: #FFD700;">★</span>
+                                          <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                                        </span>
+                                    </p>
+
+                                <p th:if="${book.title.indexOf('-') != -1}">
+                                    <br>
+                                    <b th:text="|[${#strings.substringBefore(book.title,'-')}]|"></b><br/>
+                                    <span th:text="${#strings.substringBefore(book.author,'(')}"
+                                          style="color:gray;"></span><br/>
+<!--                                    <br/>-->
+                                    <!--                                    별점이 없을떄-->
+                                    <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                                      <span>★</span>
+                                      <span>0.0</span>
+                                    </span>
+
+                                    <!--별점이 있을떄-->
+                                    <span th:if="${book.avgStarRating != null}" >
+                                      <span style="color: #FFD700;">★</span>
+                                      <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                                    </span>
+                                </p>
+                            </section>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+<!--   [책갈피 리스트 부분]     -->
+        <section class="box special">
             <header class="major">
 
-                <div class="inner_content">내용1</div>
-                <div class="inner_content">내용1</div>
-                <div class="inner_content">내용1</div>
-                <div class="inner_content">내용1</div>
-                <div class="inner_content">내용1</div>
                 <div class="inner_content">내용1</div>
                 <h2 class="inner_content">Introducing the ultimate mobile app aaaaaaaaaaaaaaaaaaaaaaaaaa
                     <br/>
@@ -91,153 +148,117 @@ function openLoginModal() {
             <span class="image featured"><img src="images/pic01.jpg" alt=""/></span>
         </section>
 
-        <h4 align="left">추천도서</h4>
-        <section class="box special features">
-            <div class="features-row">
-                <section class="box" th:each="book : ${bookList}">
-                    <section class="">
-                        <div class="features-row " align="center">
-                            <a th:href="@{|/book/${book.isbn}|}">
-                                <image class="image" style="width:100px; height:130px; "
-                                       th:src="@{${book.imageUrl}}"></image>
-                            </a>
-                        </div>
-                    </section>
-                    <section>
-                        <div>
-                            <h4 class="" style="margin: 1em 0 0em -2em;" th:if="${book.title.indexOf('-') == -1}" th:text="${book.title}"></h4>
-                            <h4 class="" style="margin: 1em 0 0em -2em;" th:if="${book.title.indexOf('-') != -1}" th:text="${#strings.substringBefore(book.title,'-')}"></h4>
-                            <!--별점이 없을떄-->
-                            <span th:if="${book.avgStarRating == null}" th:style="'font-size: 26px;'">
-                              <span style="color: #FFD700;">★</span>
-                              <span>-</span>
-                            </span>
+<!--   [독후감 리스트 부분]     -->
+    <!--세션에 로그인 정보가 없경우-->
+    <div class="row" th:if="${#session} == null">
+        <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
 
-                            <!--별점이 있을떄-->
-                            <span th:if="${book.avgStarRating != null}" th:style="'font-size: 26px;'">
-                              <span style="color: #FFD700;">★</span>
-                              <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
-                            </span>
-                        </div>
-                    </section>
-                </section>
-            </div>
-
-        </section>
-        <!--세션에 로그인 정보가 없경우-->
-        <div class="row" th:if="${#session} == null">
-            <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
-
-                <div class="box special">
-                    <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>
-                    <!--                    <h3>Sed lorem adipiscing</h3>-->
-                    <span style="float:left; color:gray;">
+            <div class="box special">
+                <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>
+                <!--                    <h3>Sed lorem adipiscing</h3>-->
+                <span style="float:left; color:gray;">
                         <span class="material-symbols-outlined">account_circle</span>
                         작성자 : <span th:text="${reportInfo.writerId}"></span>
                     </span>
 
 
-                    <nav id="nav" style="float:right;">
-                        <ul class="actions">
-                            <!--                            <li style="float:left;">-->
-                            <!--                                <span class="material-symbols-outlined" style="color:pink;">update</span>-->
-                            <!--                                <span th:text="${reportInfo.date}"></span>-->
-                            <!--                            </li>-->
-                            <a onclick="openLoginModal()">
-                                <li style="float:left;">
-                                    <span class="material-symbols-outlined" style="color:pink;">favorite</span>
-                                    <span th:text="${reportInfo.favoriteNum}"></span>
-                                </li>
-                                <li style="float:left;">
-                                    <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
-                                    <span th:text="${reportInfo.collectionNum}"></span>
-                                </li>
-                                <!--                                <li class="icon solid fa-angle-down" style="float:left;">-->
-                                <!--                                    <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
-                                <!--                                    <ul>-->
-                                <!--                                        <li><a onclick="openLoginModal()">저장</a></li>-->
-                                <!--                                        <li><a onclick="openLoginModal()">수정</a></li>-->
-                                <!--                                        <li><a onclick="openLoginModal()">삭제</a></li>-->
-                                <!--                                    </ul>-->
-                                <!--                                </li>-->
-                            </a>
-                        </ul>
-                    </nav>
-
-                    <br/>
-                    <br/>
-                    <br/>
-                    <p th:text="${reportInfo.content}"></p>
-                    <br/>
-                    <br/>
-                    <p th:text="${reportInfo.hashTag}"></p>
-                    <!--                    <span class="material-symbols-outlined">account_circle</span>-->
-                    <!--                    작성자 : <span th:text="${reportInfo.writerId}"></span>-->
-                    <ul class="actions special">
-                        <li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!--세션에 로그인 정보가 있을 경우-->
-        <div class="row" th:if="${#session} != null">
-            <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
-
-                <section class="box special">
-                    <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>
-                    <!--                    <h3>Sed lorem adipiscing</h3>-->
-
-                    <span style="float:left; color:gray;">
-                        <span class="material-symbols-outlined">account_circle</span>
-                        작성자 : <span th:text="${reportInfo.writerId}"></span>
-                    </span>
-
-                    <nav id="nav" style="float:right;" th:each="history : ${historyList}"
-                         th:if="${history.reportId}==${reportInfo.id}">
-                        <ul class="actions">
-                            <!--                            <li style="float:left;">-->
-                            <!--                                <span class="material-symbols-outlined" style="color:pink;">update</span>-->
-                            <!--                                <span th:text="${reportInfo.date}"></span>-->
-                            <!--                            </li>-->
-                            <a th:href="@{|/feedListForm/${reportInfo.id}/${history.favorite}|}">
-                                <li style="float:left;">
-                                    <span th:if="${history.favorite}" class="material-symbols-outlined"
-                                          style="color:red;">favorite</span>
-                                    <span th:unless="${history.favorite}" class="material-symbols-outlined"
-                                          style="color:pink;">favorite</span>
-                                    <span th:text="${reportInfo.favoriteNum}"></span>
-                                </li>
-                            </a>
+                <nav id="nav" style="float:right;">
+                    <ul class="actions">
+                        <a onclick="openLoginModal()">
+                            <li style="float:left;">
+                                <span class="material-symbols-outlined" style="color:pink;">favorite</span>
+                                <span th:text="${reportInfo.favoriteNum}"></span>
+                            </li>
                             <li style="float:left;">
                                 <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
                                 <span th:text="${reportInfo.collectionNum}"></span>
                             </li>
-                            <!--                            <li class="icon solid fa-angle-down" style="float:left;">-->
-                            <!--                                <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
-                            <!--                                <ul>-->
-                            <!--                                    <li><a onclick="openLoginModal()">저장</a></li>-->
-                            <!--&lt;!&ndash;                                    <li th:if="${reportInfo.writeId} == ${#session.getAttribute('loginMember').userId}"><a th:href="|/editReportForm/${reportInfo.id}|">수정</a></li>&ndash;&gt;-->
-                            <!--                                    <li><a onclick="openLoginModal()">삭제</a></li>-->
-                            <!--                                </ul>-->
-                            <!--                            </li>-->
-
-                        </ul>
-                    </nav>
-
-                    <br/>
-                    <br/>
-                    <br/>
-                    <p th:class="word" th:text="${reportInfo.content}"></p>
-                    <br/>
-                    <br/>
-                    <p th:class="word" th:text="${reportInfo.hashTag}"></p>
-                    <ul class="actions special">
-                        <li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>
+                            <!--                                <li class="icon solid fa-angle-down" style="float:left;">-->
+                            <!--                                    <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
+                            <!--                                    <ul>-->
+                            <!--                                        <li><a onclick="openLoginModal()">저장</a></li>-->
+                            <!--                                        <li><a onclick="openLoginModal()">수정</a></li>-->
+                            <!--                                        <li><a onclick="openLoginModal()">삭제</a></li>-->
+                            <!--                                    </ul>-->
+                            <!--                                </li>-->
+                        </a>
                     </ul>
-                </section>
+                </nav>
+
+                <br/>
+                <br/>
+                <p align="center" style="font-weight:bold;" th:text="|[${reportInfo.title}]|"></p>
+                <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+
+                <br/>
+                <br/>
+                <p th:text="${reportInfo.hashTag}"></p>
+                <ul class="actions special">
+                    <li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+
+    <!--세션에 로그인 정보가 있을 경우-->
+    <div class="row" th:if="${#session} != null">
+        <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
+
+            <section class="box special">
+                <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>
+                <!--                    <h3>Sed lorem adipiscing</h3>-->
+
+                <span style="float:left; color:gray;">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        작성자 : <span th:text="${reportInfo.writerId}"></span>
+                    </span>
+
+                <nav id="nav" style="float:right;" th:each="history : ${historyList}"
+                     th:if="${history.reportId}==${reportInfo.id}">
+                    <ul class="actions">
+                        <a th:href="@{|/feedListForm/${reportInfo.id}/favorite/${history.favorite}|}">
+                            <li style="float:left;">
+                                    <span th:if="${history.favorite}" class="material-symbols-outlined"
+                                          style="color:red;">favorite</span>
+                                <span th:unless="${history.favorite}" class="material-symbols-outlined"
+                                      style="color:pink;">favorite</span>
+                                <span th:text="${reportInfo.favoriteNum}"></span>
+                            </li>
+                        </a>
+                        <a th:href="@{|/feedListForm/${reportInfo.id}/collection/${history.collection}|}">
+                            <li style="float:left;">
+                                <span th:if="${history.collection}" class="material-symbols-outlined"
+                                      style="color:red; ">bookmark</span>
+                                <span th:unless="${history.collection}" class="material-symbols-outlined"
+                                      style="color:pink;">bookmark</span>
+                                <span th:text="${reportInfo.collectionNum}"></span>
+                            </li>
+                        </a>
+                        <!--                            <li class="icon solid fa-angle-down" style="float:left;">-->
+                        <!--                                <span class="material-symbols-outlined" style="color:pink;">more_vert</span>-->
+                        <!--                                <ul>-->
+                        <!--                                    <li><a onclick="openLoginModal()">저장</a></li>-->
+                        <!--&lt;!&ndash;                                    <li th:if="${reportInfo.writeId} == ${#session.getAttribute('loginMember').userId}"><a th:href="|/editReportForm/${reportInfo.id}|">수정</a></li>&ndash;&gt;-->
+                        <!--                                    <li><a onclick="openLoginModal()">삭제</a></li>-->
+                        <!--                                </ul>-->
+                        <!--                            </li>-->
+
+                    </ul>
+                </nav>
+
+                <br/>
+                <br/>
+                <p align="center" style="font-weight:bold;" th:text="|[${reportInfo.title}]|"></p>
+                <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+                <br/>
+                <br/>
+                <p th:text="${reportInfo.hashTag}"></p>
+                <ul class="actions special">
+                    <li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>
+                </ul>
+            </section>
+        </div>
+    </div>
 
 
     </section>

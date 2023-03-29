@@ -36,6 +36,16 @@ public class ReportInfoServiceImpl implements ReportInfoService {
     }
 
     @Override
+    public int existsReportInfo(String userId) {
+        return reportInfoRepository.existsReportInfo(userId);
+    }
+
+    @Override
+    public List<ReportInfo> findByUserId(String userId) {
+        return reportInfoRepository.findByUserId(userId);
+    }
+
+    @Override
     public List<ReportInfo> findAll() {
         return reportInfoRepository.findAll();
     }

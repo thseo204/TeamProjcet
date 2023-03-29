@@ -17,7 +17,8 @@ public interface ReportInfoService {
 
     void edit(ReportInfo reportInfo);
     ReportInfo findById(Long id);
-
+    int existsReportInfo(String userId);
+    List<ReportInfo> findByUserId(String userId);
     List<ReportInfo> findAll();
     void increaseOfFavoriteNum(ReportInfo reportInfo);
     void decreaseOfFavoriteNum(ReportInfo reportInfo);

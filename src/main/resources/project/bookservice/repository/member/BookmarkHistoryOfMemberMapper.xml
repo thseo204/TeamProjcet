@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.bookservice.repository.member.BookmarkHistoryOfMemberMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into bookmarkHistoryOfMember(user_id, isbn, image_url, title, author, collection_name)
+        values (#{userId}, #{isbn}, #{imageUrl}, #{title}, #{author}, #{collectionName})
+    </insert>
+
+    <select id="existsByHistory" resultType="int">
+        select count(user_id)
+        from bookmarkHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="existsByHistoryOfCollection" resultType="int">
+        select count(*)
+        from bookmarkHistoryOfMember
+        where user_id = #{userId} and collection_name = #{collectionName}
+    </select>
+
+    <select id="existsCollectionName" resultType="int">
+        select count(*)
+        from bookmarkHistoryOfMember
+        where user_id = #{userId} and collection_name != null
+    </select>
+
+    <select id="existsByIsbn" resultType="int">
+        select count(*)
+        from bookmarkHistoryOfMember
+        where user_id = #{userId} and collection_name = #{collectionName} and isbn = #{isbn}
+    </select>
+
+    <select id="findByUserId" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select *
+        from bookmarkHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="findByUserIdDistinctIsbn" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select distinct isbn, image_url
+        from bookmarkHistoryOfMember
+        where user_id = #{userId}
+    </select>
+
+    <select id="findByCollectionName" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select *
+        from bookmarkHistoryOfMember
+        where collection_name = #{collectionName}
+    </select>
+
+    <select id="findAll" resultType="project.bookservice.domain.member.BookmarkHistoryOfMember">
+        select *
+        from bookmarkHistoryOfMember
+    </select>
+
+    <update id="updateCollectionName">
+        update bookmarkHistoryOfMember
+        set collection_name = #{collectionName}
+        where id =#{checkId}
+    </update>
+</mapper>

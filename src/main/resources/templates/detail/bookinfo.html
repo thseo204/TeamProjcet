@@ -37,6 +37,13 @@ function showEditForm(span) {
   // 수정 버튼 감추기
   span.style.display = "none";
 }
+
+function openAddForm(isbn){
+    window.name = "myBookmarkForm";
+    var loc = "/addCollectionFormAtBookInfo/" + isbn
+    window.open(loc , "childForm", "width=600, height=400, resizable=no", true);
+}
+
 </script>
 
 
@@ -82,7 +89,65 @@ function showEditForm(span) {
 
 
             <br>
-            <a th:href="@{${book.buyUrl}}">구매 링크</a> <br><br>
+            <a th:href="@{${book.buyUrl}}">구매 링크</a>
+
+
+            <nav id="nav"  style="float:right;" th:if="${#session} == null">
+                <ul class="actions">
+                    <li class="icon solid fa-angle-down" >
+                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <ul >
+                            <li>
+                                <a style="float:right;"  th:onclick="openLoginModal()" >
+                                    로그인 후 이용해주세요
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- 로그인이 되어있고 컬렉션이 없을  때  -->
+            <nav id="nav"  style="float:right;"  th:if="${#session} != null and ${existsByMyHistory} == 0" >
+                <ul class="actions">
+                    <li class="icon solid fa-angle-down" >
+                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <ul >
+                            <li>
+                                <a th:href="|javascript:openAddForm('${book.isbn}');|" >
+                                    <span class="material-symbols-outlined" style="color:pink;">add</span>
+                                    컬렉션 생성하기
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- 로그인이 되어있고 컬렉션이 존재할 때-->
+            <nav id="nav"  style="float:right;"  th:if="${#session} != null and ${existsByMyHistory} != 0" >
+                <ul class="actions">
+                    <li class="icon solid fa-angle-down" >
+
+                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+
+                        <ul>
+                            <li th:each="myCollection : ${myCollectionList}">
+                                <a th:if="${#strings.length(myCollection.collectionName) < 15}" th:text="${myCollection.collectionName}" th:href="@{|/book/${book.isbn}/checkCollection/${myCollection.collectionName}|}"></a>
+                                <a th:unless="${#strings.length(myCollection.collectionName) < 15}" th:text="|${#strings.substring(myCollection.collectionName, 0, 15)}..|" th:href="@{|/book/${book.isbn}/checkCollection/${myCollection.collectionName}|}"></a>
+                            </li>
+                            <li>
+                                <a  th:href="|javascript:openAddForm('${book.isbn}');|" >
+                                    <span class="material-symbols-outlined" style="color:pink;">add</span>
+                                    컬렉션 생성하기
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <br><br>
             <ul class="actions fit">
                 <li><a th:href="@{|/book/${book.isbn}|}" class="button special fit alt">책 정보</a></li>
                 <li><a th:href="@{|/book/${book.isbn}/report|}" class="button fit alt">독후감</a></li>
