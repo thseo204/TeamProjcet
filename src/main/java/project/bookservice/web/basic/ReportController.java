@@ -54,7 +54,7 @@ public class ReportController implements Serializable {
     private final ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService;
 
     //@Value("${file.dir}")
-    @Value("${file.dir2}")
+    @Value("${file.dir}")
     private String fileDir;
 
     @GetMapping("/bookReportForm/{id}")
