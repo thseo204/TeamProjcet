@@ -4,8 +4,8 @@
 <mapper namespace="project.bookservice.repository.member.MemberMapper">
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into member(user_id, user_pwd, user_name, user_gender, user_birth, user_email, user_phone, user_charicon)
-        values (#{userId}, #{userPwd}, #{userName}, #{userGender}, #{userBirth}, #{userEmail}, #{userPhone}, #{userCharIcon})
+        insert into member(user_id, user_pwd, user_name, user_gender, user_birth, user_email, email_code, user_phone, user_charicon)
+        values (#{userId}, #{userPwd}, #{userName}, #{userGender}, #{userBirth}, #{userEmail}, #{emailCode}, #{userPhone}, #{userCharIcon})
     </insert>
 
 

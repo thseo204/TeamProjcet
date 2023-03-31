@@ -3,85 +3,171 @@
 
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
 
+<script>
+function checkId(){
+var userId = document.getElementById('userId').value;
+
+location.replace("/joinForm/idCheck?userId=" + userId);
+}
+
+function checkEmail(){
+var userId = document.getElementById('userId').value;
+var userPwd = document.getElementById('userPwd').value;
+var userRePwd = document.getElementById('userRePwd').value;
+var userPhone = document.getElementById('userPhone').value;
+var userBirth = document.getElementById('userBirth').value;
+
+var userName = document.getElementById('userName').value;
+var userEmail = document.getElementById('userEmail').value;
+
+location.replace("/joinForm/mail?userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
++ "&userBirth=" + userBirth + "&userName=" + userName );
+
+alert('인증번호가 전송되었습니다.');
+}
+
+function checkEmailCode(){
+var emailCode = document.getElementById('emailCode').value;
+var userId = document.getElementById('userId').value;
+var userPwd = document.getElementById('userPwd').value;
+var userRePwd = document.getElementById('userRePwd').value;
+var userPhone = document.getElementById('userPhone').value;
+var userBirth = document.getElementById('userBirth').value;
+
+var userName = document.getElementById('userName').value;
+var userEmail = document.getElementById('userEmail').value;
+
+<!--location.replace("/joinForm/emailCode?emailCode=" + emailCode);-->
+location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
++ "&userBirth=" + userBirth + "&userName=" + userName );
+}
+</script>
 <body class="is-preload">
 <div id="page-wrapper">
-	<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
-	<link rel="stylesheet" href="assets/css/errors.css"/>
-	<!-- Main -->
-	<section id="main" class="container medium">
-		<header>
-			<h2>회원가입</h2>
-			<p>회원가입 후 다양한 서비스를 이용해보세요:)</p>
-		</header>
-		<div class="box">
-			<form method="post" th:action th:object="${member}" action="#">
-				<div class="row gtr-50 gtr-uniform">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+    <link rel="stylesheet" href="/assets/css/errors.css"/>
+    <!-- Main -->
+    <section id="main" class="container medium">
+        <header>
+            <h2>회원가입</h2>
+            <p>회원가입 후 다양한 서비스를 이용해보세요:)</p>
+        </header>
+        <div class="box">
+            <form method="post" th:action="@{/joinForm}" th:object="${member}">
+                <div class="row gtr-50 gtr-uniform">
 
-					<div class="col-12">
-						<input type="text" id="userId" th:field="*{userId}" th:value="*{userId}" placeholder="UserId"
-						th:errorclass="field-error" />
-						<div class="field-error" th:errors="*{userId}"/>
-					</div>
-<!--					<div class="col-3 col-12-mobilep">-->
-<!--						<input type="submit" value="중복확인"-->
-<!--							   th:onclick="|location.href='/joinForm/idCheck(userId=*{userId})'|" />-->
-<!--					</div>-->
-					<div class="col-12">
-						<input type="password" id="userPwd" th:field="*{userPwd}" placeholder="Password" />
-<!--						<div class="field-error" th:errors="*{userPwd}"/>-->
-					</div>
-					<div class="col-12" >
-						<input type="password" id="userRePwd" th:field="*{userRePwd}" placeholder="RePassword" />
-						<div class="field-error" th:errors="*{userPwd}"/>
-					</div>
-					<div class="col-12" >
-						<input type="text" id="userPhone" th:field="*{userPhone}" placeholder="Phone" />
-						<div class="field-error" th:errors="*{userPhone}"/>
-					</div>
-					<div class="col-12" >
-						<input type="text" id="userBirth" th:field="*{userBirth}" placeholder="Birth yymmdd" />
-						<div class="field-error" th:errors="*{userBirth}"/>
-					</div>
-					<div class="col-4 col-8-narrower">
-						<input type="radio" id="man" th:field="*{userGender}" value="M">
-						<label for="man">남</label>
-					</div>
-					<div class="col-4 col-8-narrower">
-						<input type="radio" id="woman" th:field="*{userGender}" value="F">
-						<label for="woman">여</label>
-						<div class="field-error" th:errors="*{userGender}"/>
-					</div>
+                    <div class="col-9 col-12-mobilep">
+                        <input type="text" id="userId" name="userId" th:field="*{userId}" th:value="*{userId}"
+                               placeholder="UserId"
+                               th:errorclass="field-error"/>
 
-					<div class="col-12">
-						<input type="text" id="userName" th:field="*{userName}" placeholder="Name" />
-						<div class="field-error" th:errors="*{userName}"/>
-					</div>
-					<div class="col-12">
-						<input type="email" id="userEmail" th:field="*{userEmail}" placeholder="Email"
-							   th:errorclass="field-error"/>
-						<div class="field-error" th:errors="*{userEmail}"/>
-					</div>
-					<div class="col-12">
-						<ul class="actions special">
-							<li><input type="submit" value="회원가입" /></li>
-						</ul>
-					</div>
-				</div>
-				<input type="hidden" id="userCharIcon" name="userCharIcon" value="/images/icons/F.png">
-			</form>
-		</div>
-	</section>
+                        <div class="field-error" th:each="error, stat :${#fields.errors('userId')}"
+                             th:if="${stat.first}" th:text="${error}"/>
+                        <div th:if="${not #fields.hasErrors('userId')} and ${availableId} == true"><span style="color:blue;">사용
+                            가능한 아이디 입니다.</span></div>
+                    </div>
+                    <div class="col-3 col-12-mobilep">
+                        <a class="button alt" href="javascript:checkId();">중복확인</a>
+                    </div>
+
+                    <div class="col-12">
+                        <input type="password" id="userPwd" th:field="*{userPwd}" placeholder="Password"/>
+                        <!--						<div class="field-error" th:errors="*{userPwd}"/>-->
+                    </div>
+                    <div class="col-12">
+                        <input type="password" id="userRePwd" th:field="*{userRePwd}" placeholder="RePassword"/>
+                        <div class="field-error" th:each="error, stat :${#fields.errors('userPwd')}"
+                             th:if="${stat.first}" th:text="${error}"/>
+
+                        <!--						<div class="field-error" th:errors="*{userPwd}"/>-->
+                    </div>
+                    <div class="col-12">
+                        <input type="text" id="userPhone" th:field="*{userPhone}" placeholder="Phone"/>
+                        <div class="field-error" th:each="error, stat :${#fields.errors('userPhone')}"
+                             th:if="${stat.first}" th:text="${error}"/>
+
+                        <!--						<div class="field-error" th:errors="*{userPhone}"/>-->
+                    </div>
+                    <div class="col-12">
+                        <input type="text" id="userBirth" th:field="*{userBirth}" placeholder="Birth yymmdd"/>
+                        <div class="field-error" th:each="error, stat :${#fields.errors('userBirth')}"
+                             th:if="${stat.first}" th:text="${error}"/>
+
+                        <!--						<div class="field-error" th:errors="*{userBirth}"/>-->
+                    </div>
+                    <div class="col-4 col-8-narrower">
+                        <input type="radio" id="man" th:field="*{userGender}" value="M">
+                        <label for="man">남</label>
+
+
+                    </div>
+                    <div class="col-4 col-8-narrower">
+                        <input type="radio" id="woman" th:field="*{userGender}" value="F">
+                        <label for="woman">여</label>
+                    </div>
+                    <br/>
+                    <div class="field-error" th:each="error, stat :${#fields.errors('userGender')}"
+                         th:if="${stat.first}" th:text="${error}"/>
+
+                    <div class="col-12">
+                        <input type="text" id="userName" th:field="*{userName}" placeholder="Name"/>
+                        <div class="field-error" th:each="error, stat :${#fields.errors('userName')}"
+                             th:if="${stat.first}" th:text="${error}"/>
+                    </div>
+
+                    <div class="col-9 col-12-mobilep">
+                        <input type="text" name="userEmail" id="userEmail" th:field="*{userEmail}" placeholder="Email"
+                               th:errorclass="field-error"/>
+
+                    </div>
+                    <div class="col-3 col-12-mobilep">
+                        <a class="button alt" href="javascript:checkEmail();">인증번호 전송</a>
+                        <!--						<a class="button" id="checkEmail" href="javascript:checkEmail();" >인증번호 전송</a>-->
+                    </div>
+<!--                    <br/>-->
+                    <div class="field-error" th:each="error, stat :${#fields.errors('userEmail')}"
+                         th:if="${stat.first}" th:text="${error}"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">
+                        <div class="col-9" align="center">
+<!--                            <label for="emailCode" id="emailCodeTxt" >인증번호 8자리를 입력해주세요</label>-->
+                            <input type="text" name="emailCode" id="emailCode" th:field="*{emailCode}"
+                                   placeholder="인증번호 8자리를 입력해주세요" th:errorclass="field-error"/>
+                            <div class="field-error" th:each="error, stat :${#fields.errors('emailCode')}"
+                                 th:if="${stat.first}" th:text="${error}"/>
+                            <div th:if="${not #fields.hasErrors('emailCode')} and ${emailCodeCheck} == true"><span style="color:blue;">인증을 성공하였습니다.</span></div>
+                        </div>
+                        <br/>
+                        <div class="col-3"  align="center">
+                            <a class="button alt" href="javascript:checkEmailCode();">인증번호 확인</a>
+                        </div>
+                        <br/>
+                    </div>
+
+                    <div class="col-12">
+                        <ul class="actions special">
+                            <li><input type="submit" value="회원가입"/></li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="hidden" id="userCharIcon" name="userCharIcon" th:field="*{userCharIcon}" value="/images/icons/F.png">
+            </form>
+        </div>
+    </section>
 
 </div>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

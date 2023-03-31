@@ -2,20 +2,17 @@ package project.bookservice.web.basic;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.bookservice.domain.book.Book;
 import project.bookservice.domain.member.BookmarkCollection;
 import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.domain.member.Member;
 import project.bookservice.domain.member.ReportInfoHistoryOfMember;
 import project.bookservice.domain.report.ReportInfo;
-import project.bookservice.openapi.APIParser;
-import project.bookservice.openapi.ApiSearchBook;
+import project.bookservice.service.mail.MailService;
 import project.bookservice.service.member.BookmarkCollectionService;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
 import project.bookservice.service.member.MemberService;
@@ -46,28 +43,173 @@ public class MemberController {
     private final ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService;
     private final BookmarkCollectionService bookmarkCollectionService;
     private final StarRatingService starRatingService;
+    private final MailService mailService;
+    private String ePw; // 이메일 인증 코드
+    private boolean availableId, availableEmail, emailCodeCheck;
 
     @GetMapping("/joinForm")
-    public String joinForm(@ModelAttribute Member member){
+    public String joinForm(@ModelAttribute Member member,
+
+                           Model model){
+//                           @RequestParam(value="available", required = false, defaultValue = "0") boolean available){
+//        boolean available = false;
+//        Parameter..addAttribute("available", available);
+        model.addAttribute("availableId", availableId);
+        model.addAttribute("availableEmail", availableEmail);
+        model.addAttribute("emailCodeCheck", emailCodeCheck);
+
         return "/basic/joinForm";
     }
 
+
+    @GetMapping("/joinForm/idCheck")
+    public String idCheck(@Valid @ModelAttribute("member") Member member,
+                          BindingResult bindingResult, Model model,
+                          RedirectAttributes redirectAttributes){
+
+
+        log.info("member.getUserId()={}", member.getUserId());
+
+        //아이디 중복 검사
+        signUpFormValidator.idCheckValidate(member.getUserId(), bindingResult);
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            availableId = false; //아이디 중복검사 실패 시 false
+            model.addAttribute("availableId", availableId);
+//            return "<script> location.href='/basic/joinForm'; </script>";
+            return "/basic/joinForm";
+        }
+        availableId = true; //아이디 중복검사 성공 시 true
+        model.addAttribute("availableId", availableId);
+//            redirectAttributes.addAttribute("userId", member.getUserId());
+
+//        return "redirect:/joinForm";
+        return "/basic/joinForm";
+    }
+
+    //이메일 인증
+    @GetMapping("joinForm/mail")
+//    @ResponseBody
+    String mailConfirm(@RequestParam("userEmail") String userEmail,
+                       @RequestParam("userId") String userId,
+                       @RequestParam("userPwd") String userPwd,
+                       @RequestParam("userRePwd") String userRePwd,
+                       @RequestParam("userPhone") String userPhone,
+                       @RequestParam("userBirth") String userBirth,
+//                       @RequestParam("userGender") String userGender,
+                       @RequestParam("userName") String userName,
+                       Model model,
+                       RedirectAttributes redirectAttributes) throws Exception {
+        log.info("전달 받은 이메일 = {}", userEmail);
+        ePw = mailService.sendSimpleMessage(userEmail);
+        log.info("인증코드={}", ePw);
+        log.info("userId={}", userId);
+
+        availableEmail = true; // 이메일 전송 성공 시
+        model.addAttribute("availableEmail", availableEmail);
+
+        redirectAttributes.addAttribute("userId", userId);
+        redirectAttributes.addAttribute("userPwd", userPwd);
+        redirectAttributes.addAttribute("userRePwd", userRePwd);
+        redirectAttributes.addAttribute("userPhone", userPhone);
+        redirectAttributes.addAttribute("userBirth", userBirth);
+//        redirectAttributes.addAttribute("userGender", userGender);
+        redirectAttributes.addAttribute("userName", userName);
+        redirectAttributes.addAttribute("userEmail", userEmail);
+//        String message = "<script>alert('인증번호가 전송되었습니다.');location.replace='/joinForm';</script>";
+//        return message;
+        return "redirect:/joinForm";
+//        return code;
+    }
+
+    @GetMapping("/joinForm/emailCode")
+    public String emailCheck(@Valid @ModelAttribute("member") Member member,
+                             BindingResult bindingResult,
+                             @RequestParam("emailCode") String emailCode,
+                             @RequestParam("userEmail") String userEmail,
+                             @RequestParam("userId") String userId,
+                             @RequestParam("userPwd") String userPwd,
+                             @RequestParam("userRePwd") String userRePwd,
+                             @RequestParam("userPhone") String userPhone,
+                             @RequestParam("userBirth") String userBirth,
+//                       @RequestParam("userGender") String userGender,
+                             @RequestParam("userName") String userName,
+                             Model model,
+                             RedirectAttributes redirectAttributes){
+
+
+        log.info("member.getEmailCode()={}", member.getEmailCode());
+        model.addAttribute("member", member);
+        redirectAttributes.addAttribute("userId", userId);
+        redirectAttributes.addAttribute("userPwd", userPwd);
+        redirectAttributes.addAttribute("userRePwd", userRePwd);
+        redirectAttributes.addAttribute("userPhone", userPhone);
+        redirectAttributes.addAttribute("userBirth", userBirth);
+//        redirectAttributes.addAttribute("userGender", userGender);
+        redirectAttributes.addAttribute("userName", userName);
+        redirectAttributes.addAttribute("userEmail", userEmail);
+        redirectAttributes.addAttribute("emailCode", emailCode);
+
+
+
+        //이메일 인증코드 일치 검사
+        signUpFormValidator.emailCodeCheckValidate(ePw, member.getEmailCode(), bindingResult);
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            emailCodeCheck = false; // 이메일 코드 불일치 시 false
+            model.addAttribute("emailCodeCheck", emailCodeCheck);
+            availableEmail = true; // 이메일 전송은 이미 성공 했으니
+            model.addAttribute("availableEmail", availableEmail);
+//            return "redirect:/joinForm";
+            return "/basic/joinForm";
+        }
+        emailCodeCheck = true; // 이메일 코드 일치 시
+        model.addAttribute("emailCodeCheck", emailCodeCheck);
+//        redirectAttributes.addAttribute("userId", member.getUserId());
+
+        return "redirect:/joinForm";
+//        return "/basic/joinForm";
+    }
+    @ResponseBody
+    @GetMapping("/joinForm/joinFalse")
+    public String joinFalse(){
+
+        String message = "<script>alert('아이디 중복검사 혹은 이메일인증을 해주세요.');location.replace='/joinForm';</script>";
+        return message;
+    }
+
     @PostMapping("/joinForm")
-    public String signUpSubmit(@Valid @ModelAttribute("member") SignUpForm signUpForm, BindingResult bindingResult) {
+    public String signUpSubmit(@Valid @ModelAttribute("member") SignUpForm signUpForm,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
         log.info("signUpForm ={}", signUpForm);
+        availableEmail = true; // 이메일 전송 성공 시
+        model.addAttribute("availableEmail", availableEmail);
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
+
             return "/basic/joinForm";
         }
 
-        //중복 검사(아이디, 이메일, 비빌버호 일치 검증)
-        signUpFormValidator.validate(signUpForm, bindingResult);
 
+
+        //이메일 중복 검사, 비빌버호 일치 검증
+        signUpFormValidator.validate(signUpForm, bindingResult);
+        // 아이디 중복확인 및 이메일 인증 검증
+//        signUpFormValidator.availableValidate(availableId, emailCodeCheck, bindingResult);
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
+//            availableEmail = true; // 이메일 전송 성공 시
+//            model.addAttribute("availableEmail", availableEmail);
             return "/basic/joinForm";
+        }
+
+        if(availableId == false || emailCodeCheck == false){
+
+            return "redirect:/joinForm/joinFalse";
         }
 
         //회원 정보 등록
@@ -206,7 +348,7 @@ public class MemberController {
         int existsByMyHistory = bookmarkCollectionService.existsCollection(loginMember.getUserId());
         if(existsByMyHistory > 0){
             List<BookmarkCollection> myCollectionList = bookmarkCollectionService.collectionList(loginMember.getUserId());
-//                Optional<BookmarkHistoryOfMember> myCollectionList = myBookCollectionList.stream().distinct().filter(m -> m.getCollectionName() != null).findAny();
+
             for (BookmarkCollection bookmarkCollection : myCollectionList) {
                 log.info("bookmarkCollection={}", bookmarkCollection);
             }

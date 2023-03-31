@@ -15,8 +15,9 @@ public class SignUpForm {
 
     private Long id;
 
-    @NotBlank(message = "아이디는 필수 입력 값입니다.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{5,20}$", message = "아이디는 5~20자내로 입력해주세요.")
+//    @NotBlank(message = "아이디는 필수 입력 값입니다.")
+//    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{5,20}$", message = "아이디는 5~20자내로 입력해주세요.")
+    @NotBlank(message = "아이디는 필수 입력 값 입니다.")
     private String userId;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
@@ -43,6 +44,8 @@ public class SignUpForm {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "올바른 이메일 형식이 아닙니다.")
     private String userEmail;
+    @NotBlank
+    private String emailCode;
 
     private String userCharIcon;
 }

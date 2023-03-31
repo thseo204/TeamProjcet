@@ -13,13 +13,14 @@ public class Member {
     private String userGender;
     private Integer userBirth;
     private String userEmail;
-    private Integer userPhone;
+    private String emailCode;
+    private String userPhone;
     private String userCharIcon;
 
     public Member() {
     }
 
-    public Member(String userId, String userPwd,String userName, String userGender, Integer userBirth, String userEmail, Integer userPhone, String userCharIcon) {
+    public Member(String userId, String userPwd,String userName, String userGender, Integer userBirth, String userEmail, String userPhone, String userCharIcon) {
         this.userId = userId;
         this.userPwd = userPwd;
         this.userName = userName;
