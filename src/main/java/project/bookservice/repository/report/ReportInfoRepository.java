@@ -20,6 +20,9 @@ public interface ReportInfoRepository {
     int existsReportInfo(String userId);
     List<ReportInfo> findByUserId(String userId);
 
+    int existsReportInfoByIsbn(String isbn);
+    List<ReportInfo> findByIsbn(String isbn);
+
     List<ReportInfo> findAll();
     void increaseOfFavoriteNum(ReportInfo reportInfo);
 

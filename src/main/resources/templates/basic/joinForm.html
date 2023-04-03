@@ -20,7 +20,7 @@ var userBirth = document.getElementById('userBirth').value;
 var userName = document.getElementById('userName').value;
 var userEmail = document.getElementById('userEmail').value;
 
-location.replace("/joinForm/mail?userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
+    location.replace("/joinForm/mail?userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
 + "&userBirth=" + userBirth + "&userName=" + userName );
 
 alert('인증번호가 전송되었습니다.');
@@ -152,7 +152,6 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                         </ul>
                     </div>
                 </div>
-                <input type="hidden" id="userCharIcon" name="userCharIcon" th:field="*{userCharIcon}" value="/images/icons/F.png">
             </form>
         </div>
     </section>

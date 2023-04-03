@@ -59,6 +59,18 @@ public class MyBatisReportRepository implements ReportInfoRepository {
         return reportInfoMapper.findByUserId(userId);
     }
 
+
+    @Override
+    public int existsReportInfoByIsbn(String isbn) {
+        return reportInfoMapper.existsReportInfoByIsbn(isbn);
+    }
+
+    @Override
+    public List<ReportInfo> findByIsbn(String isbn) {
+        return reportInfoMapper.findByIsbn(isbn);
+    }
+
+
     @Override
     public List<ReportInfo> findAll() {
         return reportInfoMapper.findAll();

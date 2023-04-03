@@ -42,7 +42,8 @@
             <a th:if="${#session.getAttribute('loginMember').userName} != null" href="#" th:text="|${#session.getAttribute('loginMember').userName} 님 환영합니다.|"></a>
           </li>
           <li>
-            <a th:href="@{/logout(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그아웃</a>
+            <!--<a th:href="@{/logout(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그아웃</a>-->
+             <a th:href="@{/logout}" class="button">로그아웃</a>
           </li>
         </ul>
       </nav>

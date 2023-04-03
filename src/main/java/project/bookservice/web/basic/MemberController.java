@@ -212,6 +212,9 @@ public class MemberController {
             return "redirect:/joinForm/joinFalse";
         }
 
+        //기본 아이콘 지급
+        signUpForm.setUserCharIcon("/images/icons/F.png");
+
         //회원 정보 등록
         memberService.save(signUpForm);
 

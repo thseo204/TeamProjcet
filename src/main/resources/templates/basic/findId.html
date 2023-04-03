@@ -19,14 +19,18 @@ function openLoginModal() {
   <section id="main" class="container medium">
 
     <div class="box">
-      <form method="post" action="/findIdByEmail">
+      <form method="get" action="/findIdByEmail">
         <input type="text" name="userId" id="userId"> <br>
         <div th:if="${message != null}" class="alert alert-danger">
           <p th:text="${message}" style="color: #dc3545 !important;"></p>
         </div>
-
         <input type="submit" value="이메일로 비밀번호 찾기">
+
+
+
       </form>
+
+
     </div>
   </section>
 </div>

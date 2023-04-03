@@ -17,7 +17,7 @@ public class EmailSender {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("nanovia3@naver.com", "ehdrnsms1&");
+                        return new PasswordAuthentication("nanovia3@naver.com", "ehdrnsms1!@");
                     }
                 });
 

@@ -46,6 +46,16 @@ public class ReportInfoServiceImpl implements ReportInfoService {
     }
 
     @Override
+    public int existsReportInfoByIsbn(String isbn) {
+        return reportInfoRepository.existsReportInfoByIsbn(isbn);
+    }
+
+    @Override
+    public List<ReportInfo> findByIsbn(String isbn) {
+        return reportInfoRepository.findByIsbn(isbn);
+    }
+
+    @Override
     public List<ReportInfo> findAll() {
         return reportInfoRepository.findAll();
     }

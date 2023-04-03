@@ -66,6 +66,19 @@
         where writer_id = #{userId}
     </select>
 
+    <select id="findByIsbn" resultType="project.bookservice.domain.report.ReportInfo">
+        select *
+        from reportInfo
+        where isbn = #{isbn} and disclosure = true
+        order by date desc
+    </select>
+
+    <select id="existsReportInfoByIsbn" resultType="int">
+        select count(*)
+        from reportInfo
+        where isbn = #{isbn}
+    </select>
+
     <select id="countByWriterId" resultType="Integer">
         select count(*)
         from reportInfo

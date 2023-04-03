@@ -5,8 +5,8 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
 
-        insert into comment(content, isbn, writer_id, date)
-        values (#{content}, #{bookisbn}, #{writerID}, date_format(now(), '%Y%m%d%H%i%s'))
+        insert into comment(content, isbn, writer_id, date, charicon)
+        values (#{content}, #{bookisbn}, #{writerID}, date_format(now(), '%Y%m%d%H%i%s'), #{charIcon})
     </insert>
 
     <select id="findComments" resultType="project.bookservice.domain.comment.Comment">
@@ -21,6 +21,10 @@
 
     <update id="update">
         UPDATE comment SET content = #{content} WHERE id = #{id}
+    </update>
+
+    <update id="updateCharIcon">
+        UPDATE comment SET charicon = #{charIcon} WHERE writer_id = #{writerID}
     </update>
 
 </mapper>

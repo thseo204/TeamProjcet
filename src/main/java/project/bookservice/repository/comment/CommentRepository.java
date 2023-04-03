@@ -16,4 +16,6 @@ public interface CommentRepository {
 
     void update(Comment comment);
 
+    void updateCharIcon(Comment comment);
+
 }

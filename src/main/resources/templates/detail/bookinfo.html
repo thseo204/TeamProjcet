@@ -49,45 +49,71 @@ function openAddForm(isbn){
 
 <div id="page-wrapper">
     <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+
+    <style>
+        #main2 .box .rating-btn {
+            background-color: #ffba00;
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+             padding: 3px 10px 5px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #main2 .box .rating-btn:hover {
+            background-color: #ffcd1d;
+        }
+    </style>
     <!-- Main -->
-    <section id="main2" class="container">
-        <section class="box">
-            <p><span class="image left"><img th:src="@{${book.imageUrl}}" style="width:300px; height:400px;" alt=""/></span>
-            <h4>책 제목 </h4>
-            <p th:text="${book.title}"></p>
-            <h4>작가</h4>
-            <p th:text="${book.author}"></p>
-            <h4>출간 일</h4>
-            <p th:text="${book.pubDate}"></p>
-            <h4>
-                <!--별점이 없을떄-->
-                <span th:if="${book.avgStarRating == null}" th:style="'font-size: 35px;'">
-                  <span style="color: #FFD700;">★</span>
-                  <span>-</span>
-                </span>
+    <section id="main2" class="container" >
+        <section class="box" style="width: 100%; text-align: center;">
+            <span style=""><img th:src="@{${book.imageUrl}}" style="width: 60%; height: auto; object-fit: contain; max-height: 60vh;" alt=""/></span>
+            <span style="display: inline-block; text-align: center;">
+                        <h4>책 제목 </h4>
+                        <p th:if="${book.title.indexOf('-') == -1}">
+                            <b th:text="${#strings.substringBefore(book.title, '(')}"></b>
+                            <br/>
+                            <span th:unless="${#strings.length(book.title) > 20}">
+                                <b th:text="${book.title}" style="word-wrap: break-word;"></b>
+                            </span>
 
-                <!--별점이 있을떄-->
-                <span th:if="${book.avgStarRating != null}"
-                      th:style="'font-size: 35px;'">
-                  <span style="color: #FFD700;">★</span>
-                  <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
-                </span>
+                            <b th:if="${#strings.length(book.title) > 20}" th:text="${#strings.substring(book.title, #strings.indexOf(book.title, '(')+1, #strings.indexOf(book.title, ')'))}"
+                               th:utext="${#strings.length(#strings.substring(book.title, #strings.indexOf(book.title, '(')+1, #strings.indexOf(book.title, ')')))
+                                        &gt; 20 ? #strings.substring(#strings.substring(book.title, #strings.indexOf(book.title, '(')+1, #strings.indexOf(book.title, ')')), 0, 20) + '...' : ''}"></b>
+                            </p>
+                        <h4>작가</h4>
+                        <p th:text="${book.author}"></p>
+                        <h4>출간 일</h4>
+                        <p th:text="${book.pubDate}"></p>
+                        <h4>
+                            <!--별점이 없을떄-->
+                            <span th:if="${book.avgStarRating == null}" th:style="'font-size: 35px;'">
+                              <span style="color: #FFD700;">★</span>
+                              <span>-</span>
+                            </span>
 
-                <span th:if="${#session} != null">
-                    <span th:if="${starId == false}">
-                        <input class="rating-btn" type="button" value="별점 주기" onclick="openWindow();"/>
-                    </span>
-                    <span th:if="${starId == true}">
-                        <input  class="rating-btn" type="button" value="참여 완료"/>
-                    </span>
-                </span>
-                <span th:if="${#session} == null">
-                    <input class="rating-btn" type="button" value="별점 주기" onclick="openLoginModal()"/>
-                </span>
-            </h4>
+                            <!--별점이 있을떄-->
+                            <span th:if="${book.avgStarRating != null}"
+                                  th:style="'font-size: 35px;'">
+                              <span style="color: #FFD700;">★</span>
+                              <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                            </span>
 
-
-
+                            <span th:if="${#session} != null">
+                                <span th:if="${starId == false}">
+                                    <input class="rating-btn" type="button" value="별점 주기" onclick="openWindow();"/>
+                                </span>
+                                <span th:if="${starId == true}">
+                                    <input  class="rating-btn" type="button" value="참여 완료"/>
+                                </span>
+                            </span>
+                            <span th:if="${#session} == null">
+                                <input class="rating-btn" type="button" value="별점 주기" onclick="openLoginModal()"/>
+                            </span>
+                        </h4>
+             </span>
             <br>
             <a th:href="@{${book.buyUrl}}">구매 링크</a>
 
@@ -149,99 +175,196 @@ function openAddForm(isbn){
 
             <br><br>
             <ul class="actions fit">
-                <li><a th:href="@{|/book/${book.isbn}|}" class="button special fit alt">책 정보</a></li>
-                <li><a th:href="@{|/book/${book.isbn}/report|}" class="button fit alt">독후감</a></li>
+                <li><a th:href="@{|/book/${book.isbn}/bookInfo/true|}" class="button special fit alt">책 정보</a></li>
+                <li><a th:href="@{|/book/${book.isbn}/bookInfo/false|}" class="button fit alt">독후감</a></li>
             </ul>
 
+            <!--책 상세 페이지-->
+        <div th:if="${bookAndReport}">
             <h3>책 소개</h3>  <br>
             <div th:text="${book.description}"></div>
             <br>
+        </div>
         </section>
+        <div th:if="${bookAndReport} == true">
+            <section  class="box">
+                <style>
+                      section ul li span,
+                      section ul li p {
+                        font-size: 15px;
+                      }
+                      span.material-symbols-outlined {
+                        float: right;
+                      }
+                        .no_dot {
+                            list-style-type: none;
+                        }
+                </style>
+                <span class="material-symbols-outlined" style="float: none;">chat</span>
+                <span th:text="댓글" th:style="'font-size: 320x;'"></span>
+                <br>
 
-        <section  class="box">
-            <style>
-                  section ul li span,
-                  section ul li p {
-                    font-size: 15px;
-                  }
-                  span.material-symbols-outlined {
-                    float: right;
-                  }
-                  	.no_dot {
-                  	    list-style-type: none;
-                    }
-            </style>
-            <span class="material-symbols-outlined" style="float: none;">chat</span>
-            <span th:text="댓글" th:style="'font-size: 320x;'"></span>
-            <br>
+                <section>
 
-            <section>
+                    <ul class='no_dot'>
+                        <li th:each="comment : ${comments}" >
+                            <img th:src="${comment.charIcon}" alt="image"  width="20" height="20"/>
+                            <span th:text="${comment.writerID}" th:style="'font-size: 13px;'"></span> &nbsp;&nbsp;
+                            <span th:text="|작성 날짜 : ${comment.date}|" th:style="'font-size: 13px;'"></span> <br>
+                            <span th:text="${comment.content}" th:style="'font-size: 15px;'"></span>
+                            <span th:if="${#session} != null">
+                                <span th:if="${#session.getAttribute('loginMember').userId} == ${comment.writerID}">
+                                    <a th:href="@{|/deleteComment/${book.isbn}/${comment.id}|}"
+                                       onclick="event.preventDefault();
+                                                if(confirm('정말 댓글을 삭제하시겠습니까?')) {
+                                                    window.location.href = this.getAttribute('href');
+                                                }">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </a>
+                                </span>
 
-                <ul class='no_dot'>
-                    <li th:each="comment : ${comments}" >
-                        <img src="/images/icons/B.png" alt="image"  width="20" height="20"/>
-                        <span th:text="${comment.writerID}" th:style="'font-size: 13px;'"></span> &nbsp;&nbsp;
-                        <span th:text="|작성 날짜 : ${comment.date}|" th:style="'font-size: 13px;'"></span> <br>
-                        <span th:text="${comment.content}" th:style="'font-size: 15px;'"></span>
-                        <span th:if="${#session} != null">
+                                  <span th:if="${#session.getAttribute('loginMember').userId} == ${comment.writerID}">
+                                    <span class="material-symbols-outlined" onclick="showEditForm(this)">edit</span>
 
-                            <span th:if="${#session.getAttribute('loginMember').userId} == ${comment.writerID}">
-                                <a th:href="@{|/deleteComment/${book.isbn}/${comment.id}|}"
-                                   onclick="event.preventDefault();
-                                            if(confirm('정말 댓글을 삭제하시겠습니까?')) {
-                                                window.location.href = this.getAttribute('href');
-                                            }">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </a>
+                                    <form th:action="@{|/updateComment/${book.isbn}/${comment.id}|}" method="post" style="display: none;">
+                                      <br>
+                                        <textarea th:name="content" th:text="${comment.content}"></textarea>
+                                        <br>
+                                      <input type="submit" value="수정완료"/>
+                                    </form>
+                                  </span>
+
                             </span>
+                            <hr>
+                        </li>
+                    </ul>
 
-                              <span th:if="${#session.getAttribute('loginMember').userId} == ${comment.writerID}">
-                                <span class="material-symbols-outlined" onclick="showEditForm(this)">edit</span>
-
-                                <form th:action="@{|/updateComment/${book.isbn}/${comment.id}|}" method="post" style="display: none;">
-                                  <br>
-                                    <textarea th:name="content" th:text="${comment.content}"></textarea>
-                                    <br>
-                                  <input type="submit" value="수정완료"/>
-                                </form>
-                              </span>
-
-                        </span>
-                        <hr>
-                    </li>
-                </ul>
-
-            </section>
+                </section>
 
 
 
-            <!-- Comments Form -->
-            <div>
-                <div class="card my-4">
-                    <div class="card-body">
-                        <form id="comment-form" name="comment-form" method="post" autocomplete="off">
-                            <div class="col-12">
-                                <textarea name="content" id="content" placeholder="댓글을 남겨주세요" rows="6"
-                                          class="review_textarea"></textarea>
-                                <input type="hidden" name="bookisbn" th:value="${book.isbn}"/>
-                                <input th:if="${#session} != null" type="hidden" name="writerID" th:value="${#session.getAttribute('loginMember').userId}"/>
-                            </div>
-                            <br>
-                            <div class="col-12">
-                                <ul class="actions small" th:if="${#session} != null">
-                                    <li><input type="submit" name="save" id="save" value="등록"/></li>
-                                    <li><input type="reset" value="취소" class="alt"/></li>
-                                </ul>
+                <!-- Comments Form -->
+                <div>
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <form id="comment-form" name="comment-form" th:action="@{|/book/${book.isbn}/insertComment|}" method="post" autocomplete="off">
+                                <div class="col-12">
+                                    <textarea name="content" id="content" placeholder="댓글을 남겨주세요" rows="6"
+                                              class="review_textarea"></textarea>
+                                    <input type="hidden" name="bookisbn" th:value="${book.isbn}"/>
+                                    <input th:if="${#session} != null" type="hidden" id="charIcon" name="charIcon" th:value="${#session.getAttribute('loginMember').userCharIcon}"/>
+                                    <input th:if="${#session} != null" type="hidden" name="writerID" th:value="${#session.getAttribute('loginMember').userId}"/>
+                                </div>
+                                <br>
+                                <div class="col-12">
+                                    <ul class="actions small" th:if="${#session} != null">
+                                        <li><input type="submit" name="save" id="save" value="등록"/></li>
+                                        <li><input type="reset" value="취소" class="alt"/></li>
+                                    </ul>
 
-                                <ul class="actions small" th:if="${#session} == null">
-                                    <li><input type="button"  value="등록" onclick="openLoginModal()"/></li>
-                                    <li><input type="reset" value="취소" class="alt"/></li>
-                                </ul>
-                            </div>
-                        </form>
+                                    <ul class="actions small" th:if="${#session} == null">
+                                        <li><input type="button"  value="등록" onclick="openLoginModal()"/></li>
+                                        <li><input type="reset" value="취소" class="alt"/></li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            </section>
+        </div>
+
+        <!-- 책 독후감 페이지-->
+        <section th:unless="${bookAndReport}">
+            <section class="box">
+                <div th:if="${existsByBookHistory} == 0">
+                    <h4 align="center">
+                        <span class="material-symbols-outlined">collections_bookmark</span>
+                        작성한 독후감이 없습니다.
+                    </h4>
+                    <a th:if="${#session} != null" th:href="@{|/writeReportForm/${book.isbn}|}">
+                        <span class="material-symbols-outlined" style="color:pink;">add_circle</span>
+                        독후감 작성하기
+                    </a>
+
+                    <a th:if="${#session} == null" th:onclick="openLoginModal()">
+                        <span class="material-symbols-outlined" style="color:pink;">add_circle</span>
+                        독후감 작성하기
+                    </a>
+                </div>
+                <div th:unless="${existsByBookHistory} == 0">
+                    <h4>독후감
+                        <a th:if="${#session} != null" th:href="@{|/writeReportForm/${book.isbn}|}">
+                            <span class="material-symbols-outlined" style="color:pink;">add_circle</span>
+                        </a>
+
+                        <a th:if="${#session} == null" th:onclick="openLoginModal()">
+                            <span class="material-symbols-outlined" style="color:pink;">add_circle</span>
+                        </a>
+                    </h4>
+
+                    <hr/>
+
+                 <!--
+                    <div class="row">
+                        <div class="col-3 col-12-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
+                            <a th:href="@{|/bookReportForm/${bookReportInfo.id}|}">
+                                <section class="box special" style="background-color:#FFFAF0;">
+                                    <span class="image featured">
+                                        <img th:src="|/image/${bookReportInfo.getStoreFileName()}|" alt=""/>
+                                    </span>
+                                    <p th:if="${#strings.length(bookReportInfo.title) > 6}"><b
+                                            th:text="|[${#strings.substring(bookReportInfo.title, 0 , 6)}...]|"></b></p>
+                                    <p th:unless="${#strings.length(bookReportInfo.title) > 6}"><b
+                                            th:text="|[${bookReportInfo.title}]|"></b></p>
+                                    <p th:if="${#strings.length(bookReportInfo.content) > 15}"
+                                       th:text="|${#strings.substring(bookReportInfo.content, 0, 15)} ....|"></p>
+                                    <p th:unless="${#strings.length(bookReportInfo.content) > 15}"
+                                       th:text="|${bookReportInfo.content}|"></p>
+                                </section>
+                            </a>
+                        </div>
+                    </div>
+                    -->
+
+                    <div class="col-30 col-3-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
+                        <section class="box" id="my-box" style="background-color:#FFFAF0; width: 80%; margin: 20px auto; display: flex; align-items: center; justify-content: center;
+                                                    padding-top: 1em; padding-bottom: 1em; padding-right: -1em; padding-left: -1em;">
+                            <a th:href="@{|/bookReportForm/${bookReportInfo.id}|}">
+                                <span class="image left">
+                                    <br>
+                                    <img th:src="|/image/${bookReportInfo.getStoreFileName()}|"
+                                         style="width:80px; height:90px;"
+                                         alt=""/>
+                                </span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                <span style="display: inline-block; text-align: center; max-width: 100%; white-space: nowrap;">
+                                    <span th:utext="${bookReportInfo.date}"></span><br>
+                                    <span th:if="${#strings.length(bookReportInfo.content) > 13}">
+                                        <b th:utext="|${#strings.substring(bookReportInfo.content, 0, 13)}|" style="word-wrap: break-word;"></b>
+                                    </span><br>
+                                    <span th:if="${#strings.length(bookReportInfo.content) > 26}">
+                                        <b th:utext="|${#strings.substring(bookReportInfo.content, 13, 26)}|" style="word-wrap: break-word;"></b>
+                                    </span><br>
+                                    <span th:if="${#strings.length(bookReportInfo.content) > 39}">
+                                        <b th:utext="|${#strings.substring(bookReportInfo.content, 26, 39)} ...|" style="word-wrap: break-word;"></b>
+                                    </span>
+                                    <span th:unless="${#strings.length(bookReportInfo.content) > 13}" >
+                                        <b th:utext="|${bookReportInfo.content}|" style="word-wrap: break-word;"></b>
+                                    </span>
+                                </span>
+
+
+
+                            </a>
+                        </section>
+                    </div>
+
+                </div>
+            </section> <!--독후감 박스 끝-->
+
 
         </section>
     </section>

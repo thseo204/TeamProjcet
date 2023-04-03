@@ -13,4 +13,6 @@ public interface CommentService {
 
    void delete(Long id);
    void update(Comment comment);
+
+   void updateCharIcon(Comment comment);
 }

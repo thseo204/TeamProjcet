@@ -36,5 +36,10 @@ public class MybatisCommentRepository implements CommentRepository{
         commentMapper.update(comment);
     }
 
+    @Override
+    public void updateCharIcon(Comment comment) {
+        commentMapper.updateCharIcon(comment);
+    }
+
 
 }

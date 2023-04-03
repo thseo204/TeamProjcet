@@ -1,29 +1,25 @@
 package project.bookservice.web.basic;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.bookservice.domain.book.Book;
 import project.bookservice.domain.login.LoginForm;
-import project.bookservice.domain.naverUser.NaverUser;
-import project.bookservice.openapi.APIParser;
-import project.bookservice.openapi.ApiSearchBookList;
 import project.bookservice.service.login.LoginService;
 import project.bookservice.domain.member.Member;
-import project.bookservice.repository.member.MemberRepository;
 import project.bookservice.service.mail.MailService;
 import project.bookservice.web.SessionConst;
+import project.bookservice.web.validation.SignUpFormValidator;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
+
 
 @Slf4j
 @Controller
@@ -32,7 +28,9 @@ public class LoginController {
 
     private final LoginService loginService;
     private final MailService mailService;
-    private final MemberRepository memberRepository;
+    private String ePw; // 이메일 인증 코드
+    private boolean availableId, availableEmail, emailCodeCheck;
+    private final SignUpFormValidator signUpFormValidator;
 
     @GetMapping("/loginForm")
     public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
@@ -94,8 +92,6 @@ public class LoginController {
 
 
 
-
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,@RequestParam(defaultValue = "/") String redirectURL) {
 
@@ -109,13 +105,15 @@ public class LoginController {
     }
 
     @GetMapping("/findId")
-    public String findId(@ModelAttribute("loginForm") LoginForm form){
-
+    public String findId(@ModelAttribute("loginForm") LoginForm form, Model model){
+        model.addAttribute("availableId", availableId);
+        model.addAttribute("availableEmail", availableEmail);
+        model.addAttribute("emailCodeCheck", emailCodeCheck);
         return "basic/findId";
     }
 
 
-    @PostMapping("/findIdByEmail")
+    @GetMapping("/findIdByEmail")
     public String findIdByEmail(String userId,Model model) throws MessagingException {
 
 
@@ -126,11 +124,75 @@ public class LoginController {
             model.addAttribute("message", "존재하지 않는 아이디 입니다");
             return "basic/findId";
         }
-        mailService.sendMail(member);
+      //  mailService.sendMail(member);
         model.addAttribute("member",member);
-        return "detail/emailComplete";
+        return "detail/emailAuthentication";
     }
 
+    @GetMapping("/emailAuthentication")
+    public String mailConfirm(@RequestParam("userEmail") String userEmail,
+                              @RequestParam("userId") String userId,
+                              Model model,
+                              RedirectAttributes redirectAttributes) throws Exception {
+        log.info("전달 받은 이메일 = {}", userEmail);
+        ePw = mailService.sendSimpleMessage(userEmail);
+        log.info("인증코드={}", ePw);
+
+        Member member = loginService.findId(userId);
+
+
+        availableEmail = true; // 이메일 전송 성공 시
+        model.addAttribute("availableEmail", availableEmail);
+        model.addAttribute("member",member);
+
+        redirectAttributes.addAttribute("userEmail", userEmail);
+        redirectAttributes.addAttribute("userId", userId);
+//        String message = "<script>alert('인증번호가 전송되었습니다.');location.replace='/joinForm';</script>";
+//        return message;
+        return "detail/emailAuthentication";
+//        return code;
+    }
+
+    @GetMapping("/emailAuthentication/emailCode")
+    public String emailCheck(@Valid @ModelAttribute("member") Member member,
+                             BindingResult bindingResult,
+                             @RequestParam("emailCode") String emailCode,
+                             @RequestParam("userEmail") String userEmail,
+                             @RequestParam("userId") String userId,
+                             @RequestParam("userPwd") String userPwd,
+                             @RequestParam("userRePwd") String userRePwd,
+                             Model model,
+                             RedirectAttributes redirectAttributes) throws MessagingException {
+
+
+        log.info("member.getEmailCode()={}", member.getEmailCode());
+
+        redirectAttributes.addAttribute("userId", userId);
+        redirectAttributes.addAttribute("userEmail", userEmail);
+        redirectAttributes.addAttribute("emailCode", emailCode);
+        redirectAttributes.addAttribute("userPwd", userPwd);
+        redirectAttributes.addAttribute("userRePwd", userRePwd);
+
+        //이메일 인증코드 일치 검사
+        signUpFormValidator.emailCodeCheckValidate(ePw, member.getEmailCode(), bindingResult);
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            emailCodeCheck = false; // 이메일 코드 불일치 시 false
+            model.addAttribute("emailCodeCheck", emailCodeCheck);
+            availableEmail = true; // 이메일 전송은 이미 성공 했으니
+            model.addAttribute("availableEmail", availableEmail);
+            return "/detail/emailAuthentication";
+        }
+
+        mailService.sendMail(member);
+
+        return "/detail/emailComplete";
+    }
+
+    @GetMapping("/newPassword")
+    public String newPassword(){
+        return "/basic/NewPassword";
+    }
 
 
 

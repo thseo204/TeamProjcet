@@ -15,15 +15,18 @@ import project.bookservice.domain.member.BookmarkCollection;
 import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.domain.member.Member;
 
+import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.domain.starRating.StarRating;
 import project.bookservice.repository.book.MyBatisBookRepository;
 import project.bookservice.openapi.APIParser;
 import project.bookservice.openapi.ApiSearchBook;
 import project.bookservice.openapi.ApiSearchBookList;
 
+import project.bookservice.repository.report.ReportInfoRepository;
 import project.bookservice.service.comment.CommentService;
 import project.bookservice.service.member.BookmarkCollectionService;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
+import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.form.BookmarkCollectionSaveForm;
@@ -41,6 +44,7 @@ public class BookController {
      private final StarRatingService starRatingService;
     private final BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService;
     private final BookmarkCollectionService bookmarkCollectionService;
+    private final ReportInfoService reportInfoService;
 
     @GetMapping("/searchBookList")
     public String searchBook(String title,Book book,Model model) throws ParseException {
@@ -52,6 +56,7 @@ public class BookController {
         }else {
             APIParser apiParser = new ApiSearchBook(starRatingService);
             ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(title);
+
             model.addAttribute("bookList", bookList);
             return "basic/searchBookList";
         }
@@ -68,57 +73,128 @@ public class BookController {
         return "basic/main";
     }
 
-
     @GetMapping("/book/{isbn}")
-    public String bookInfo(@PathVariable String isbn, @SessionAttribute(name= SessionConst.LOGIN_MEMBER,
+    public String book(Model model,
+                       RedirectAttributes redirectAttributes){
+
+        boolean bookAndReport=true;
+        redirectAttributes.addAttribute("bookAndReport", bookAndReport);
+        return "redirect:/book/{isbn}/bookInfo/{bookAndReport}";
+    }
+
+    @GetMapping("/book/{isbn}/bookInfo/{bookAndReport}")
+    public String bookInfo(@PathVariable String isbn,@PathVariable boolean bookAndReport, @SessionAttribute(name= SessionConst.LOGIN_MEMBER,
             required = false) Member loginMember, Model model,StarRating starRating) throws ParseException {
 
-        //로그인 세션에 정보가 없을경우 (비로그인 상태)
-        if(loginMember == null){
+        //bookAndReport 가 true 일때 -> 책상세정보 페이지
+        if(bookAndReport == true){
+            //로그인 세션에 정보가 없을경우 (비로그인 상태)
+            if(loginMember == null){
+                APIParser apiParser = new ApiSearchBook(starRatingService);
+                ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(isbn);
+                Book book = bookList.get(0);
+                List<Comment> comments = commentService.findComments(isbn);
+                log.info("avgStarRating={}",bookList.get(0).getAvgStarRating());
+                log.info("comments={}",comments);
+                model.addAttribute("comments", comments);
+                model.addAttribute("book",book);
+
+                return "detail/bookInfo";
+            }
+            //로그인 세션에 정보가 있을경우 (로그인 상태)
+            starRating.setUserId(loginMember.getUserId()); //starRatingService 에 아이디 값을 넘겨주기 위해 세션 아이디값을 starRating 에 넣어준다
+
             APIParser apiParser = new ApiSearchBook(starRatingService);
-            ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(isbn);
+            ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(isbn); //책정보
             Book book = bookList.get(0);
-            List<Comment> comments = commentService.findComments(isbn);
-            log.info("avgStarRating={}",bookList.get(0).getAvgStarRating());
+            List<Comment> comments = commentService.findComments(isbn); //이 책에 등록된 댓글 정보
+            Boolean starId = starRatingService.findByUserId(starRating); // 로그인한 아이디가 별점 부여했는지 유무 체크
+
+
+            // 로그인한 아이디의 컬렉션 이름 리스트 가져오기
+            int existsByMyHistory = bookmarkCollectionService.existsCollection(loginMember.getUserId());
+            if(existsByMyHistory > 0){
+                List<BookmarkCollection> myCollectionList = bookmarkCollectionService.collectionList(loginMember.getUserId());
+
+                for (BookmarkCollection bookmarkCollection : myCollectionList) {
+                    log.info("bookmarkCollection={}", bookmarkCollection);
+                }
+                model.addAttribute("myCollectionList", myCollectionList);
+            }
+            model.addAttribute("existsByMyHistory", existsByMyHistory);
+
+            log.info("starId={}", starId); //별점 유무
+            log.info("userId={}", starRating.getUserId()); //로그인한 아이디
+            log.info("isbn={}", starRating.getIsbn()); // 책 isbn
+
             model.addAttribute("comments", comments);
             model.addAttribute("book",book);
-
+            model.addAttribute("loginMember", loginMember);
+            model.addAttribute("starId",starId);
             return "detail/bookInfo";
-        }
-        //로그인 세션에 정보가 있을경우 (로그인 상태)
-        starRating.setUserId(loginMember.getUserId()); //starRatingService 에 아이디 값을 넘겨주기 위해 세션 아이디값을 starRating 에 넣어준다
+        } else{   //bookAndReport 가 false 일때 -> 책 독후감 페이지
+            if(loginMember == null){
+                APIParser apiParser = new ApiSearchBook(starRatingService);
+                ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(isbn);
+                Book book = bookList.get(0);
 
-        APIParser apiParser = new ApiSearchBook(starRatingService);
-        ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(isbn); //책정보
-        Book book = bookList.get(0);
-        List<Comment> comments = commentService.findComments(isbn); //이 책에 등록된 댓글 정보
+                int existsByBookHistory = reportInfoService.existsReportInfoByIsbn(isbn);
 
-        Double avgStarRating = starRatingService.findAvgStarRating(isbn); // 이 책의 별점 평균 정보
-        Boolean starId = starRatingService.findByUserId(starRating); // 로그인한 아이디가 별점 부여했는지 유무 체크
+                if(existsByBookHistory > 0){
+                    List<ReportInfo> bookReportInfoList = reportInfoService.findByIsbn(isbn);
+                    model.addAttribute("bookReportInfoList", bookReportInfoList);
+                    log.info("bookReportInfoList ={}",bookReportInfoList);
+                }
 
 
-        // 로그인한 아이디의 컬렉션 이름 리스트 가져오기
-        int existsByMyHistory = bookmarkCollectionService.existsCollection(loginMember.getUserId());
-        if(existsByMyHistory > 0){
-            List<BookmarkCollection> myCollectionList = bookmarkCollectionService.collectionList(loginMember.getUserId());
+                log.info("avgStarRating={}",bookList.get(0).getAvgStarRating());
+                model.addAttribute("existsByBookHistory", existsByBookHistory);
+                model.addAttribute("book",book);
 
-            for (BookmarkCollection bookmarkCollection : myCollectionList) {
-                log.info("bookmarkCollection={}", bookmarkCollection);
+                return "detail/bookInfo";
             }
-            model.addAttribute("myCollectionList", myCollectionList);
+
+            //로그인 세션에 정보가 있을경우 (로그인 상태)
+            starRating.setUserId(loginMember.getUserId()); //starRatingService 에 아이디 값을 넘겨주기 위해 세션 아이디값을 starRating 에 넣어준다
+
+            APIParser apiParser = new ApiSearchBook(starRatingService);
+            ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(isbn); //책정보
+            Book book = bookList.get(0);
+
+            int existsByBookHistory = reportInfoService.existsReportInfoByIsbn(isbn);
+
+            if(existsByBookHistory>0){
+                List<ReportInfo> bookReportInfoList = reportInfoService.findByIsbn(isbn);
+                model.addAttribute("bookReportInfoList", bookReportInfoList);
+                log.info("bookReportInfoList ={}",bookReportInfoList);
+            }
+
+            Boolean starId = starRatingService.findByUserId(starRating); // 로그인한 아이디가 별점 부여했는지 유무 체크
+
+            // 로그인한 아이디의 컬렉션 이름 리스트 가져오기
+            int existsByMyHistory = bookmarkCollectionService.existsCollection(loginMember.getUserId());
+            if(existsByMyHistory > 0){
+                List<BookmarkCollection> myCollectionList = bookmarkCollectionService.collectionList(loginMember.getUserId());
+
+                for (BookmarkCollection bookmarkCollection : myCollectionList) {
+                    log.info("bookmarkCollection={}", bookmarkCollection);
+                }
+                model.addAttribute("myCollectionList", myCollectionList);
+            }
+            model.addAttribute("existsByMyHistory", existsByMyHistory);
+
+            log.info("starId={}", starId); //별점 유무
+            log.info("userId={}", starRating.getUserId()); //로그인한 아이디
+            log.info("isbn={}", starRating.getIsbn()); // 책 isbn
+
+            model.addAttribute("book",book);
+            model.addAttribute("loginMember", loginMember);
+            model.addAttribute("existsByBookHistory", existsByBookHistory);
+            model.addAttribute("starId",starId);
+            return "detail/bookInfo";
+
         }
-        model.addAttribute("existsByMyHistory", existsByMyHistory);
 
-        log.info("starId={}", starId); //별점 유무
-        log.info("userId={}", starRating.getUserId()); //로그인한 아이디
-        log.info("isbn={}", starRating.getIsbn()); // 책 isbn
-
-        model.addAttribute("comments", comments);
-        model.addAttribute("book",book);
-        model.addAttribute("loginMember", loginMember);
-        model.addAttribute("avgStarRating" , avgStarRating);
-        model.addAttribute("starId",starId);
-        return "detail/bookInfo";
     }
 
     @GetMapping("/book/{isbn}/report")

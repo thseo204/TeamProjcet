@@ -34,5 +34,10 @@ public class CommentServiceImpl implements CommentService{
         commentRepository.update(comment);
     }
 
+    @Override
+    public void updateCharIcon(Comment comment) {
+        commentRepository.updateCharIcon(comment);
+    }
+
 
 }

@@ -71,7 +71,6 @@ function openLoginModal() {
     <!-- Main -->
     <section id="main" class="container">
 <!--   [추천도서 리스트 부분]     -->
-        <h4 align="left">추천도서</h4>
 
         <section class="box">
             <div>
@@ -188,7 +187,12 @@ function openLoginModal() {
                 <br/>
                 <br/>
                 <p align="center" style="font-weight:bold;" th:text="|[${reportInfo.title}]|"></p>
-                <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+                <span th:if="${#strings.length(reportInfo.content) > 50}">
+                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+                </span>
+                <span th:unless="${#strings.length(reportInfo.content) > 50}" >
+                    <b th:text="|${reportInfo.content}|" style="word-wrap: break-word;"></b>
+                </span>
 
                 <br/>
                 <br/>
@@ -249,7 +253,12 @@ function openLoginModal() {
                 <br/>
                 <br/>
                 <p align="center" style="font-weight:bold;" th:text="|[${reportInfo.title}]|"></p>
-                <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+                <span th:if="${#strings.length(reportInfo.content) > 50}">
+                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+                </span>
+                <span th:unless="${#strings.length(reportInfo.content) > 50}" >
+                    <b th:text="|${reportInfo.content}|" style="word-wrap: break-word;"></b>
+                </span>
                 <br/>
                 <br/>
                 <p th:text="${reportInfo.hashTag}"></p>

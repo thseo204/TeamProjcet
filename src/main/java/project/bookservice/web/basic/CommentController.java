@@ -31,14 +31,11 @@ public class CommentController {
         return "redirect:/book/{isbn}";
     }
 
-    @PostMapping("/book/{isbn}")
+    @PostMapping("/book/{isbn}/insertComment")
     public String insertComment(@ModelAttribute Comment comment, @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
             required = false) Member loginMember, Model model){
-        Comment savedComment = commentService.save(comment);
-        Integer reportCount = reportInfoService.countByWriterId(loginMember.getUserId());
+        commentService.save(comment);
 
-
-        model.addAttribute("reportCount",reportCount);
         return "redirect:/book/{isbn}";
     }
 }

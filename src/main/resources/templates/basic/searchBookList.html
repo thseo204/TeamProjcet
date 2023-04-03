@@ -2,6 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<style>
+body p {
+display:block;
+}
+.word {
+    white-space: no-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+<!--    word-wrap: break-word;-->
+<!--    text-align: left;-->
+<!--    display: -webkit-box;-->
+<!--    -webkit-line-clamp: 1;-->
+<!--    -webkit-box-orient: vertical;-->
+<!--    line-height: 1.2;-->
+}
+
+
+</style>
 
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
@@ -27,37 +45,63 @@
     </form>
       <hr/>
   </section>
+    <section class="box">
+      <div>
+        <h4>검색 결과</h4>
+        <hr/>
 
-  <section class="box special features">
-    <div class="features-row">
-      <section class="box" th:each="book : ${bookList}">
-        <section class="" >
-          <div class="features-row " align="center">
+        <div class="row">
+          <!--                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">-->
+          <!--                    <div class="col-6 gtr-25" th:each="book : ${bookList}">-->
+          <div class="col-6 col-12-narrower" th:each="book : ${bookList}">
             <a th:href="@{|/book/${book.isbn}|}">
-              <image class="image" style="width:100px; height:130px; " th:src="@{${book.imageUrl}}"></image>
+              <!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
+              <section class="box special" style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;" >
+                <span class="image left"><img th:src="@{${book.imageUrl}}" alt="" style="width:85px; height:125px;"/></span>
+
+                <p th:if="${book.title.indexOf('-') == -1}">
+                  <br/>
+                  <b th:text="|[${book.title}]|"></b><br/>
+                  <span th:text="${#strings.substringBefore(book.author,'(')}"
+                        style="color:gray;"></span><br/>
+                  <!--                                        <br/>-->
+                  <!--                                별점이 없을떄-->
+                  <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                                            <span >★</span>
+                                            <span>0.0</span>
+                                          </span>
+
+                  <!--별점이 있을떄-->
+                  <span th:if="${book.avgStarRating != null}" >
+                                            <span style="color: #FFD700;">★</span>
+                                            <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                                          </span>
+                </p>
+
+                <p th:if="${book.title.indexOf('-') != -1}">
+                  <br>
+                  <b th:text="|[${#strings.substringBefore(book.title,'-')}]|"></b><br/>
+                  <span th:text="${#strings.substringBefore(book.author,'(')}"
+                        style="color:gray;"></span><br/>
+                  <!--                                    <br/>-->
+                  <!--                                    별점이 없을떄-->
+                  <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                                        <span>★</span>
+                                        <span>0.0</span>
+                                      </span>
+
+                  <!--별점이 있을떄-->
+                  <span th:if="${book.avgStarRating != null}" >
+                    <span style="color: #FFD700;">★</span>
+                    <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                  </span>
+                </p>
+              </section>
             </a>
           </div>
-        </section>
-        <section>
-          <div>
-            <h4 class="" style="margin: 1em 0 0em -2em;" th:text="${book.title}" ></h4>
-            <!--별점이 없을떄-->
-            <span th:if="${book.avgStarRating == null}" th:style="'font-size: 26px;'">
-              <span style="color: #FFD700;">★</span>
-              <span>-</span>
-            </span>
-
-            <!--별점이 있을떄-->
-            <span th:if="${book.avgStarRating != null}" th:style="'font-size: 26px;'">
-              <span style="color: #FFD700;">★</span>
-              <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
-            </span>
-          </div>
-        </section>
-      </section>
-    </div>
-
-  </section>
+        </div>
+      </div>
+    </section>
 
 </section>
 

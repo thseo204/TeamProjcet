@@ -27,6 +27,10 @@ public interface ReportInfoMapper {
 
     List<ReportInfo> findByUserId(String userId);
 
+    int existsReportInfoByIsbn(String isbn);
+    List<ReportInfo> findByIsbn(String isbn);
+
+
     List<ReportInfo> findAll();
     void increaseOfFavoriteNum(@Param("reportInfoParam")ReportInfo reportInfo);
 
