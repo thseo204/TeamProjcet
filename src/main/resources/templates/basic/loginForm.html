@@ -41,15 +41,16 @@
 
 					<div class="col-12">
 						<ul class="actions special">
-							<li><input type="submit" value="로그인"/></li>
-							<li><div id="naver_id_login"></div></li>
+							<li><div class="col-6" id="naver_id_login"></div></li>
+							<li><input class="col-6" type="submit" value="로그인"/></li>
 						</ul>
 					</div>
 				</div>
 			</form>
-			<div style="display: flex; justify-content: center;">
-				<a onclick="openWindow();" class="button special icon solid fa-search">비밀번호 찾기</a> &nbsp;&nbsp;&nbsp;
-				<a onclick="window.location.href = '/joinForm'" class="button alt icon solid fa-check">회원가입</a>
+			<div style="display: flex; justify-content: center; float:right;">
+				<a style="float:right;" onclick="openWindow();" class="special icon solid fa-search"><span style="color:gray;"> 아이디/비밀번호 찾기 / </span></a> &nbsp;&nbsp;&nbsp;
+				<a style="float:right;" onclick="window.location.href = '/joinForm'" class="icon solid fa-check"> 회원가입</a>
+				<!--				<a onclick="window.location.href = '/joinForm'" class="button alt icon solid fa-check">회원가입</a>-->
 			</div>
 
 		</div>
@@ -72,7 +73,7 @@
 <script type="text/javascript">
         var naver_id_login = new naver_id_login("rpwlE8p1Xp5mnCjiiv_w", "http://localhost:8000/callback/naver");
         var state = naver_id_login.getUniqState();
-        naver_id_login.setButton("green", 3,50);
+        naver_id_login.setButton("green", 2,45);
         naver_id_login.setDomain("http://localhost:8000");
         naver_id_login.setState(state);
         naver_id_login.init_naver_id_login();

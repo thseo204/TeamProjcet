@@ -29,5 +29,8 @@ public interface MemberRepository {
 
     Member findId(String userId);
 
+    Member findIdByEmail(String userEmail);
+
+    void editPwd(Member member);
 
 }

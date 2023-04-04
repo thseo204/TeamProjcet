@@ -36,10 +36,15 @@ location.replace("/emailAuthentication/emailCode?emailCode=" + emailCode + "&use
 </script>
 <link rel="stylesheet" href="/assets/css/errors.css"/>
 <div class="box">
+  <h3 class = "col-12">본인 명의 이메일로 비밀번호 찾기</h3>
   <form method="Get" th:action="@{/emailAuthentication}" th:object="${member}">
     <div class="col-9 col-12-mobilep">
-      <input type="text" name="userEmail" id="userEmail" th:field="*{userEmail}" placeholder="Email"/>
+      <label for="userId">ID</label>
       <input type="text" name="userId" id="userId" th:field="*{userId}" placeholder="Id"/>
+      <br>
+      <label for="userEmail">이메일 주소</label>
+      <input type="text" name="userEmail" id="userEmail" th:field="*{userEmail}" placeholder="Email"/>
+      <br>
     </div>
     <div class="col-3 col-12-mobilep">
       <a class="button alt" href="javascript:checkEmail();">인증번호 전송</a>
@@ -48,7 +53,7 @@ location.replace("/emailAuthentication/emailCode?emailCode=" + emailCode + "&use
 
     <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">
       <div class="col-9" align="center">
-        <!--                            <label for="emailCode" id="emailCodeTxt" >인증번호 8자리를 입력해주세요</label>-->
+        <br>
         <input type="text" name="emailCode" id="emailCode" placeholder="인증번호 8자리를 입력해주세요" th:errorclass="field-error"/>
         <div class="field-error" th:each="error, stat :${#fields.errors('emailCode')}"
              th:if="${stat.first}" th:text="${error}"/>

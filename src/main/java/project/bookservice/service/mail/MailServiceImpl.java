@@ -9,6 +9,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import project.bookservice.domain.member.Member;
+import project.bookservice.repository.member.MemberRepository;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,21 +17,28 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.management.StringValueExp;
 import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 @Slf4j
 @Service
 @PropertySource("classpath:email.properties")
+@RequiredArgsConstructor
 public class MailServiceImpl implements MailService{
 
     @Autowired
     JavaMailSender javaMailSender; // Bean 등록해둔 MailConfig를 emailSender 라는 이름으로 autowired
+
+    private final MemberRepository memberRepository;
 
     private String ePw; //인증번호
     @Value("${spring.mail.username}")
     private String id;
     @Override
     public void sendMail(Member member) throws MessagingException {
+        String randomPwd = randomPwdCreate();
+        member.setUserPwd(randomPwd);
+        memberRepository.editPwd(member);
         String subject="[Reading journal] Password";
         String body = "<h1>Password :" + member.getUserPwd() + "</h1>";
         body += "<p><a href='http://localhost:8000/loginForm'>Go login page</a></p>";
@@ -113,4 +121,47 @@ public class MailServiceImpl implements MailService{
         }
         return ePw;// 메일로 보냈던 인증 코드를 서버로 반환
     }
+
+    public String randomPwdCreate() {
+        // 비밀번호 생성에 필요한 문자열
+        String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
+        String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String NUMBER_CHARS = "0123456789";
+        String SPECIAL_CHARS = "!@#$%^&*()_+-=[]{}|;':\"<>,.?/";
+
+        // 랜덤 생성기
+        Random random = new SecureRandom();
+        // 8~16자 중 랜덤한 길이 선택
+        int length = random.nextInt(9) + 8;
+
+        // 비밀번호 문자열 생성 (문자, 숫자, 특수문자 옵션)
+        StringBuilder passwordBuilder = new StringBuilder();
+        passwordBuilder.append(LOWERCASE_CHARS.charAt(random.nextInt(LOWERCASE_CHARS.length())));
+        passwordBuilder.append(NUMBER_CHARS.charAt(random.nextInt(NUMBER_CHARS.length())));
+        length -= 2;
+        for (int i = 0; i < length; i++) {
+            int charType = random.nextInt(4);
+            switch (charType) {
+                case 0:
+                    passwordBuilder.append(LOWERCASE_CHARS.charAt(random.nextInt(LOWERCASE_CHARS.length())));
+                    break;
+                case 1:
+                    passwordBuilder.append(UPPERCASE_CHARS.charAt(random.nextInt(UPPERCASE_CHARS.length())));
+                    break;
+                case 2:
+                    passwordBuilder.append(NUMBER_CHARS.charAt(random.nextInt(NUMBER_CHARS.length())));
+                    break;
+                case 3:
+                    if (SPECIAL_CHARS.length() > 0) {
+                        passwordBuilder.append(SPECIAL_CHARS.charAt(random.nextInt(SPECIAL_CHARS.length())));
+                    } else {
+                        i--;
+                    }
+                    break;
+            }
+        }
+
+        return passwordBuilder.toString();
+    }
+
 }

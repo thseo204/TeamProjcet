@@ -20,4 +20,8 @@ public class LoginService {
     public Member findId(String userId){
         return memberRepository.findId(userId);
     }
+
+    public Member findIdByEmail(String userEmail){
+        return memberRepository.findIdByEmail(userEmail);
+    }
 }

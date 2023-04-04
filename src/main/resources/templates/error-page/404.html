@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+
+<body>
+<div id="page-wrapper">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+  <section id="main" class="container medium">
+    <div class="box"  style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+      <div class="row">
+        <div class="col-md-6">
+          <p style="font-size: 2em; font-weight: bold; text-align: center;">요청하신 페이지를 찾을 수 없습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</html>

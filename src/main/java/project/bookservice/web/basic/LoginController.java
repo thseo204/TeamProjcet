@@ -113,20 +113,33 @@ public class LoginController {
     }
 
 
-    @GetMapping("/findIdByEmail")
-    public String findIdByEmail(String userId,Model model) throws MessagingException {
+    @GetMapping("/findPwdByEmail")
+    public String findPwdByEmail(String userId,Model model) throws MessagingException {
 
 
         // Retrieve the member from the database using the user ID
         Member member = loginService.findId(userId);
         log.info("ID?= {}", member);
         if(member == null){
-            model.addAttribute("message", "존재하지 않는 아이디 입니다");
+            model.addAttribute("message1", "존재하지 않는 아이디 입니다");
             return "basic/findId";
         }
       //  mailService.sendMail(member);
         model.addAttribute("member",member);
         return "detail/emailAuthentication";
+    }
+
+    @GetMapping("/findIdByEmail")
+    public String findIdByEmail(String userEmail,Model model) throws MessagingException {
+        Member member = loginService.findIdByEmail(userEmail);
+        log.info("ID?= {}", member);
+        if(member == null){
+            model.addAttribute("message2", "가입된 아이디가 없습니다");
+            return "basic/findId";
+        }
+
+        model.addAttribute("member",member);
+        return "detail/findIdByEmailAuthentication";
     }
 
     @GetMapping("/emailAuthentication")
@@ -147,10 +160,8 @@ public class LoginController {
 
         redirectAttributes.addAttribute("userEmail", userEmail);
         redirectAttributes.addAttribute("userId", userId);
-//        String message = "<script>alert('인증번호가 전송되었습니다.');location.replace='/joinForm';</script>";
-//        return message;
+
         return "detail/emailAuthentication";
-//        return code;
     }
 
     @GetMapping("/emailAuthentication/emailCode")
@@ -188,6 +199,60 @@ public class LoginController {
 
         return "/detail/emailComplete";
     }
+
+    @GetMapping("/findIdByEmailAuthentication")
+    public String mailConfirm2(@RequestParam("userEmail") String userEmail,
+                              Model model,
+                              RedirectAttributes redirectAttributes) throws Exception {
+        log.info("전달 받은 이메일 = {}", userEmail);
+        ePw = mailService.sendSimpleMessage(userEmail);
+        log.info("인증코드={}", ePw);
+
+        Member member = loginService.findIdByEmail(userEmail);
+
+
+        availableEmail = true; // 이메일 전송 성공 시
+        model.addAttribute("availableEmail", availableEmail);
+        model.addAttribute("member",member);
+
+        redirectAttributes.addAttribute("userEmail", userEmail);
+
+        return "detail/findIdByEmailAuthentication";
+    }
+
+    @GetMapping("/findIdByEmailAuthentication/emailCode")
+    public String emailCheck2(@Valid @ModelAttribute("member") Member member,
+                             BindingResult bindingResult,
+                             @RequestParam("emailCode") String emailCode,
+                             @RequestParam("userEmail") String userEmail,
+                             Model model,
+                             RedirectAttributes redirectAttributes) throws MessagingException {
+
+        Member member2 = loginService.findIdByEmail(userEmail);
+        member.setUserId(member2.getUserId());
+        log.info("member.getEmailCode()={}", member.getEmailCode());
+
+        redirectAttributes.addAttribute("userEmail", userEmail);
+        redirectAttributes.addAttribute("emailCode", emailCode);
+
+
+        //이메일 인증코드 일치 검사
+        signUpFormValidator.emailCodeCheckValidate(ePw, member.getEmailCode(), bindingResult);
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            emailCodeCheck = false; // 이메일 코드 불일치 시 false
+            model.addAttribute("emailCodeCheck", emailCodeCheck);
+            availableEmail = true; // 이메일 전송은 이미 성공 했으니
+            model.addAttribute("availableEmail", availableEmail);
+            return "/detail/findIdByEmailAuthentication";
+        }
+
+        model.addAttribute(member);
+
+        return "/detail/findIdComplete";
+    }
+
+
 
     @GetMapping("/newPassword")
     public String newPassword(){

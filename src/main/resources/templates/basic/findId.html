@@ -19,18 +19,25 @@ function openLoginModal() {
   <section id="main" class="container medium">
 
     <div class="box">
-      <form method="get" action="/findIdByEmail">
-        <input type="text" name="userId" id="userId"> <br>
-        <div th:if="${message != null}" class="alert alert-danger">
-          <p th:text="${message}" style="color: #dc3545 !important;"></p>
+      <form method="get" action="/findPwdByEmail">
+        <h3 class = "col-12">비밀번호 찾기</h3>
+        <input type="text" name="userId" placeholder="아이디를 입력하세요"> <br>
+        <div th:if="${message1 != null}" class="alert alert-danger">
+          <p th:text="${message1}" style="color: #dc3545 !important;"></p>
         </div>
-        <input type="submit" value="이메일로 비밀번호 찾기">
-
-
-
+        <input type="submit" value="비밀번호 찾기">
       </form>
+    </div>
 
-
+    <div class="box">
+      <form method="get" action="/findIdByEmail">
+        <h3 class = "col-12">아이디 찾기</h3>
+        <input type="text" name="userEmail" placeholder="이메일을 입력하세요"> <br>
+        <div th:if="${message2 != null}" class="alert alert-danger">
+          <p th:text="${message2}" style="color: #dc3545 !important;"></p>
+        </div>
+        <input type="submit" value="아이디 찾기">
+      </form>
     </div>
   </section>
 </div>

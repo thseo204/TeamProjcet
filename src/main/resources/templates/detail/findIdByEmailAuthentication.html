@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
+    <link rel="stylesheet" href="/assets/css/star.css"/>
+</head>
+<body>
+<script>
+    function windowClose(){
+
+        window.close();
+};
+</script>
+
+<script>
+function checkEmail(){
+var userEmail = document.getElementById('userEmail').value;
+
+location.replace("/findIdByEmailAuthentication?userEmail=" + userEmail);
+
+alert('인증번호가 전송되었습니다.');
+}
+
+function checkEmailCode(){
+var emailCode = document.getElementById('emailCode').value;
+var userId = document.getElementById('userId').value;
+var userEmail = document.getElementById('userEmail').value;
+
+location.replace("/findIdByEmailAuthentication/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail);
+}
+</script>
+<link rel="stylesheet" href="/assets/css/errors.css"/>
+<div class="box">
+    <h3 class = "col-12">본인 명의 이메일로 아이디 찾기</h3>
+    <form method="Get" th:action="@{/emailAuthentication}" th:object="${member}">
+        <div class="col-9 col-12-mobilep">
+            <label for="userEmail">이메일 주소</label>
+            <input type="text" name="userEmail" id="userEmail" th:field="*{userEmail}" placeholder="Email"/>
+            <br>
+        </div>
+        <div class="col-3 col-12-mobilep">
+            <a class="button alt" href="javascript:checkEmail();">인증번호 전송</a>
+            <!--						<a class="button" id="checkEmail" href="javascript:checkEmail();" >인증번호 전송</a>-->
+        </div>
+
+        <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">
+            <div class="col-9" align="center">
+                <br>
+                <input type="text" name="emailCode" id="emailCode" placeholder="인증번호 8자리를 입력해주세요" th:errorclass="field-error"/>
+                <div class="field-error" th:each="error, stat :${#fields.errors('emailCode')}"
+                     th:if="${stat.first}" th:text="${error}"/>
+                <div th:if="${not #fields.hasErrors('emailCode')} and ${emailCodeCheck} == true"><span style="color:blue;">인증을 성공하였습니다.</span></div>
+            </div>
+            <br/>
+            <div class="col-3"  align="center">
+                <a class="button alt" href="javascript:checkEmailCode();">인증번호 확인</a>
+            </div>
+            <br/>
+        </div>
+
+        <input type="hidden" id="userId" name="userId" th:field="*{userId}"/>
+    </form>
+</div>
+</body>
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</html>

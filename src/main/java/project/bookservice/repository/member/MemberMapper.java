@@ -28,4 +28,9 @@ public interface MemberMapper {
     Optional<Member> findByLoginId(String userId);
 
     Member findId(String userId);
+
+    Member findIdByEmail(String userEMail);
+
+    void editPwd(Member member);
+
 }

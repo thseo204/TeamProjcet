@@ -82,4 +82,14 @@ public class MyBatisMemberRepository implements MemberRepository {
     public Member findId(String userId) {
         return memberMapper.findId(userId);
     }
+
+    @Override
+    public Member findIdByEmail(String userEmail) {
+        return memberMapper.findIdByEmail(userEmail);
+    }
+
+    @Override
+    public void editPwd(Member member) {
+        memberMapper.editPwd(member);
+    }
 }

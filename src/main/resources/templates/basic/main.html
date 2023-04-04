@@ -44,27 +44,18 @@ function openLoginModal() {
     <div th:replace="~{fragments/headerMain :: headerMainFragment('mainPage')}"></div>
     <!-- Banner -->
     <section id="banner">
-        <h2 th:text="#{page.title}">독서노트</h2>
+	    <h2 th:text="#{page.title}">독서노트</h2>
         <p>기록의 기억을 믿어보세요</p>
-
-        <div th:if="${#session} == null">
-            <form>
-                <ul class="actions special">
-                    <li><a href="/loginForm" class="button primary">로그인</a></li>
-                    <li><a href="#" class="button">회원가입</a></li>
-                </ul>
-            </form>
-        </div>
-
-        <div th:if="${#session} != null">
-            <form th:action="@{/logout}" method="post">
-                <div class="col-12">
-                    <ul class="actions special">
-                        <li><input type="submit" value="로그아웃"/></li>
-                    </ul>
+        <form th:action="@{/searchBookList}" method="get" th:Object="${book}" style="display: flex; justify-content: center;" >
+            <div style="display: flex; align-items: center;">
+                <div class="search" style="flex: 1;">
+                    <input type="text" id="title" name="title" placeholder="도서 검색" style="width: 500px; color: black;">
                 </div>
-            </form>
-        </div>
+                <button type="submit" class="button special icon solid fa-search" style="margin-left: 10px;">
+                    검색
+                </button>
+            </div>
+        </form>
 
     </section>
 

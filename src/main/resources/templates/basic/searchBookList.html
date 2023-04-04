@@ -10,12 +10,6 @@ display:block;
     white-space: no-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-<!--    word-wrap: break-word;-->
-<!--    text-align: left;-->
-<!--    display: -webkit-box;-->
-<!--    -webkit-line-clamp: 1;-->
-<!--    -webkit-box-orient: vertical;-->
-<!--    line-height: 1.2;-->
 }
 
 
@@ -31,20 +25,40 @@ display:block;
   </header>
 
   <!-- Table -->
-  <section class="box" >
-    <form th:action method="get" th:Object="${book}">
-      <div class="row gtr-uniform gtr-50">
-        <div class="col-9 col-12-mobilep">
-          <input type="text" id="title" name="title" placeholder="도서 검색" autocomplete="on"/>
-        </div>
+  <section class="box" style="display: flex; align-items: center;">
+<!--    <form th:action method="get" th:Object="${book}">-->
+<!--      &lt;!&ndash;-->
+<!--      <div class="row gtr-uniform gtr-50">-->
+<!--        <div class="col-9 col-12-mobilep">-->
+<!--          <input type="text" id="title" name="title" placeholder="도서 검색" autocomplete="on"/>-->
+<!--        </div>-->
 
-        <div class="col-3 col-12-mobilep">
-          <input type="submit" class="button special icon solid fa-search fit" value="search" />
+<!--        <div class="col-3 col-12-mobilep">-->
+<!--          <input type="submit" class="button special icon solid fa-search fit" value="search" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &ndash;&gt;-->
+<!--      <div class="search">-->
+<!--        <input type="text" id="title" name="title" placeholder="검색어 입력">-->
+<!--      </div>-->
+<!--      <div style="display: flex; justify-content: center;">-->
+<!--        <a class="button special icon solid fa-search">검색</a>-->
+<!--      </div>-->
+<!--    </form>-->
+
+    <form th:action="@{/searchBookList}" method="get"  th:Object="${book}" style="flex: 1; width: 80%" >
+      <div style="display: flex; align-items: center;">
+        <div class="search" style="flex: 1;">
+          <input type="text" id="title" name="title" placeholder="검색어 입력">
         </div>
+        <button type="submit" class="button special icon solid fa-search" style="margin-left: 10px;">
+          검색
+        </button>
       </div>
     </form>
-      <hr/>
   </section>
+
+
     <section class="box">
       <div>
         <h4>검색 결과</h4>
