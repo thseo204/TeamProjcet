@@ -15,6 +15,7 @@ import project.bookservice.domain.member.BookmarkCollection;
 import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.domain.member.Member;
 
+import project.bookservice.domain.report.Keyword;
 import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.domain.starRating.StarRating;
 import project.bookservice.repository.book.MyBatisBookRepository;
@@ -26,6 +27,7 @@ import project.bookservice.repository.report.ReportInfoRepository;
 import project.bookservice.service.comment.CommentService;
 import project.bookservice.service.member.BookmarkCollectionService;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
+import project.bookservice.service.report.KeywordService;
 import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
@@ -44,7 +46,8 @@ public class BookController {
      private final StarRatingService starRatingService;
     private final BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService;
     private final BookmarkCollectionService bookmarkCollectionService;
-    private final ReportInfoService reportInfoService;
+    private final KeywordService keywordService;
+	private final ReportInfoService reportInfoService;
 
     @GetMapping("/searchBookList")
     public String searchBook(String title,Book book,Model model) throws ParseException {
@@ -56,8 +59,10 @@ public class BookController {
         }else {
             APIParser apiParser = new ApiSearchBook(starRatingService);
             ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(title);
+            String[] keywordArr = keywordService.findByLikeKeyword(title);
 
             model.addAttribute("bookList", bookList);
+            model.addAttribute("keywordArr", keywordArr);
             return "basic/searchBookList";
         }
     }

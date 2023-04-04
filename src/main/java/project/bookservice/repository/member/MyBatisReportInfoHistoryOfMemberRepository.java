@@ -25,6 +25,11 @@ public class MyBatisReportInfoHistoryOfMemberRepository implements ReportInfoHis
     }
 
     @Override
+    public void delete(Long reportId) {
+        reportInfoHistoryOfMemberMapper.deleteAll(reportId);
+    }
+
+    @Override
     public int existsByHistory(String userId) {
         return reportInfoHistoryOfMemberMapper.existsByHistory(userId);
     }

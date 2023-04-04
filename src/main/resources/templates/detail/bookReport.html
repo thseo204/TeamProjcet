@@ -70,25 +70,29 @@ function openLoginModal() {
 
         <h4><span th:text="${reportInfo.content}"></span></h4>
         <br/>
+        <h4>
+            <a th:each=" keyword : ${keywordArr}" th:href="@{|/searchKeyword/${keyword}|}">
+                <span th:if="!${keywordStat.first}" th:text="|#${keyword}|" style="color:skyBlue;"></span>
+            </a>
+        </h4>
         <hr/>
 
         <!--로그인 세션 정보가 없을 때-->
         <nav id="nav" style="float:right;" th:if="${#session} == null">
             <ul class="actions">
-                <li style="float:left;">
+                <li style="float:left; color:pink;">
                     <span class="material-symbols-outlined" style="color:pink;">update</span>
                     <span th:text="${reportInfo.date}"></span>
                 </li>
                 <a onclick="openLoginModal()">
-                    <li style="float:left;">
+                    <li style="float:left; color:pink;">
                         <span th:if="${history.favorite}" class="material-symbols-outlined"
                               style="color:red; ">favorite</span>
-                        <span th:unless="${history.favorite}" class="material-symbols-outlined"
-                              style="color:pink;">favorite</span>
+                        <span th:unless="${history.favorite}" class="material-symbols-outlined">favorite</span>
                         <span th:text="${reportInfo.favoriteNum}"></span>
                     </li>
-                    <li style="float:left;">
-                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                    <li style="float:left; color:pink;">
+                        <span class="material-symbols-outlined">bookmark</span>
                         <span th:text="${reportInfo.collectionNum}"></span>
                     </li>
                 </a>
@@ -99,29 +103,29 @@ function openLoginModal() {
         <!--로그인 세션 정보가 있을 때-->
         <nav id="nav" style="float:right;" th:if="${#session} != null">
             <ul class="actions">
-                <li style="float:left;">
-                    <span class="material-symbols-outlined" style="color:pink;">update</span>
+                <li style="float:left; color:pink;">
+                    <span class="material-symbols-outlined">update</span>
                     <span th:text="${reportInfo.date}"></span>
                 </li>
-                <li style="float:left;">
+                <li style="float:left; color:pink;">
                     <a th:href="@{|/bookReportForm/${reportInfo.id}/favorite/${history.favorite}|}">
                         <span th:if="${history.favorite}" class="material-symbols-outlined"
                               style="color:red; ">favorite</span>
                         <span th:unless="${history.favorite}" class="material-symbols-outlined"
-                              style="color:pink;">favorite</span>
+                              >favorite</span>
                         <span th:text="${reportInfo.favoriteNum}"></span>
                     </a>
                 </li>
-                <li style="float:left;">
+                <li style="float:left; color:pink;">
                     <a th:href="@{|/bookReportForm/${reportInfo.id}/collection/${history.collection}|}">
                         <span th:if="${history.collection}" class="material-symbols-outlined" style="color:red;">bookmark</span>
-                        <span th:unless="${history.collection}" class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                        <span th:unless="${history.collection}" class="material-symbols-outlined" >bookmark</span>
                         <span th:text="${reportInfo.collectionNum}"></span>
                     </a>
                 </li>
-                <li class="icon solid fa-angle-down" style="float:left;"
+                <li class="icon solid fa-angle-down" style="float:left; color:pink;"
                     th:if="${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">
-                    <span class="material-symbols-outlined" style="color:pink;">more_vert</span>
+                    <span class="material-symbols-outlined" >more_vert</span>
                     <ul>
                         <li>
                             <a th:href="|/editReportInfoForm/${reportInfo.id}/${book.isbn}|">수정</a>
@@ -185,6 +189,7 @@ function openLoginModal() {
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
 
+<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

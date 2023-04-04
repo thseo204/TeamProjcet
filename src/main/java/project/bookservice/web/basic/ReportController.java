@@ -8,12 +8,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.bookservice.domain.book.Book;
 import project.bookservice.domain.historyOfReportInfo.HistoryOfReportInfo;
 import project.bookservice.domain.member.Member;
 import project.bookservice.domain.member.ReportInfoHistoryOfMember;
+import project.bookservice.domain.report.Keyword;
 import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.domain.report.UploadFile;
 import project.bookservice.openapi.APIParser;
@@ -23,15 +25,15 @@ import project.bookservice.repository.report.FileStore;
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.member.MemberService;
 import project.bookservice.service.member.ReportInfoHistoryOfMemberService;
+import project.bookservice.service.report.KeywordService;
 import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
-import project.bookservice.web.validation.form.HistoryOfReportInfoSaveForm;
-import project.bookservice.web.validation.form.ReportForm;
-import project.bookservice.web.validation.form.ReportInfoHistoryOfMemberSaveForm;
-import project.bookservice.web.validation.form.ReportSaveForm;
+import project.bookservice.web.validation.ReportSaveFormValidator;
+import project.bookservice.web.validation.form.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -50,10 +52,11 @@ public class ReportController implements Serializable {
     private final MemberService memberService;
     private final FileStore fileStore;
     private final StarRatingService starRatingService;
-
     private final ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService;
+    private final KeywordService keywordService;
+    private final ReportSaveFormValidator reportSaveFormValidator;
 
-    //@Value("${file.dir}")
+    //    @Value("${file.dir2}")
     @Value("${file.dir}")
     private String fileDir;
 
@@ -75,7 +78,9 @@ public class ReportController implements Serializable {
         ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
         Book book = booklist.get(0);
         log.info("book={}", book);
+        String[] keywordArr = reportInfo.getHashTag().split("#");
 
+        model.addAttribute("keywordArr", keywordArr);
         model.addAttribute("book", book);
         model.addAttribute("reportInfo", reportInfo);
 
@@ -328,18 +333,34 @@ public class ReportController implements Serializable {
     @PostMapping("writeReportForm/{isbn}")
     public String saveReport(
             @PathVariable String isbn,
-            @ModelAttribute("reportInfo") ReportForm form,
             @ModelAttribute("book") Book book,
+            @Valid @ModelAttribute("reportInfo") ReportForm form,
+            BindingResult bindingResult, Model model,
             RedirectAttributes redirectAttributes,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) throws IOException, ParseException {
 
+        // 도서선택 안했을때 우선 검증
+        if(isbn.equals("null")){
+            log.info("isbnNull={}", isbn);
+            return "redirect:/writeReportForm/null";
+        }
+
         APIParser apiParser = new ApiSearchBook(starRatingService);
         ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(isbn); //책정보
         book = booklist.get(0);
+        log.info("postSaveReport={}", form);
+
+
+        reportSaveFormValidator.validate(form, bindingResult);
+        if(bindingResult.hasErrors()){
+            log.info("error={}", bindingResult);
+            model.addAttribute("book", book);
+//            model.addAttribute("reportInfo", form);
+            return "detail/writeReport";
+        }
 
         UploadFile attachFile = fileStore.storeFile(form.getAttachFile());
-
         //데이터베이스에 report 저장
         ReportSaveForm reportInfo = new ReportSaveForm();
         reportInfo.setIsbn(isbn);
@@ -353,9 +374,22 @@ public class ReportController implements Serializable {
         reportInfo.setContent(form.getContent());
         reportInfo.setDisclosure(form.getDisclosure());
         reportInfo.setHashTag(form.getHashTag());
+
+
+
         // 책 타이틀 레포트 인포와 레포트인포오브 멤버 테이블에 넣기!
         log.info("reportForm ={}", reportInfo);
         reportInfoService.save(reportInfo);
+
+        // 해시태그는 keyword 테이블에 저장
+        String[] hashTagArr = form.getHashTag().split("#");
+        for(int i = 1; i < hashTagArr.length; i++){
+            KeywordSaveForm keywordForm = new KeywordSaveForm();
+            keywordForm.setKeyword(hashTagArr[i].trim());
+            keywordForm.setIsbn(isbn);
+            keywordForm.setReportId(reportInfo.getId());
+            keywordService.save(keywordForm);
+        }
 
         // 새로운 히스토리 각 member 별 db 생성
         List<Member> memberList = memberService.findAll();
@@ -370,10 +404,20 @@ public class ReportController implements Serializable {
         redirectAttributes.addAttribute("id", reportInfo.getId());
 
         return "redirect:/bookReportForm/{id}";
-
-//        return "detail/bookReport";
     }
 
+    @GetMapping("/writeReportForm/null")
+    public String bookInfoNull(@ModelAttribute("reportInfo") ReportInfo reportInfo,
+                               @Valid @ModelAttribute Book book,
+                               BindingResult bindingResult, Model model){
+        bindingResult.reject("invalid.reportInfo.title.null", "도서를 선택해주세요.");
+
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            return "detail/writeReport";
+        }
+        return "detail/writeReport";
+    }
 
     @ResponseBody
     @GetMapping("/image/{fileName}")
@@ -388,9 +432,11 @@ public class ReportController implements Serializable {
 
         // 리포트 리스트 받아와서 feedListForm에 뿌리기!!
         List<ReportInfo> reportInfoList = reportInfoService.findAll();
-        model.addAttribute("reportInfoList", reportInfoList);
-        if (loginMember == null) {
+        List<Keyword> keywordList = keywordService.findAll();
 
+        model.addAttribute("reportInfoList", reportInfoList);
+        model.addAttribute("keywordList", keywordList);
+        if (loginMember == null) {
             return "detail/feedList";
         }
 
@@ -462,6 +508,8 @@ public class ReportController implements Serializable {
 
     @GetMapping("/deleteReportInfoForm/{id}")
     public String deleteReportInfo(@PathVariable Long id) {
+        keywordService.deleteReport(id);
+        reportInfoHistoryOfMemberService.delete(id);
         reportInfoService.delete(id);
 
         return "/basic/deleteReportSuccessForm"; // 해당게시물이 삭제되었습니다. 페이지로 이동.
@@ -492,9 +540,19 @@ public class ReportController implements Serializable {
         Book book = booklist.get(0);
         ReportInfo reportInfo = reportInfoService.findById(reportId);
         reportInfo.setContent(form.getContent());
-        reportInfo.setHashTag(form.getHashTag());
+//        reportInfo.setHashTag(form.getHashTag());
         reportInfo.setDisclosure(form.getDisclosure());
         reportInfoService.edit(reportInfo);
+
+        String[] hashTagArr = form.getHashTag().split("#");
+        for(int i = 1; i < hashTagArr.length; i++){
+            KeywordSaveForm keywordForm = new KeywordSaveForm();
+            keywordForm.setKeyword(hashTagArr[i].trim());
+            keywordForm.setIsbn(isbn);
+            keywordForm.setReportId(reportInfo.getId());
+
+            keywordService.update(keywordForm);
+        }
 
         model.addAttribute("book", book);
         redirectAttributes.addAttribute("id", reportId);
@@ -565,5 +623,6 @@ public class ReportController implements Serializable {
         return "redirect:/feedListForm";
 
     }
+
 
 }

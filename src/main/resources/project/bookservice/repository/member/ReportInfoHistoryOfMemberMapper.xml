@@ -14,6 +14,12 @@
         where user_id = #{userId} and report_id = #{reportId}
     </delete>
 
+    <delete id="deleteAll">
+        delete
+        from reportInfoHistoryOfMember
+        where report_id = #{reportId}
+    </delete>
+
     <select id="existsByHistory" resultType="int">
         select count(user_id)
         from reportInfoHistoryOfMember

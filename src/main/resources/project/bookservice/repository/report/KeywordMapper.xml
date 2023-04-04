@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.bookservice.repository.report.KeywordMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into keyword(keyword, isbn, report_id)
+        values (#{keyword}, #{isbn}, #{reportId})
+    </insert>
+
+    <update id="update">
+        update reportInfo
+        set keyword=#{keyword},
+        where isbn=#{isbn} and report_id=#{reportId}
+    </update>
+
+    <delete id="deleteReport">
+        delete from keyword
+        where report_id = #{reportId}
+    </delete>
+
+    <select id="findByKeyword" resultType="project.bookservice.domain.report.Keyword">
+        select *
+        from keyword
+        where keyword = #{keyword}
+    </select>
+
+    <select id="findByLikeKeyword" resultType="String">
+        select distinct keyword
+        from keyword
+        where keyword like CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <select id="countKeyword" resultType="int">
+        select count(*)
+        from keyword
+        where keyword = #{keyword}
+    </select>
+
+    <select id="findAll" resultType="project.bookservice.domain.report.Keyword">
+        select *
+        from keyword
+        order by report_id
+    </select>
+
+</mapper>

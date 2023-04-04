@@ -26,6 +26,11 @@ public class ReportInfoHistoryOfMemberServiceImpl implements ReportInfoHistoryOf
     }
 
     @Override
+    public void delete(Long reportId) {
+        reportInfoHistoryOfMemberRepository.delete(reportId);
+    }
+
+    @Override
     public int existsByHistory(String userId) {
         return reportInfoHistoryOfMemberRepository.existsByHistory(userId);
     }

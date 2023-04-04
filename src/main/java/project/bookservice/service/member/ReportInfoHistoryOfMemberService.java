@@ -9,6 +9,7 @@ public interface ReportInfoHistoryOfMemberService {
 
     void save(ReportInfoHistoryOfMemberSaveForm form);
     void delete(ReportInfoHistoryOfMember reportInfoHistoryOfMember);
+    void delete(Long reportId);
     int existsByHistory(String userId);
     List<ReportInfoHistoryOfMember> findAll();
 

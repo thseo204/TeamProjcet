@@ -48,12 +48,11 @@ public class MemberController {
     private boolean availableId, availableEmail, emailCodeCheck;
 
     @GetMapping("/joinForm")
-    public String joinForm(@ModelAttribute Member member,
+    public String joinForm(@ModelAttribute Member member, Model model){
 
-                           Model model){
-//                           @RequestParam(value="available", required = false, defaultValue = "0") boolean available){
-//        boolean available = false;
-//        Parameter..addAttribute("available", available);
+        log.info("availableId={}", availableId);
+        log.info("availableEmail={}",  availableEmail);
+        log.info("emailCodeCheck={}", emailCodeCheck);
         model.addAttribute("availableId", availableId);
         model.addAttribute("availableEmail", availableEmail);
         model.addAttribute("emailCodeCheck", emailCodeCheck);
@@ -64,9 +63,7 @@ public class MemberController {
 
     @GetMapping("/joinForm/idCheck")
     public String idCheck(@Valid @ModelAttribute("member") Member member,
-                          BindingResult bindingResult, Model model,
-                          RedirectAttributes redirectAttributes){
-
+                          BindingResult bindingResult, Model model){
 
         log.info("member.getUserId()={}", member.getUserId());
 
@@ -76,12 +73,11 @@ public class MemberController {
             log.info("errors={}", bindingResult);
             availableId = false; //아이디 중복검사 실패 시 false
             model.addAttribute("availableId", availableId);
-//            return "<script> location.href='/basic/joinForm'; </script>";
+
             return "/basic/joinForm";
         }
         availableId = true; //아이디 중복검사 성공 시 true
         model.addAttribute("availableId", availableId);
-//            redirectAttributes.addAttribute("userId", member.getUserId());
 
 //        return "redirect:/joinForm";
         return "/basic/joinForm";
@@ -98,9 +94,20 @@ public class MemberController {
                        @RequestParam("userBirth") String userBirth,
 //                       @RequestParam("userGender") String userGender,
                        @RequestParam("userName") String userName,
+                       @ModelAttribute Member member,
+                       BindingResult bindingResult,
                        Model model,
                        RedirectAttributes redirectAttributes) throws Exception {
         log.info("전달 받은 이메일 = {}", userEmail);
+        // 이메일에 인증코드를 보내기 전 이메일 검증(중복 or null)
+        member.setUserEmail(userEmail);
+        signUpFormValidator.emailCheckValidate(member.getUserEmail(), bindingResult);
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+
+            return "/basic/joinForm";
+        }
+
         ePw = mailService.sendSimpleMessage(userEmail);
         log.info("인증코드={}", ePw);
         log.info("userId={}", userId);
@@ -116,10 +123,8 @@ public class MemberController {
 //        redirectAttributes.addAttribute("userGender", userGender);
         redirectAttributes.addAttribute("userName", userName);
         redirectAttributes.addAttribute("userEmail", userEmail);
-//        String message = "<script>alert('인증번호가 전송되었습니다.');location.replace='/joinForm';</script>";
-//        return message;
+
         return "redirect:/joinForm";
-//        return code;
     }
 
     @GetMapping("/joinForm/emailCode")
@@ -151,7 +156,6 @@ public class MemberController {
         redirectAttributes.addAttribute("emailCode", emailCode);
 
 
-
         //이메일 인증코드 일치 검사
         signUpFormValidator.emailCodeCheckValidate(ePw, member.getEmailCode(), bindingResult);
         if(bindingResult.hasErrors()){
@@ -170,13 +174,7 @@ public class MemberController {
         return "redirect:/joinForm";
 //        return "/basic/joinForm";
     }
-    @ResponseBody
-    @GetMapping("/joinForm/joinFalse")
-    public String joinFalse(){
 
-        String message = "<script>alert('아이디 중복검사 혹은 이메일인증을 해주세요.');location.replace='/joinForm';</script>";
-        return message;
-    }
 
     @PostMapping("/joinForm")
     public String signUpSubmit(@Valid @ModelAttribute("member") SignUpForm signUpForm,
@@ -186,6 +184,7 @@ public class MemberController {
         log.info("signUpForm ={}", signUpForm);
         availableEmail = true; // 이메일 전송 성공 시
         model.addAttribute("availableEmail", availableEmail);
+
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
@@ -208,8 +207,11 @@ public class MemberController {
         }
 
         if(availableId == false || emailCodeCheck == false){
-
-            return "redirect:/joinForm/joinFalse";
+            bindingResult.reject("joinFalse", "아이디 중복확인 혹은 이메일 인증을 해주세요.");
+        }
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            return "basic/joinForm";
         }
 
         //기본 아이콘 지급
@@ -217,7 +219,9 @@ public class MemberController {
 
         //회원 정보 등록
         memberService.save(signUpForm);
-
+        availableId = false;
+        availableEmail = false;
+        emailCodeCheck = false;
         return "/basic/joinSuccessForm"; // 회원가입 성공 시 축하페이지로 이동
     }
 
@@ -229,7 +233,7 @@ public class MemberController {
     @GetMapping("/myBookmarkForm")
     public String myBookmarkForm(
             @SessionAttribute(name= SessionConst.LOGIN_MEMBER, required = false)
-                                     Member loginMember,
+            Member loginMember,
             Model model,
             RedirectAttributes redirectAttributes){
 
@@ -265,6 +269,7 @@ public class MemberController {
                                     @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                                     Member loginMember, Model model,
                                     RedirectAttributes redirectAttributes) {
+
         int existsByHistory = 0;
         if (bookAndReport == true) {
 
@@ -316,10 +321,10 @@ public class MemberController {
 
     @PostMapping("/myBookmarkForm/true/{collectionName}")
     public String addBookInCollection(@PathVariable String collectionName,
-                                    @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                    Member loginMember, Model model,
-                                    @RequestParam(value = "cb") List<Long> checkboxList,
-                                    RedirectAttributes redirectAttributes) {
+                                      @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                                      Member loginMember, Model model,
+                                      @RequestParam(value = "cb") List<Long> checkboxList,
+                                      RedirectAttributes redirectAttributes) {
 //        List<Long> checkboxList = (List<Long>) model.getAttribute("cb[]");
         log.info("collectionName={}", collectionName);
         Map<String, String> updateCollectionName = new HashMap<>();
@@ -378,8 +383,8 @@ public class MemberController {
 
     @GetMapping("/editCollectionListForm/{collectionName}")
     public String editCollectionListForm(@PathVariable String collectionName,
-                                     @SessionAttribute(name = SessionConst.LOGIN_MEMBER) Member loginMember,
-                                     Model model){
+                                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER) Member loginMember,
+                                         Model model){
 
         // 해당 유저의 collectionName에 있는 book 리스트 가져오기
         List<BookmarkHistoryOfMember> bookmarkHistoryOfMemberList = bookmarkHistoryOfMemberService.findByUserId(loginMember.getUserId());
@@ -393,8 +398,8 @@ public class MemberController {
 
     @PostMapping("/editCollectionListForm/{collectionName}")
     public String editCollectionList(@PathVariable String collectionName,
-                                         @SessionAttribute(name = SessionConst.LOGIN_MEMBER) Member loginMember,
-                                         Model model,
+                                     @SessionAttribute(name = SessionConst.LOGIN_MEMBER) Member loginMember,
+                                     Model model,
                                      @RequestParam(value = "cb") List<Long> checkboxList,
                                      RedirectAttributes redirectAttributes){
         // 컬렉션에서 삭제 하기 위해 컬렉션 레코드에 값 "-"로 변경
@@ -408,4 +413,10 @@ public class MemberController {
 
         return "redirect:/editCollectionListForm/{collectionName}";
     }
+
+    @GetMapping("/agreementForm")
+    public String agreementForm(){
+        return "/basic/agreement";
+    }
 }
+

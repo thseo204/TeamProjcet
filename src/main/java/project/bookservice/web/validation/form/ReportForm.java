@@ -14,30 +14,24 @@ import java.util.List;
  */
 @Data
 public class ReportForm {
-    @NotBlank
+
     private String isbn; // 책의 key 값을 통해 도서 제목 가지고 오기
 
     private Long id;
     private String title;
 
-    @NotBlank
-    private String writerId;
 
-//    @NotBlank(message = "아이디는 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{5,20}$", message = "아이디는 5~20자내로 입력해주세요.")
-//    private String userId;
+    private String writerId;
 
 
     private String date; // 작성일
 
-//    private List<MultipartFile> imageFiles; // 업로드한 이미지
     private String uploadFileName; // 유저가 업로드한 파일명
     private String storeFileName; // 서버 내부에서 관리하는 파일명
     private MultipartFile attachFile;
-    @NotBlank(message="기록을 남겨주세요.")
+
     private String content; // 내용
 
-    @NotNull(message = "공개 여부를 선택해주세요.")
     private Boolean disclosure; //공개여부
 
 

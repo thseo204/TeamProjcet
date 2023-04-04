@@ -12,14 +12,14 @@ import project.bookservice.repository.historyOfReportInfo.HistoryOfReportInfoRep
 import project.bookservice.repository.historyOfReportInfo.MyBatisHistoryOfReportInfoRepository;
 import project.bookservice.repository.member.*;
 
-import project.bookservice.repository.report.MyBatisReportRepository;
-import project.bookservice.repository.report.ReportInfoMapper;
-import project.bookservice.repository.report.ReportInfoRepository;
+import project.bookservice.repository.report.*;
 import project.bookservice.service.comment.CommentService;
 import project.bookservice.service.comment.CommentServiceImpl;
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoServiceImpl;
 import project.bookservice.service.member.*;
+import project.bookservice.service.report.KeywordService;
+import project.bookservice.service.report.KeywordServiceImpl;
 import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.repository.starRating.MybatisStarRatingRepository;
 import project.bookservice.repository.starRating.StarRatingMapper;
@@ -41,6 +41,7 @@ public class MyBatisConfig {
     private final ReportInfoHistoryOfMemberMapper reportInfoHistoryOfMemberMapper;
     private final BookmarkHistoryOfMemberMapper bookmarkHistoryOfMemberMapper;
     private final BookmarkCollectionMapper bookmarkCollectionMapper;
+    private final KeywordMapper keywordMapper;
 
     @Bean
     public MemberService memberService(){
@@ -112,5 +113,14 @@ public class MyBatisConfig {
     @Bean
     public BookmarkCollectionService bookmarkCollectionService(){
         return new BookmarkCollectionServiceImpl(bookmarkCollectionRepository());
+    }
+
+    @Bean
+    public KeywordRepository keywordRepository(){
+        return new MyBatisKeywordRepository(keywordMapper);
+    }
+    @Bean
+    public KeywordService keywordService(){
+        return new KeywordServiceImpl(keywordRepository());
     }
 }

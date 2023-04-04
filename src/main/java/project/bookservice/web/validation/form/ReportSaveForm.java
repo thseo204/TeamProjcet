@@ -25,6 +25,7 @@ public class ReportSaveForm {
 //    private String reportTitle; // 게시글 제목
     private String date; // 작성일
     //    private String fullPath;// 이미지 저장 경로
+    @NotBlank
     private String uploadFileName; // 유저가 업로드한 파일명
     private String storeFileName; // 서버 내부에서 관리하는 파일명
     @NotBlank(message="기록을 남겨주세요.")

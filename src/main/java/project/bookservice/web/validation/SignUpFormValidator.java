@@ -35,9 +35,10 @@ public class SignUpFormValidator implements Validator {
             bindingResult.rejectValue("userEmail","invalid.email.null", "");
         }
 //        // 아이디 중복 검증
-        if(memberRepository.existsByUserId(signUpForm.getUserId()) == 1){
-            bindingResult.rejectValue("userId", "invalid.id", "이미 사용중인 아이디 입니다.");
-        }
+//        if(memberRepository.existsByUserId(signUpForm.getUserId()) == 1){
+//            log.info("아이디 중복검증={}", signUpForm.getUserId());
+//            bindingResult.rejectValue("userId", "invalid.id", "이미 사용중인 아이디 입니다.");
+//        }
         //비밀번호 일치 검증
         if(!signUpForm.getUserPwd().equals(signUpForm.getUserRePwd())){
             bindingResult.rejectValue("userPwd", "invalid.pwd", "비밀번호가 일치하지 않습니다.");
@@ -60,11 +61,24 @@ public class SignUpFormValidator implements Validator {
         }
     }
 
+    public void emailCheckValidate(Object target, Errors errors){
+        BindingResult bindingResult = (BindingResult) errors;
+        String userEmail = (String) target;
+        log.info("emailCheckValidate {}=", userEmail);
+        // 아이디 중복 검증
+        if(memberRepository.existsByUserEmail(userEmail) == 1){
+            bindingResult.rejectValue("userEmail", "invalid.email", "이미 사용중인 이메일 입니다.");
+        }
+        if(userEmail.isEmpty()){
+            bindingResult.rejectValue("userEmail", "invalid.email.null", "이메일을 입력해주세요.");
+        }
+    }
+
 
     public void emailCodeCheckValidate(String ePw, Object target, Errors errors) {
         BindingResult bindingResult = (BindingResult) errors;
         String emailCode = (String) target;
-        log.info("idCheckValidate {}=", emailCode);
+        log.info("idCheckValidate ={}", emailCode);
         // 아이디 중복 검증
         if(!ePw.equals(emailCode)){
             bindingResult.rejectValue("emailCode", "invalid.ePw", "인증번호가 일치하지 않습니다.");
@@ -74,12 +88,5 @@ public class SignUpFormValidator implements Validator {
         }
     }
 
-    public void availableValidate(boolean availableId, boolean emailCodeCheck, BindingResult bindingResult) {
-        if(availableId == false){
-            bindingResult.rejectValue("availableId", "invalid.availableId", "아이디 중복확인을 해주시기바랍니다.");
-        }
-        if(!emailCodeCheck == false){
-            bindingResult.rejectValue("emailCodeCheck", "invalid.emailCodeCheck", "이메일 인증을 해주시기바랍니다.");
-        }
-    }
+
 }

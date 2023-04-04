@@ -54,7 +54,7 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("item");
 
-            System.out.println(nList.getLength() + "개의 데이터 발견");
+//            System.out.println(nList.getLength() + "개의 데이터 발견");
 
             
 
@@ -64,8 +64,8 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    System.out.println(eElement.toString());
-                    System.out.println();
+//                    System.out.println(eElement.toString());
+//                    System.out.println();
 //                    System.out.println("책 이미지 : " + getTagvalue("cover", eElement));
 //                    System.out.println("작가 : " + getTagvalue("author", eElement));
 //                    System.out.println("책 링크 : " + getTagvalue("link", eElement));

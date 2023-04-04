@@ -206,28 +206,7 @@ function closeEditForm(span){
                                     <span th:text="|${myCollection.collectionName} [${myCollection.date}]|"></span>
                                 </a>
 
-                                <!-- 컬렉션 이름 아래로 form 열리기 -->
-<!--                                    <span class="material-symbols-outlined" style="color:pink;"-->
-<!--                                          onclick="showEditForm(this)">add</span>-->
-<!--                                    <form th:action="@{|/myBookmarkForm/true/${myCollection.collectionName}|}"-->
-<!--                                          method="post" style="display: none;">-->
-<!--                                        <br/>-->
-<!--                                        <div class="box alt">-->
-<!--                                            <div class="row gtr-50 gtr-uniform" th:name="image">-->
-<!--                                                <div hidden="hidden" name="collectionName" id="collectionName"-->
-<!--                                                     th:text="${myCollection.collectionName}"></div>-->
-<!--                                                <div class="col-2 col-4-narrower" th:each="bookmark : ${bookmarkList}"-->
-<!--                                                     th:if="${bookmark.collectionName} == '-'">-->
-<!--                                                    <input type="checkbox" th:id="|cb${myCollection.collectionName}${bookmark.id}|" name="cb"-->
-<!--                                                           th:value="${bookmark.id}"/>-->
-<!--                                                    <label th:for="|cb${myCollection.collectionName}${bookmark.id}|" class=""><span-->
-<!--                                                            class="image"><img th:src="@{${bookmark.imageUrl}}" alt=""></span></label>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <input class="alt" type="submit" value="컬렉션에 추가하기"/>-->
-<!--                                        <br/>-->
-<!--                                    </form>-->
+
 
                             </td>
                             <!--                            <td>0</td>-->
@@ -237,16 +216,6 @@ function closeEditForm(span){
                     </table>
                 </div>
 
-                <!--                <div class="row">-->
-                <!--                    <div class="col-12 fit" th:each="myCollection : ${myCollectionList}">-->
-                <!--                        <ul class="actions" >-->
-                <!--                            <li>-->
-                <!--                                <a class="button special fit alt" th:text="${myCollection.collectionName}"></a>-->
-                <!--                            </li>-->
-                <!--                        </ul>-->
-
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </section>
 
@@ -275,23 +244,10 @@ function closeEditForm(span){
                                 <img th:src="|/image/${myReportInfo.getStoreFileName()}|" alt=""/>
                                 <span th:if="${myReportInfo.disclosure}==false">
                                     <span class="material-symbols-outlined" style="float:left; color:pink;">disabled_visible</span>
-                                    <!--                                    <span class="material-symbols-outlined" style="float:right; color:pink;">favorite</span>-->
-                                    <!--                                    <span th:text="${myReportInfo.favoriteNum}"></span>-->
-                                    <!--                                    <span class="material-symbols-outlined" style="float:right; color:pink;">bookmark</span>-->
-                                    <!--                                    <span th:text="${myReportInfo.collectionNum}"></span>-->
                                 </span>
                             </span>
-                                <!--                            <span style="float:left; color:gray;">-->
-                                <!--                            <span class="material-symbols-outlined" style="color:pink;">favorite</span>-->
-                                <!--                            <span th:text="${myReportInfo.favoriteNum}"></span>-->
-                                <!--                                <span class="material-symbols-outlined" style="color:pink;">bookmark</span>-->
-                                <!--                            <span th:text="${myReportInfo.favoriteNum}"></span>-->
-                                <!--                                <span th:if="${myReportInfo.disclosure}==false">-->
-                                <!--                                    <span class="material-symbols-outlined" >disabled_visible</span>-->
-                                <!--                                </span>-->
-                                <!--                            </span>-->
-                                <!--                            <br/>-->
-                                <!--                            <br/>-->
+
+								<span style="padding: 0em;" >
                                 <p th:if="${#strings.length(myReportInfo.title) > 6}"><b
                                         th:text="|[${#strings.substring(myReportInfo.title, 0 , 6)}...]|"></b></p>
                                 <p th:unless="${#strings.length(myReportInfo.title) > 6}"><b
@@ -300,6 +256,8 @@ function closeEditForm(span){
                                    th:text="|${#strings.substring(myReportInfo.content, 0, 15)} ....|"></p>
                                 <p th:unless="${#strings.length(myReportInfo.content) > 15}"
                                    th:text="|${myReportInfo.content}|"></p>
+                                </span>
+
                                 <!--                            <ul class="actions special">-->
                                 <!--                                <li><a class="button alt">Learn More</a></li>-->
                                 <!--                            </ul>-->
@@ -343,9 +301,6 @@ function closeEditForm(span){
                                    th:text="|${#strings.substring(reportInfo.content, 0, 15)} ....|"></p>
                                 <p th:unless="${#strings.length(reportInfo.content) > 15}"
                                    th:text="|${reportInfo.content}|"></p>
-                                <!--                            <ul class="actions special">-->
-                                <!--                                <li><a class="button alt">Learn More</a></li>-->
-                                <!--                            </ul>-->
                             </section>
                         </a>
                     </div>
@@ -356,76 +311,18 @@ function closeEditForm(span){
 </section>
 
 
-<!--&lt;!&ndash; Main &ndash;&gt;-->
-<!--<section id="banner">-->
 
-<!--    <div class="row" >-->
-<!--        <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">-->
-
-<!--            <section class="box special">-->
-<!--                <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>-->
-<!--                &lt;!&ndash;                    <h3>Sed lorem adipiscing</h3>&ndash;&gt;-->
-
-<!--                <span style="float:left; color:gray;">-->
-<!--                        <span class="material-symbols-outlined">account_circle</span>-->
-<!--                        작성자 : <span th:text="${reportInfo.writerId}"></span>-->
-<!--                    </span>-->
-
-<!--                <nav id="nav" style="float:right;" >-->
-<!--                    <ul class="actions">-->
-<!--                        &lt;!&ndash;                            <li style="float:left;">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                <span class="material-symbols-outlined" style="color:pink;">update</span>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                <span th:text="${reportInfo.date}"></span>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                            </li>&ndash;&gt;-->
-<!--                        <a th:href="@{|/feedListForm/${reportInfo.id}/${history.favorite}|}">-->
-<!--                            <li style="float:left;">-->
-<!--                                    <span th:if="${history.favorite}" class="material-symbols-outlined"-->
-<!--                                          style="color:red;">favorite</span>-->
-<!--                                <span th:unless="${history.favorite}" class="material-symbols-outlined"-->
-<!--                                      style="color:pink;">favorite</span>-->
-<!--                                <span th:text="${reportInfo.favoriteNum}"></span>-->
-<!--                            </li>-->
-<!--                        </a>-->
-<!--                        <li style="float:left;">-->
-<!--                            <span class="material-symbols-outlined" style="color:pink;">bookmark</span>-->
-<!--                            <span th:text="${reportInfo.collectionNum}"></span>-->
-<!--                        </li>-->
-<!--                        &lt;!&ndash;                            <li class="icon solid fa-angle-down" style="float:left;">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                <span class="material-symbols-outlined" style="color:pink;">more_vert</span>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                <ul>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                    <li><a onclick="openLoginModal()">저장</a></li>&ndash;&gt;-->
-<!--                        &lt;!&ndash;&lt;!&ndash;                                    <li th:if="${reportInfo.writeId} == ${#session.getAttribute('loginMember').userId}"><a th:href="|/editReportForm/${reportInfo.id}|">수정</a></li>&ndash;&gt;&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                    <li><a onclick="openLoginModal()">삭제</a></li>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                                </ul>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                            </li>&ndash;&gt;-->
-
-<!--                    </ul>-->
-<!--                </nav>-->
-
-<!--                <br/>-->
-<!--                <br/>-->
-<!--                <br/>-->
-<!--                <p th:class="word" th:text="${reportInfo.content}"></p>-->
-<!--                <br/>-->
-<!--                <br/>-->
-<!--                <p th:class="word" th:text="${reportInfo.hashTag}"></p>-->
-<!--                <ul class="actions special">-->
-<!--                    <li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>-->
-<!--                </ul>-->
-<!--            </section>-->
-<!--        </div>-->
-<!--    </div>-->
 
 <!--</section>-->
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
 <!--<script src="assets/js/imageUpload.js"></script>-->
 </body>

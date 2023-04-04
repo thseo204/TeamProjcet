@@ -30,6 +30,7 @@ function openLoginModal() {
 <!--로그인 세션정보 없을때-->
 <section id="main" class="container" th:if="${#session} == null">
     <header>
+        <br/>
         <h2>FEED</h2>
         <p>
             <a th:onclick="openLoginModal();">
@@ -51,34 +52,33 @@ function openLoginModal() {
 
         <span class="material-symbols-outlined">account_circle</span>
         작성자 : <span th:text="${reportInfo.writerId}"></span>
-
-        <nav id="nav" style="float:right;">
-            <ul class="actions">
-                <li style="float:left;">
-                    <span class="material-symbols-outlined" style="color:pink;">update</span>
+        <span style="float:right; color:pink;">
+            <span class="material-symbols-outlined" style="color:pink;">update</span>
                     <span th:text="${reportInfo.date}"></span>
-                </li>
-                <a onclick="openLoginModal()">
-                    <li style="float:left;">
-                        <span class="material-symbols-outlined" style="color:pink;">favorite</span>
-                        <span th:text="${reportInfo.favoriteNum}"></span>
-                    </li>
-                    <li style="float:left;">
-                        <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
-                        <span th:text="${reportInfo.collectionNum}"></span>
-                    </li>
-                </a>
-            </ul>
-        </nav>
+            <a onclick="openLoginModal()">
+                <span class="material-symbols-outlined" style="color:pink;">favorite</span>
+                <span th:text="${reportInfo.favoriteNum}"></span>
+                <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                <span th:text="${reportInfo.collectionNum}"></span>
+            </a>
+        </span>
 
         <!--        <h3> 도서제목 : </h3>-->
         <br/>
         <br/>
-        <br/>
+        <h4><b th:text="|도서제목: ${reportInfo.title}"|></b></h4>
         <p th:text="${reportInfo.content}"></p>
         <br/>
         <br/>
-        <p th:text="${reportInfo.hashTag}"></p>
+        <p>
+            <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}" >
+                <a th:href="@{|/searchKeyword/${keyword.keyword}|}">
+                    <span th:text="|#${keyword.keyword} |" style="color:skyBlue;"></span>
+                </a>
+            </span>
+        </p>
+
+<!--        <p th:text="${reportInfo.hashTag}"></p>-->
     </div>
 </section>
 
@@ -107,39 +107,42 @@ function openLoginModal() {
         <span class="material-symbols-outlined">account_circle</span>
         작성자 : <span th:text="${reportInfo.writerId}"></span>
 
-        <nav id="nav" style="float:right;" th:each="history : ${historyList}"
-             th:if="${history.reportId}==${reportInfo.id}">
-            <ul class="actions">
-                <li style="float:left;">
-                    <span class="material-symbols-outlined" style="color:pink;">update</span>
-                    <span th:text="${reportInfo.date}"></span>
-                </li>
-                <li style="float:left;">
-                    <a th:href="@{|/feedListForm/${reportInfo.id}/favorite/${history.favorite}|}">
-                        <span th:if="${history.favorite}" class="material-symbols-outlined"
-                              style="color:red; ">favorite</span>
-                        <span th:unless="${history.favorite}" class="material-symbols-outlined" style="color:pink;">favorite</span>
-                        <span th:text="${reportInfo.favoriteNum}"></span>
-                    </a>
-                </li>
-                <li style="float:left;">
-                    <a th:href="@{|/feedListForm/${reportInfo.id}/collection/${history.collection}|}">
-                        <span th:if="${history.collection}" class="material-symbols-outlined" style="color:red; ">bookmark</span>
-                        <span th:unless="${history.collection}" class="material-symbols-outlined" style="color:pink;">bookmark</span>
-                        <span th:text="${reportInfo.collectionNum}"></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <span style="float:right; color:pink;"  th:each="history : ${historyList}"
+              th:if="${history.reportId}==${reportInfo.id}">
+            <span class="material-symbols-outlined" style="color:pink;">update</span>
+            <span th:text="${reportInfo.date}"></span>
+            <a th:href="@{|/feedListForm/${reportInfo.id}/favorite/${history.favorite}|}">
+                <span th:if="${history.favorite}" class="material-symbols-outlined"
+                      style="color:red;">favorite</span>
+                <span th:unless="${history.favorite}" class="material-symbols-outlined"
+                      style="color:pink;">favorite</span>
+                <span th:text="${reportInfo.favoriteNum}"></span>
+            </a>
+            <a th:href="@{|/feedListForm/${reportInfo.id}/collection/${history.collection}|}">
+                <span th:if="${history.collection}" class="material-symbols-outlined"
+                      style="color:red; ">bookmark</span>
+                <span th:unless="${history.collection}" class="material-symbols-outlined"
+                      style="color:pink;">bookmark</span>
+                <span th:text="${reportInfo.collectionNum}"></span>
+            </a>
+        </span>
+
+
 
         <!--        <h3> 도서제목 : </h3>-->
         <br/>
         <br/>
-        <br/>
+        <h4><b th:text="|도서제목: ${reportInfo.title}"|></b></h4>
         <p th:text="${reportInfo.content}"></p>
         <br/>
         <br/>
-        <p th:text="${reportInfo.hashTag}"></p>
+        <p>
+            <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}" >
+                <a th:href="@{|/searchKeyword/${keyword.keyword}|}">
+                    <span th:text="|#${keyword.keyword} |" style="color:skyBlue;"></span>
+                </a>
+            </span>
+        </p>
     </div>
 </section>
 

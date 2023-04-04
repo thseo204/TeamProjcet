@@ -3,10 +3,11 @@
 
 <th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
 
-<script>
+<script type="text/javascript">
 function checkId(){
 var userId = document.getElementById('userId').value;
 
+<!--location.replace("/joinForm/idCheck");-->
 location.replace("/joinForm/idCheck?userId=" + userId);
 }
 
@@ -20,10 +21,12 @@ var userBirth = document.getElementById('userBirth').value;
 var userName = document.getElementById('userName').value;
 var userEmail = document.getElementById('userEmail').value;
 
-    location.replace("/joinForm/mail?userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
+location.replace("/joinForm/mail?userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
 + "&userBirth=" + userBirth + "&userName=" + userName );
+if(!userEmail.equals(null)){
+    alert('인증번호가 전송되었습니다.');
+}
 
-alert('인증번호가 전송되었습니다.');
 }
 
 function checkEmailCode(){
@@ -41,6 +44,7 @@ var userEmail = document.getElementById('userEmail').value;
 location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
 + "&userBirth=" + userBirth + "&userName=" + userName );
 }
+
 </script>
 <body class="is-preload">
 <div id="page-wrapper">
@@ -53,7 +57,7 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
             <p>회원가입 후 다양한 서비스를 이용해보세요:)</p>
         </header>
         <div class="box">
-            <form method="post" th:action="@{/joinForm}" th:object="${member}">
+            <form method="post" th:action="@{/joinForm}" id="joinForm" name="joinForm" th:object="${member}">
                 <div class="row gtr-50 gtr-uniform">
 
                     <div class="col-9 col-12-mobilep">
@@ -67,7 +71,7 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                             가능한 아이디 입니다.</span></div>
                     </div>
                     <div class="col-3 col-12-mobilep">
-                        <a class="button alt" href="javascript:checkId();">중복확인</a>
+                        <a class="button alt" id="idCheckBtn" name="idCheckBtn" href="javascript:checkId();">중복확인</a>
                     </div>
 
                     <div class="col-12">
@@ -124,7 +128,7 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                         <a class="button alt" href="javascript:checkEmail();">인증번호 전송</a>
                         <!--						<a class="button" id="checkEmail" href="javascript:checkEmail();" >인증번호 전송</a>-->
                     </div>
-<!--                    <br/>-->
+                    <!--                    <br/>-->
                     <div class="field-error" th:each="error, stat :${#fields.errors('userEmail')}"
                          th:if="${stat.first}" th:text="${error}"/>
                     <br/>
@@ -132,7 +136,7 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                     <br/>
                     <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">
                         <div class="col-9" align="center">
-<!--                            <label for="emailCode" id="emailCodeTxt" >인증번호 8자리를 입력해주세요</label>-->
+                            <!--                            <label for="emailCode" id="emailCodeTxt" >인증번호 8자리를 입력해주세요</label>-->
                             <input type="text" name="emailCode" id="emailCode" th:field="*{emailCode}"
                                    placeholder="인증번호 8자리를 입력해주세요" th:errorclass="field-error"/>
                             <div class="field-error" th:each="error, stat :${#fields.errors('emailCode')}"
@@ -141,17 +145,31 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                         </div>
                         <br/>
                         <div class="col-3"  align="center">
-                            <a class="button alt" href="javascript:checkEmailCode();">인증번호 확인</a>
+                            <a class="button alt" id="emailCheckBtn" name="emailCheckBtn" href="javascript:checkEmailCode();">인증번호 확인</a>
                         </div>
                         <br/>
                     </div>
 
                     <div class="col-12">
+
+                        <input type="checkbox" name="agree" id="agree" value="agree"  />
+                        <label for="agree">
+                            <a onclick="window.open('/agreementForm', '_blank', 'width=600, height=650', true);" style="color:skyBlue;">개인정보 수집 및 이용 동의</a>
+                        </label>
+                    </div>
+
+                    <div align="center" th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each=" err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                    </div>
+
+                    <div class="col-12">
                         <ul class="actions special">
-                            <li><input type="submit" value="회원가입"/></li>
+                            <li><input type="submit" id="joinBtn" name="joinBtn" value="회원가입"/></li>
+
                         </ul>
                     </div>
                 </div>
+                <input type="hidden" id="userCharIcon" name="userCharIcon" th:field="*{userCharIcon}" value="/images/icons/F.png">
             </form>
         </div>
     </section>
@@ -166,7 +184,31 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
 <script src="/assets/js/breakpoints.min.js"></script>
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
+<script th:inline="javascript" type="text/javascript" language="javascript">
 
+$('#joinBtn').click(function(e){
+const availableId = /*[[${availableId}]]*/;
+const availableEmail = /*[[${availableEmail}]]*/;
+const emailCodeCheck = /*[[${emailCodeCheck}]]*/;
+
+    if(availableId == false){
+        alert('아이디 중복확인을 해주세요.');
+        $('#idCheckBtn').focus();
+        return;
+    }
+    if(availableEmail == false || emailCodeCheck == false){
+        alert('이메일 인증을 해주세요.')
+        $('#emailCheckBtn').focus();
+        return;
+    }
+    if(!$('#agree').is(':checked')){
+       alert("개인정보 수집 및 이용에 동의하셔야 합니다.");
+       $('#agree').focus();
+    }else{
+        $('#joinForm').attr('action', '/joinForm').submit();
+    }
+});
+</script>
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

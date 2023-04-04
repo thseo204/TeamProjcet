@@ -43,13 +43,13 @@ public class MyCharController {
 
 
         loginMember.setUserCharIcon(imagePath);
-        //유저의 아이콘 변경
+        
         memberService.editCharIcon(loginMember);
 
-        //변경된 아이콘으로 comment 설정
+        
         Comment comment = new Comment(loginMember.getUserId(),loginMember.getUserCharIcon());
 
-        //유저가 작성한 댓글들 아이콘을 변경된 아이콘으로 변경
+        
         commentService.updateCharIcon(comment);
 
         log.info("comment={}",comment);

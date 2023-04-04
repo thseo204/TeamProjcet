@@ -7,7 +7,7 @@
 
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
-<link rel="stylesheet" href="assets/css/errors.css"/>
+<link rel="stylesheet" href="/assets/css/errors.css"/>
 
 <script>
     function loadFile(input){
@@ -49,18 +49,20 @@ function openLoginModal() {
 
                 <form method="get">
                     <p></p>
-                    <div class="row gtr-uniform gtr-50">
+                    <div class="row gtr-uniform gtr-50" th:object="${book}">
 
                         <div class="col-9 col-12-mobilep">
-                            <input type="text" name="title" id="title" th:value="${book.title}" placeholder="도서 검색"
+                            <input type="text" name="title" id="title" th:field="*{title}" placeholder="도서 검색"
                                    readonly/>
                         </div>
                         <div class="col-3 col-12-mobilep">
                             <!--									<a class="button special icon solid fa-search fit"></a>-->
-                            <input type="button" value="Search" class="button special icon solid fa-search fit"
+                            <input type="button" id="bookSearchBtn" name="bookSearchBtn" value="Search" class="button special icon solid fa-search fit"
                                    onclick="window.open('/searchBookInReportForm', '_blank', 'width=600, height=600', true);"/>
                         </div>
-
+                        <div th:if="${#fields.hasGlobalErrors()}">
+                            <p class="field-error" th:each=" err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                        </div>
                         <!--						<ul class="actions">-->
                         <!--							<li class="col-9 col-12-mobilep"></li>-->
                         <!--							<li class="col-3 col-12-mobilep"><a href="#" class="button special icon solid fa-search fit">Search</a></li>-->
@@ -78,7 +80,8 @@ function openLoginModal() {
 <!--                        </label>-->
 <!--                    </span>-->
 <!--                </h3>-->
-                <form method="post" enctype="multipart/form-data" th:action >
+
+				<form method="post" id="uploadForm" name="uploadForm" enctype="multipart/form-data" th:action="@{|/writeReportForm/${book.isbn}|}" th:object="${reportInfo}">
                     <h3>
                         도서제목 : <span th:text="${book.title}"></span>
                     </h3>
@@ -90,9 +93,11 @@ function openLoginModal() {
                                     <p class="image fit" id="image"></p><br/>
 <!--                                    <span class="material-symbols-outlined" style="float:right; color:pink;">add_a_photo</span>-->
                                     <span class="material-symbols-outlined" style="float:right; color:pink;">add_photo_alternate</span>&nbsp;&nbsp;
+                                    <div class="field-error" th:each="error, stat :${#fields.errors('attachFile')}"
+                                         th:if="${stat.first}" th:text="${error}"/>
                                 </label>
                             </div>
-                            <input type="file" id="attachFile" name="attachFile" accept="image/*"
+                            <input type="file" id="attachFile" name="attachFile" th:field="*{attachFile}" accept="image/*"
                                    style="visibility:hidden;" onchange="loadFile(this)">
 <!--                            th:field="${reportInfo.imageFile}" multiple="multiple"-->
 
@@ -111,26 +116,31 @@ function openLoginModal() {
 
                     <div class="row gtr-uniform gtr-50">
                         <div class="col-12">
-                            <textarea name="content" id="content" th:field="${reportInfo.content}" placeholder="기록을 남겨보세요." rows="12"></textarea>
+                            <textarea name="content" id="content" th:field="*{content}" placeholder="기록을 남겨보세요." rows="12"></textarea>
+                            <div class="field-error" th:each="error, stat :${#fields.errors('content')}"
+                                 th:if="${stat.first}" th:text="${error}"/>
                         </div>
                         <div class="col-12">
-                            <input type="text" name="hashTag" id="hashTag" value="" th:field="${reportInfo.hashTag}"
+                            <input type="text" name="hashTag" id="hashTag" value="" th:field="*{hashTag}"
                                    placeholder="태그를 입력해주세요.   ex) #독서노트 #오늘의기록 #소설 #000작가님"/>
                         </div>
                         <div class="col-4 col-12-narrower">
-                            <input type="radio" id="disclosure-true" name="disclosure" th:field="${reportInfo.disclosure}" th:value="true" checked>
+                            <input type="radio" id="disclosure-true" name="disclosure" th:field="*{disclosure}" th:value="true" checked>
                             <label for="disclosure-true">공개</label>
                         </div>
                         <div class="col-4 col-12-narrower">
-                            <input type="radio" id="disclosure-false" th:field="${reportInfo.disclosure}" th:value="false" name="disclosure">
+                            <input type="radio" id="disclosure-false" th:field="*{disclosure}" th:value="false" name="disclosure">
                             <label for="disclosure-false">비공개</label>
                         </div>
+                        <br/>
+                        <div class="field-error" th:each="error, stat :${#fields.errors('disclosure')}"
+                             th:if="${stat.first}" th:text="${error}"/>
 <!--                        <div>-->
 <!--                            작성자 : <input type="text" name="userId"/>-->
 <!--                        </div>-->
                         <div class="col-12">
                             <ul class="actions">
-                                <li><input type="submit" value="올리기"/></li>
+                                <li><input type="submit" id="uploadBtn" value="올리기"/></li>
                                 <li><input type="reset" value="작성취소" class="alt"/></li>
                             </ul>
                         </div>
