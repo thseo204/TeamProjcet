@@ -15,7 +15,6 @@ import project.bookservice.domain.member.BookmarkCollection;
 import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.domain.member.Member;
 
-import project.bookservice.domain.report.Keyword;
 import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.domain.starRating.StarRating;
 import project.bookservice.repository.book.MyBatisBookRepository;
@@ -46,23 +45,73 @@ public class BookController {
      private final StarRatingService starRatingService;
     private final BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService;
     private final BookmarkCollectionService bookmarkCollectionService;
-    private final KeywordService keywordService;
-	private final ReportInfoService reportInfoService;
+	 private final KeywordService keywordService;
+    private final ReportInfoService reportInfoService;
+
+    @GetMapping("/BookList")
+    public String BookList(String title,Book book,Model model) throws ParseException {
+        log.info("title ={}", title);
+        String[] keywordArr = keywordService.findByLikeKeyword(title);
+        model.addAttribute("keywordArr", keywordArr);
+            return "basic/searchBookList";
+    }
+
+    @GetMapping("/NoSearchWord")
+    public String MoSearchWord(String title,Book book,Model model) throws ParseException {
+
+        log.info("title ={}", title);
+
+        //검색어가 아무겄또 없을경우 베스트셀러 정보 가져오기
+        String bookTitle = "Bestseller";
+        APIParser apiParser = new ApiSearchBookList(starRatingService);
+        ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(bookTitle);
+
+        //랜덤한 숫자 생성
+        Random random = new Random();
+        int randomNumber = random.nextInt(10) + 1;
+
+        Book randomBook = bookList.get(randomNumber-1);
+        model.addAttribute("randomBook", randomBook);
+        model.addAttribute("randomNumber", randomNumber);
+        return "basic/searchBookList";
+    }
 
     @GetMapping("/searchBookList")
-    public String searchBook(String title,Book book,Model model) throws ParseException {
+    public String searchBook(String title,Book book,Model model,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "10") int size) throws ParseException {
 
+        log.info("title ={}", title);
 
-        if (title == null) {
-            return "basic/searchBookList";
+        if (title.isBlank()) {
+            title = null;
+            return "redirect:/NoSearchWord";
 
         }else {
             APIParser apiParser = new ApiSearchBook(starRatingService);
             ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(title);
-            String[] keywordArr = keywordService.findByLikeKeyword(title);
+			String[] keywordArr = keywordService.findByLikeKeyword(title);
 
-            model.addAttribute("bookList", bookList);
-            model.addAttribute("keywordArr", keywordArr);
+            // 전체 데이터 개수
+            int total = bookList.size();
+
+            if(total == 0){
+                return "redirect:/NoSearchWord";
+            }
+            // 총 페이지 수 계산
+            int totalPages = (int) Math.ceil((double) total / size);
+
+
+            // 현재 페이지의 데이터 추출
+            int start = (page - 1) * size;
+            int end = Math.min(start + size, total);
+            List<Book> currentPageList = bookList.subList(start, end);
+
+            // 모델에 데이터 담기
+            model.addAttribute("bookList", currentPageList);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("currentPage", page);
+			model.addAttribute("keywordArr", keywordArr);
             return "basic/searchBookList";
         }
     }

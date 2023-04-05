@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
+import project.bookservice.web.validation.form.EditEmailForm;
+import project.bookservice.web.validation.form.EditInformationForm;
+import project.bookservice.web.validation.form.EditPwdForm;
 import project.bookservice.web.validation.form.SignUpForm;
 
 import java.util.List;
@@ -14,7 +17,7 @@ public interface MemberRepository {
 	 Member save(Member member);
     SignUpForm save(SignUpForm signUpForm);
 
-    void update(SignUpForm signUpForm);
+    void update(EditInformationForm editInformationForm);
 
     void editCharIcon(Member loginmember);
 
@@ -31,6 +34,9 @@ public interface MemberRepository {
 
     Member findIdByEmail(String userEmail);
 
-    void editPwd(Member member);
+    void editPwdByRandom(Member member);
+
+    void editPwd(EditPwdForm editPwdForm);
+    void editEmail(EditEmailForm editEmailForm);
 
 }

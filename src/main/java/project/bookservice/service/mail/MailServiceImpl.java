@@ -38,7 +38,7 @@ public class MailServiceImpl implements MailService{
     public void sendMail(Member member) throws MessagingException {
         String randomPwd = randomPwdCreate();
         member.setUserPwd(randomPwd);
-        memberRepository.editPwd(member);
+        memberRepository.editPwdByRandom(member);
         String subject="[Reading journal] Password";
         String body = "<h1>Password :" + member.getUserPwd() + "</h1>";
         body += "<p><a href='http://localhost:8000/loginForm'>Go login page</a></p>";

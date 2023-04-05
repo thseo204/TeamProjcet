@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+<script>
+function checkEmail(){
+var userEmail = document.getElementById('userEmail').value;
+var newEmail = document.getElementById('newEmail').value;
+
+    location.replace("/editEmail/mail?userEmail=" + userEmail + "&newEmail=" + newEmail );
+
+alert('인증번호가 전송되었습니다.');
+}
+
+function checkEmailCode(){
+var emailCode = document.getElementById('emailCode').value;
+var userEmail = document.getElementById('userEmail').value;
+var newEmail = document.getElementById('newEmail').value;
+
+location.replace("/editEmail/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail + "&newEmail=" + newEmail );
+}
+</script>
+<body class="is-preload">
+<link rel="stylesheet" href="/assets/css/errors.css"/>
+
+<div id="page-wrapper">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+    <section id="main" class="container medium">
+
+        <div class="box">
+            <form method="post" th:object="${editEmailForm}" id="editPwdForm" >
+                <div class="row gtr-50 gtr-uniform">
+                    <h3 class = "col-12">이메일 변경</h3>
+                    <h4 class = "col-12">다른 아이디/사이트에서 사용한 적 없는 비밀번</h4>
+                    <h4 class = "col-12">이전에 사용한 적 없는 비밀번호가 안전합니다.</h4>
+                    <div class="col-12">
+                        <label for="userEmail">현재 이메일</label>
+                        <input type="text" name="userEmail" id="userEmail" th:field="*{userEmail}"
+                               class="form-control"
+                               th:errorclass="field-error">
+                        <div th:if="${message != null}" class="alert alert-danger">
+                            <p th:text="${message}" style="color: #dc3545 !important;"></p>
+                        </div>
+                    </div>
+                    <br><br><br>
+                    <div class="col-9 col-12-mobilep">
+                        <input type="text" name="newEmail" id="newEmail" th:field="*{newEmail}"
+                               class="form-control"
+                               placeholder="변경할 이메일"
+                               th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{newEmail}"/>
+                    </div>
+                    <div class="col-3 col-12-mobilep">
+                        <a class="button alt" href="javascript:checkEmail();">이메일 인증하기</a>
+                    </div>
+                    <br><br><br>
+
+                    <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">
+                        <div class="col-9 col-12-mobilep">
+                            <!--                            <label for="emailCode" id="emailCodeTxt" >인증번호 8자리를 입력해주세요</label>-->
+                            <input type="text" name="emailCode" id="emailCode" th:field="*{emailCode}"
+                                   placeholder="인증번호 8자리를 입력해주세요" th:errorclass="field-error"/>
+                        </div>
+                        <br>
+                        <div class="col-3 col-12-mobilep">
+                            <a class="button alt" href="javascript:checkEmailCode();">인증번호 확인</a>
+                        </div>
+                            <div class="field-error" th:each="error, stat :${#fields.errors('emailCode')}"
+                                 th:if="${stat.first}" th:text="${error}"/>
+                            <div th:if="${not #fields.hasErrors('emailCode')} and ${emailCodeCheck} == true"><span style="color:blue;">인증을 성공하였습니다.</span></div>
+                        <br>
+                    </div>
+
+                    <div align="center" th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each=" err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                    </div>
+
+                    <div class="col-12">
+                        <ul class="actions special">
+                            <li><input type="submit" value="수정 완료"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>
+

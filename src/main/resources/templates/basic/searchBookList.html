@@ -6,8 +6,20 @@
 body p {
 display:block;
 }
+.word {
+    white-space: no-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+.pagination {
+  display: flex;
+  justify-content: center;
+}
 
+.pagination a {
+  font-size: 1.2em; /* 예시로 글자 크기를 1.2em으로 설정 */
+}
 
 </style>
 
@@ -16,91 +28,156 @@ display:block;
 
 <!-- Main -->
 <section id="main" class="container">
-  <header>
-    <br/>
-    <h2>도서검색</h2>
-  </header>
+    <header>
+        <h2>도서검색</h2>
+    </header>
 
-  <!-- Table -->
-  <section class="box" >
-    <form th:action method="get" th:Object="${book}">
-      <div class="row gtr-uniform gtr-50">
-        <div class="col-9 col-12-mobilep">
-          <input type="text" id="title" name="title" placeholder="도서 검색" autocomplete="on"/>
-        </div>
-
-        <div class="col-3 col-12-mobilep">
-          <input type="submit" class="button special icon solid fa-search fit" value="search" />
-        </div>
-      </div>
-    </form>
-    <hr/>
-    <!-- 검색 키워드 리스트 출력 -->
-    <h4>| 유사 키워드 검색 결과 |</h4>
-    <span th:each="keyword : ${keywordArr}">
-      <a th:href="@{|/searchKeyword/${keyword}|}">
+    <!-- Table -->
+    <section class="box" style="display: flex; align-items: center;">
+        <form th:action="@{/searchBookList}" method="get" th:Object="${book}" style="flex: 1; width: 80%">
+            <div style="display: flex; align-items: center;">
+                <div class="search" style="flex: 1;">
+                    <input type="text" id="title" name="title" placeholder="검색어 입력">
+                </div>
+                <button type="submit" class="button special icon solid fa-search" style="margin-left: 10px;">
+                    검색
+                </button>
+            </div>
+        </form>
+        <span th:each="keyword : ${keywordArr}">
+            <a th:href="@{|/searchKeyword/${keyword}|}">
         <span th:text="|#${keyword} |" style="font-size:18px; color:skyBlue;"></span>
       </a>
     </span>
-  </section>
+    </section>
 
-  <section class="box">
-    <div>
-      <h4>| 검색 결과 |</h4>
-      <hr/>
+    <section class="box" th:if="${randomBook != null}">
+        <h3>검색 결과가 없습니다.</h3>
+        <h4>이런 책은 어떠세요?</h4>
+        <h4 th:text="|이번주 베스트셀러 ${randomNumber} 위|"></h4>
+        <a th:href="@{|/book/${randomBook.isbn}|}">
+            <section class="box special"
+                     style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+                <span class="image left"><img th:src="@{${randomBook.imageUrl}}" alt=""
+                                              style="width:85px; height:125px;"/></span>
 
-      <div class="row">
-        <!--                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">-->
-        <!--                    <div class="col-6 gtr-25" th:each="book : ${bookList}">-->
-        <div class="col-6 col-12-narrower" th:each="book : ${bookList}">
-          <a th:href="@{|/book/${book.isbn}|}">
-            <!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
-            <section class="box special" style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;" >
-              <span class="image left"><img th:src="@{${book.imageUrl}}" alt="" style="width:85px; height:125px;"/></span>
-
-              <p th:if="${book.title.indexOf('-') == -1}">
-                <br/>
-                <b th:text="|[${book.title}]|"></b><br/>
-                <span th:text="${#strings.substringBefore(book.author,'(')}"
-                      style="color:gray;"></span><br/>
-                <!--                                        <br/>-->
-                <!--                                별점이 없을떄-->
-                <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
-                                            <span >★</span>
+                <p th:if="${randomBook.title.indexOf('-') == -1}">
+                    <br/>
+                    <b th:text="|[${randomBook.title}]|"></b><br/>
+                    <span th:text="${#strings.substringBefore(randomBook.author,'(')}"
+                          style="color:gray;"></span><br/>
+                    <!--                                        <br/>-->
+                    <!--                                별점이 없을떄-->
+                    <span th:if="${randomBook.avgStarRating == null}" style="color: lightGray;">
+                                            <span>★</span>
                                             <span>0.0</span>
                                           </span>
 
-                <!--별점이 있을떄-->
-                <span th:if="${book.avgStarRating != null}" >
+                    <!--별점이 있을떄-->
+                    <span th:if="${randomBook.avgStarRating != null}">
                                             <span style="color: #FFD700;">★</span>
-                                            <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                                            <span th:text="${#numbers.formatDecimal(randomBook.avgStarRating,1,1)}"></span>
                                           </span>
-              </p>
+                </p>
 
-              <p th:if="${book.title.indexOf('-') != -1}">
-                <br>
-                <b th:text="|[${#strings.substringBefore(book.title,'-')}]|"></b><br/>
-                <span th:text="${#strings.substringBefore(book.author,'(')}"
-                      style="color:gray;"></span><br/>
-                <!--                                    <br/>-->
-                <!--                                    별점이 없을떄-->
-                <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                <p th:if="${randomBook.title.indexOf('-') != -1}">
+                    <br>
+                    <b th:text="|[${#strings.substringBefore(randomBook.title,'-')}]|"></b><br/>
+                    <span th:text="${#strings.substringBefore(randomBook.author,'(')}"
+                          style="color:gray;"></span><br/>
+                    <!--                                    <br/>-->
+                    <!--                                    별점이 없을떄-->
+                    <span th:if="${randomBook.avgStarRating == null}" style="color: lightGray;">
                                         <span>★</span>
                                         <span>0.0</span>
                                       </span>
 
-                <!--별점이 있을떄-->
-                <span th:if="${book.avgStarRating != null}" >
+                    <!--별점이 있을떄-->
+                    <span th:if="${randomBook.avgStarRating != null}">
+                    <span style="color: #FFD700;">★</span>
+                    <span th:text="${#numbers.formatDecimal(randomBook.avgStarRating,1,1)}"></span>
+                  </span>
+                </p>
+            </section>
+        </a>
+    </section>
+
+
+    <section class="box" th:if="${bookList != null}">
+        <div>
+            <h4><strong th:text="${book.title}"></strong> 검색 결과</h4>
+            <hr/>
+
+            <div class="row">
+                <!--                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">-->
+                <!--                    <div class="col-6 gtr-25" th:each="book : ${bookList}">-->
+                <div class="col-6 col-12-narrower" th:each="book : ${bookList}">
+                    <a th:href="@{|/book/${book.isbn}|}">
+                        <!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
+                        <section class="box special"
+                                 style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+                            <span class="image left"><img th:src="@{${book.imageUrl}}" alt=""
+                                                          style="width:85px; height:125px;"/></span>
+
+                            <p th:if="${book.title.indexOf('-') == -1}">
+                                <br/>
+                                <b th:text="|[${book.title}]|"></b><br/>
+                                <span th:text="${#strings.substringBefore(book.author,'(')}"
+                                      style="color:gray;"></span><br/>
+                                <!--                                        <br/>-->
+                                <!--                                별점이 없을떄-->
+                                <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                                            <span>★</span>
+                                            <span>0.0</span>
+                                          </span>
+
+                                <!--별점이 있을떄-->
+                                <span th:if="${book.avgStarRating != null}">
+                                            <span style="color: #FFD700;">★</span>
+                                            <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
+                                          </span>
+                            </p>
+
+                            <p th:if="${book.title.indexOf('-') != -1}">
+                                <br>
+                                <b th:text="|[${#strings.substringBefore(book.title,'-')}]|"></b><br/>
+                                <span th:text="${#strings.substringBefore(book.author,'(')}"
+                                      style="color:gray;"></span><br/>
+                                <!--                                    <br/>-->
+                                <!--                                    별점이 없을떄-->
+                                <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
+                                        <span>★</span>
+                                        <span>0.0</span>
+                                      </span>
+
+                                <!--별점이 있을떄-->
+                                <span th:if="${book.avgStarRating != null}">
                     <span style="color: #FFD700;">★</span>
                     <span th:text="${#numbers.formatDecimal(book.avgStarRating,1,1)}"></span>
                   </span>
-              </p>
-            </section>
-          </a>
+                            </p>
+                        </section>
+                    </a>
+                </div>
+
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+
+        <div class="pagination">
+            <a th:if="${currentPage > 1}"
+               th:href="@{/searchBookList(title=${book.title},page=${currentPage - 1},size=${size})}">이전</a>
+
+            <a th:each="page : ${#numbers.sequence(1, totalPages)}"
+               th:href="@{/searchBookList(title=${book.title},page=${page},size=${size})}"
+               th:class="${page == currentPage ? 'active' : ''}"
+               th:text="${page}"
+               style="margin:0 6px;">
+            </a>
+
+            <a th:if="${currentPage < totalPages}"
+               th:href="@{/searchBookList(title=${book.title},page=${currentPage + 1},size=${size})}">다음</a>
+        </div>
+    </section>
 
 </section>
 
@@ -111,7 +188,6 @@ display:block;
 <script src="/assets/js/breakpoints.min.js"></script>
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
-
 
 
 </body>

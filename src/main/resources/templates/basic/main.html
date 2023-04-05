@@ -39,18 +39,14 @@ function openLoginModal() {
     <section id="banner">
         <h2 th:text="#{page.title}">독서노트</h2>
         <p>기록의 기억을 믿어보세요</p>
-        <form th:action="@{/searchBookList}" method="get" th:Object="${book}"
-              style="display: flex; justify-content: center;">
-            <div style="display: flex; align-items: center;">
-                <div class="search" style="flex: 1;">
-                    <input type="text" id="title" name="title" placeholder="도서 검색" style="width: 500px; color: black;">
-                </div>
-                <button type="submit" class="button special icon solid fa-search" style="margin-left: 10px;">
-                    검색
-                </button>
-            </div>
-        </form>
-
+                <form  th:action="@{/searchBookList}" method="get" th:Object="${book}" style="display: flex; justify-content: center;" >
+                    <div style="display: flex; align-items: center;">
+                        <div class="search" style="flex: 1;">
+                            <input type="text" id="title" name="title" placeholder="도서 검색" style="width: 200px; height: 40px; color: black;">
+                        </div>
+                        <button type="submit" class="button special icon solid fa-search alt" style="margin-left: 10px;">도서 검색</button>
+                    </div>
+                </form>
     </section>
 
     <!-- Main -->
@@ -278,13 +274,13 @@ function openLoginModal() {
 </div>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
 </body>
 

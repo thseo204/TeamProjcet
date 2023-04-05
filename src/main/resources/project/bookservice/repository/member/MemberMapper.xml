@@ -63,9 +63,21 @@
         where user_email = #{userEmail}
     </select>
 
-    <update id="editPwd">
+    <update id="editPwdByRandom">
         update member
         set user_pwd = #{userPwd}
+        where user_id = #{userId}
+    </update>
+
+    <update id="editPwd">
+        update member
+        set user_pwd = #{newPwd}
+        where user_id = #{userId}
+    </update>
+
+    <update id="editEmail">
+        update member
+        set user_email = #{newEmail}
         where user_id = #{userId}
     </update>
 
