@@ -44,8 +44,7 @@ public class FileStore {
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
 
-//        Path path = Paths.get(getFullPath(storeFileName)).toAbsolutePath();
-//        multipartFile.transferTo(path.toFile());
+
 
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
         return new UploadFile(originalFilename, storeFileName);

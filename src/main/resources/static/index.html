@@ -1,175 +1,294 @@
-<!DOCTYPE HTML>
-<!--
-	Alpha by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>독서노트</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="landing is-preload">
-		<div id="page-wrapper">
 
-			<!-- Header -->
-				<header id="header" class="alt">
-					<h1><a href="index.html">독서노트</a> by HTML5 UP</h1>
-					<nav id="nav">
-						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li>
-								<a href="#" class="icon solid fa-angle-down">Layouts</a>
-								<ul>
-									<li><a href="generic.html">Generic</a></li>
-									<li><a href="contact.html">Contact</a></li>
-									<li><a href="elements.html">Elements</a></li>
-									<li>
-										<a href="#">Submenu</a>
-										<ul>
-											<li><a href="#">Option One</a></li>
-											<li><a href="#">Option Two</a></li>
-											<li><a href="#">Option Three</a></li>
-											<li><a href="#">Option Four</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li><a href="#" class="button">Sign Up</a></li>
-						</ul>
-					</nav>
-				</header>
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
+<link rel="stylesheet"
+	  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+<style>
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+body p {
+display:block;
+}
 
-			<!-- Banner -->
-				<section id="banner">
-					<h2>독서노트</h2>
-					<p>기록의 기억을 믿어보세요</p>
+
+
+</style>
+<script>
+function openLoginModal() {
+    if (confirm("로그인 후 이용해 주세요.")) {
+    window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
+    }
+}
+
+
+
+
+
+</script>
+<body class="landing is-preload">
+
+<div id="page-wrapper">
+	<div th:replace="~{fragments/headerMain :: headerMainFragment('mainPage')}"></div>
+	<!-- Banner -->
+	<section id="banner">
+		<h2 th:text="#{page.title}">독서노트</h2>
+		<p>기록의 기억을 믿어보세요</p>
+		<form th:action="@{/searchBookList}" method="get" th:Object="${book}"
+			  style="display: flex; justify-content: center;">
+			<div style="display: flex; align-items: center;">
+				<div class="search" style="flex: 1;">
+					<input type="text" id="title" name="title" placeholder="도서 검색" style="width: 500px; color: black;">
+				</div>
+				<button type="submit" class="button special icon solid fa-search" style="margin-left: 10px;">
+					검색
+				</button>
+			</div>
+		</form>
+
+	</section>
+
+	<!-- Main -->
+	<section id="main" class="container">
+		<!--   [추천도서 리스트 부분]     -->
+		<!--        <h4 align="left">추천도서</h4>-->
+
+		<section class="box">
+			<div style="overflow:hidden;">
+				<h4 >
+					<ul class="actions fit">
+						<li><a th:href="@{/main/true}" class="button special fit alt"
+							   th:class="${listViewStat} ? 'button special fit' : 'button special fit alt'">블로거 베스트 셀러 TOP 10</a></li>
+						<li><a th:href="@{/main/false}" class="button fit alt"
+							   th:class="${listViewStat} ? 'button special fit  alt' : 'button special fit'">주목할만한 신간 리스트</a></li>
+					</ul>
+				</h4>
+				<!--                <hr/>-->
+				<pre th:if="${listViewStat}" class="row" style="background: white; line-height: 0.1em; border: none; width:150%;">
+<!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
+                    <div class="col-1 col-2-narrower" name="BlogBestList"
+						 th:each="books : ${bookList}">
+                        <a th:href="@{|/book/${books.isbn}|}">
+                            <span th:text="|${booksStat.index+1}위|" style="color: pink; float:left;"></span>
+                            <span class="image left">
+                                <img th:src="@{${books.imageUrl}}" alt=""/>
+                            </span>
+                            <br/>
+
+                            <span>
+                                <!--별점이 있을떄-->
+                                <span th:if="${books.avgStarRating != null}" style="color: #FFD700; float:right;"
+									  th:text="|★ ${#numbers.formatDecimal(books.avgStarRating,1,1)}|">
+                                </span>
+								<!-- 별점이 없을떄 -->
+                                <span th:unless="${books.avgStarRating != null}"
+									  style="color: lightGray; float:right;">★ 0.0</span>
+                            </span>
+                        </a>
+                    </div>
+                </pre>
+
+				<pre th:unless="${listViewStat}" class="row" style="background: white; line-height: 0.1em; border: none; width:150%; ">
+<!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
+                    <div class="col-1 col-2-narrower" th:each="books : ${bookList}">
+                        <a th:href="@{|/book/${books.isbn}|}">
+                            <span th:text="|${booksStat.index+1}위|" style="color: pink; float:left;"></span>
+                            <span class="image left">
+                                <img th:src="@{${books.imageUrl}}" alt=""/>
+                            </span>
+                            <br/>
+
+                            <span>
+                                <!--별점이 있을떄-->
+                                <span th:if="${books.avgStarRating != null}"
+									  style="color: #FFD700; float:right;"
+									  th:text="|★ ${#numbers.formatDecimal(books.avgStarRating,1,1)}|">
+                                </span>
+								<!-- 별점이 없을떄 -->
+                                <span th:unless="${books.avgStarRating != null}"
+									  style="color: lightGray; float:right;">★ 0.0</span>
+                            </span>
+                        </a>
+                    </div>
+                </pre>
+
+			</div>
+		</section>
+
+
+
+		<!--   [독후감 리스트 부분]     -->
+		<!--세션에 로그인 정보가 없경우-->
+		<div class="row" th:if="${#session} == null">
+			<div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
+
+				<div class="box special">
+					<span class="image featured"><img th:src="|/image/${reportInfo.storeFileName}|" alt=""/></span>
+					<!--                    <h3>Sed lorem adipiscing</h3>-->
+					<span style="float:left; color:gray;">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        작성자 : <span th:text="${reportInfo.writerId}"></span>
+                    </span>
+
+					<span style="float:right; color:pink;">
+                        <a onclick="openLoginModal()">
+                            <span class="material-symbols-outlined" style="color:pink;">favorite</span>
+                            <span th:text="${reportInfo.favoriteNum}"></span>
+                            <span class="material-symbols-outlined" style="color:pink;">bookmark</span>
+                            <span th:text="${reportInfo.collectionNum}"></span>
+                        </a>
+                    </span>
+
+					<br/>
+					<br/>
+					<p align="center" style="font-weight:bold;"
+					   th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
+					<p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+
+					<br/>
+					<br/>
+					<p>
+                        <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}">
+                            <a th:href="@{|/searchKeyword/${keyword.keyword}|}">
+                                <span th:text="|#${keyword.keyword} |" style="color:skyBlue;"></span>
+                            </a>
+                        </span>
+					</p>
 					<ul class="actions special">
-						<li><a href="#" class="button primary">로그인</a></li>
-						<li><a href="#" class="button">회원가입</a></li>
+						<li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>
 					</ul>
-				</section>
-
-			<!-- Main -->
-				<section id="main" class="container">
-
-					<section class="box special">
-						<header class="major">
-							<h4 align="left">추천도서</h4>
-							<br/>
-							<section><img th:src="@{${book.imageUrl}}"></section>
-							<section></section>
-							<br/>
-							<section></section>
-							<section></section>
-							<p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc ornare<br />
-							adipiscing nunc adipiscing. Condimentum turpis massa.</p>
-						</header>
-						<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
-					</section>
-
-					<section class="box special features">
-						<div class="features-row">
-							<section>
-								<span class="icon solid major fa-bolt accent2"></span>
-								<h3>Magna etiam</h3>
-								<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
-							</section>
-							<section>
-								<span class="icon solid major fa-chart-area accent3"></span>
-								<h3>Ipsum dolor</h3>
-								<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
-							</section>
-						</div>
-						<div class="features-row">
-							<section>
-								<span class="icon solid major fa-cloud accent4"></span>
-								<h3>Sed feugiat</h3>
-								<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
-							</section>
-							<section>
-								<span class="icon solid major fa-lock accent5"></span>
-								<h3>Enim phasellus</h3>
-								<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
-							</section>
-						</div>
-					</section>
-
-					<div class="row">
-						<div class="col-6 col-12-narrower">
-
-							<section class="box special">
-								<span class="image featured"><img src="images/pic02.jpg" alt="" /></span>
-								<h3>Sed lorem adipiscing</h3>
-								<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
-								<ul class="actions special">
-									<li><a href="#" class="button alt">Learn More</a></li>
-								</ul>
-							</section>
-
-						</div>
-						<div class="col-6 col-12-narrower">
-
-							<section class="box special">
-								<span class="image featured"><img src="images/pic03.jpg" alt="" /></span>
-								<h3>Accumsan integer</h3>
-								<p>Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.</p>
-								<ul class="actions special">
-									<li><a href="#" class="button alt">Learn More</a></li>
-								</ul>
-							</section>
-
-						</div>
-					</div>
-
-				</section>
-
-			<!-- CTA -->
-				<section id="cta">
-
-					<h2>Sign up for beta access</h2>
-					<p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc.</p>
-
-					<form>
-						<div class="row gtr-50 gtr-uniform">
-							<div class="col-8 col-12-mobilep">
-								<input type="email" name="email" id="email" placeholder="Email Address" />
-							</div>
-							<div class="col-4 col-12-mobilep">
-								<input type="submit" value="Sign Up" class="fit" />
-							</div>
-						</div>
-					</form>
-
-				</section>
-
-			<!-- Footer -->
-				<footer id="footer">
-					<ul class="icons">
-						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-						<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</footer>
-
+				</div>
+			</div>
 		</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<!--세션에 로그인 정보가 있을 경우-->
+		<div class="row" th:if="${#session} != null">
+			<div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
 
-	</body>
+				<section class="box special">
+					<span class="image featured"><img th:src="|/image/${reportInfo.storeFileName}|" alt=""/></span>
+					<!--                    <h3>Sed lorem adipiscing</h3>-->
+
+					<span style="float:left; color:gray;">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        작성자 : <span th:text="${reportInfo.writerId}"></span>
+                    </span>
+					<span style="float:right; color:pink;" th:each="history : ${historyList}"
+						  th:if="${history.reportId}==${reportInfo.id}">
+                        <a th:href="@{|/mainFeedListForm/${reportInfo.id}/favorite/${history.favorite}|}">
+                            <span th:if="${history.favorite}" class="material-symbols-outlined"
+								  style="color:red;">favorite</span>
+                            <span th:unless="${history.favorite}" class="material-symbols-outlined"
+								  style="color:pink;">favorite</span>
+                            <span th:text="${reportInfo.favoriteNum}"></span>
+                        </a>
+                        <a th:href="@{|/mainFeedListForm/${reportInfo.id}/collection/${history.collection}|}">
+                            <span th:if="${history.collection}" class="material-symbols-outlined"
+								  style="color:red; ">bookmark</span>
+                            <span th:unless="${history.collection}" class="material-symbols-outlined"
+								  style="color:pink;">bookmark</span>
+                            <span th:text="${reportInfo.collectionNum}"></span>
+                        </a>
+                    </span>
+
+					<br/>
+					<br/>
+					<p align="center" style="font-weight:bold;"
+					   th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
+					<p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+					<br/>
+					<br/>
+					<p>
+                        <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}">
+                            <a th:href="@{|/searchKeyword/${keyword.keyword}|}">
+                                <span th:text="|#${keyword.keyword} |" style="color:skyBlue;"></span>
+                            </a>
+                        </span>
+					</p>
+					<ul class="actions special">
+						<li><a th:href="@{|/bookReportForm/${reportInfo.id}|}" class="button alt">Learn More</a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+
+		<section class="box">
+			<div>
+				<h4>베스트셀러 TOP 10</h4>
+				<hr/>
+
+				<div class="row">
+					<div class="col-6 col-12-narrower" th:each="bestseller : ${bestsellerList}">
+						<a th:href="@{|/book/${bestseller.isbn}|}">
+							<section class="box special"
+									 style="border:solid 3px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+								<span class="image left"><img th:src="@{${bestseller.imageUrl}}" alt=""/></span>
+
+								<p th:if="${bestseller.title.indexOf('-') == -1}">
+									<br/>
+									<b th:text="|[${bestseller.title}]|"></b><br/>
+									<span th:text="${#strings.substringBefore(bestseller.author,'(')}"
+										  style="color:gray;"></span><br/>
+									<!--                                        <br/>-->
+									<!--                                별점이 없을떄-->
+									<span th:if="${bestseller.avgStarRating == null}" style="color: lightGray;">
+                                          <span>★</span>
+                                          <span>0.0</span>
+                                        </span>
+
+									<!--별점이 있을떄-->
+									<span th:if="${bestseller.avgStarRating != null}">
+                                          <span style="color: #FFD700;">★</span>
+                                          <span th:text="${#numbers.formatDecimal(bestseller.avgStarRating,1,1)}"></span>
+                                        </span>
+								</p>
+
+								<p th:if="${bestseller.title.indexOf('-') != -1}">
+									<br>
+									<b th:text="|[${#strings.substringBefore(bestseller.title,'-')}]|"></b><br/>
+									<span th:text="${#strings.substringBefore(bestseller.author,'(')}"
+										  style="color:gray;"></span><br/>
+									<!--                                    <br/>-->
+									<!--                                    별점이 없을떄-->
+									<span th:if="${bestseller.avgStarRating == null}" style="color: lightGray;">
+                                      <span>★</span>
+                                      <span>0.0</span>
+                                    </span>
+
+									<!--별점이 있을떄-->
+									<span th:if="${bestseller.avgStarRating != null}">
+                                      <span style="color: #FFD700;">★</span>
+                                      <span th:text="${#numbers.formatDecimal(bestseller.avgStarRating,1,1)}"></span>
+                                    </span>
+								</p>
+							</section>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</section>
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
 </html>
+

@@ -16,6 +16,8 @@ body p {
 display:block;
 }
 
+
+
 </style>
 <script>
 function openLoginModal() {
@@ -23,6 +25,8 @@ function openLoginModal() {
     window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
     }
 }
+
+
 
 
 
@@ -35,7 +39,8 @@ function openLoginModal() {
     <section id="banner">
         <h2 th:text="#{page.title}">독서노트</h2>
         <p>기록의 기억을 믿어보세요</p>
-        <form th:action="@{/searchBookList}" method="get" th:Object="${book}" style="display: flex; justify-content: center;" >
+        <form th:action="@{/searchBookList}" method="get" th:Object="${book}"
+              style="display: flex; justify-content: center;">
             <div style="display: flex; align-items: center;">
                 <div class="search" style="flex: 1;">
                     <input type="text" id="title" name="title" placeholder="도서 검색" style="width: 500px; color: black;">
@@ -51,139 +56,71 @@ function openLoginModal() {
     <!-- Main -->
     <section id="main" class="container">
         <!--   [추천도서 리스트 부분]     -->
-<!--        <h4 align="left">추천도서</h4>-->
-
+        <!--        <h4 align="left">추천도서</h4>-->
 
         <section class="box">
             <div style="overflow:hidden;">
-                <h4 class="button alt fit">블로거 베스트 셀러 TOP 10</h4>
-<!--                <hr/>-->
-                <pre class="row" style="background: white; line-height: 0.1em; border: none; width:150%;">
+                <h4 >
+                    <ul class="actions fit">
+                        <li><a th:href="@{/main/true}" class="button special fit alt"
+                               th:class="${listViewStat} ? 'button special fit' : 'button special fit alt'">블로거 베스트 셀러 TOP 10</a></li>
+                        <li><a th:href="@{/main/false}" class="button fit alt"
+                               th:class="${listViewStat} ? 'button special fit  alt' : 'button special fit'">주목할만한 신간 리스트</a></li>
+                    </ul>
+                </h4>
+                <!--                <hr/>-->
+                <pre th:if="${listViewStat}" class="row" style="background: white; line-height: 0.1em; border: none; width:150%;">
 <!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
-                    <div class="col-1 col-2-narrower" id="BlogBestList" name="BlogBestList"  th:each="BlogBest : ${BlogBestList}" >
-                        <a th:href="@{|/book/${BlogBest.isbn}|}">
-                            <span th:text="|${BlogBestStat.index+1}위|" style="color: pink; float:left;"></span>
+                    <div class="col-1 col-2-narrower" name="BlogBestList"
+                         th:each="books : ${bookList}">
+                        <a th:href="@{|/book/${books.isbn}|}">
+                            <span th:text="|${booksStat.index+1}위|" style="color: pink; float:left;"></span>
                             <span class="image left">
-                                <img th:src="@{${BlogBest.imageUrl}}" alt=""/>
+                                <img th:src="@{${books.imageUrl}}" alt=""/>
                             </span>
                             <br/>
 
                             <span>
                                 <!--별점이 있을떄-->
-                                <span th:if="${BlogBest.avgStarRating != null}" style="color: #FFD700; float:right;"
-                                      th:text="|★ ${#numbers.formatDecimal(BlogBest.avgStarRating,1,1)}|">
+                                <span th:if="${books.avgStarRating != null}" style="color: #FFD700; float:right;"
+                                      th:text="|★ ${#numbers.formatDecimal(books.avgStarRating,1,1)}|">
                                 </span>
                                 <!-- 별점이 없을떄 -->
-                                <span th:unless="${BlogBest.avgStarRating != null}" style="color: lightGray; float:right;">★ 0.0</span>
+                                <span th:unless="${books.avgStarRating != null}"
+                                      style="color: lightGray; float:right;">★ 0.0</span>
                             </span>
                         </a>
                     </div>
                 </pre>
-            </div>
-        </section>
 
-        <section class="box">
-            <div style="overflow:hidden;">
-                <h4 class="button alt fit">베스트셀러 Top 10</h4>
-<!--                <hr/>-->
-                <pre class="row" style="background: white; line-height: 0.1em; border: none; width:150%; ">
+                <pre th:unless="${listViewStat}" class="row" style="background: white; line-height: 0.1em; border: none; width:150%; ">
 <!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
-                    <div class="col-1 col-2-narrower" th:each="bestseller : ${bestsellerList}">
-                        <a th:href="@{|/book/${bestseller.isbn}|}">
-                            <span th:text="|${bestsellerStat.index+1}위|" style="color: pink; float:left;"></span>
+                    <div class="col-1 col-2-narrower" th:each="books : ${bookList}">
+                        <a th:href="@{|/book/${books.isbn}|}">
+                            <span th:text="|${booksStat.index+1}위|" style="color: pink; float:left;"></span>
                             <span class="image left">
-                                <img th:src="@{${bestseller.imageUrl}}" alt=""/>
+                                <img th:src="@{${books.imageUrl}}" alt=""/>
                             </span>
                             <br/>
 
                             <span>
                                 <!--별점이 있을떄-->
-                                <span th:if="${bestseller.avgStarRating != null}" style="color: #FFD700; float:right;"
-                                      th:text="|★ ${#numbers.formatDecimal(bestseller.avgStarRating,1,1)}|">
+                                <span th:if="${books.avgStarRating != null}"
+                                      style="color: #FFD700; float:right;"
+                                      th:text="|★ ${#numbers.formatDecimal(books.avgStarRating,1,1)}|">
                                 </span>
                                 <!-- 별점이 없을떄 -->
-                                <span th:unless="${bestseller.avgStarRating != null}" style="color: lightGray; float:right;">★ 0.0</span>
+                                <span th:unless="${books.avgStarRating != null}"
+                                      style="color: lightGray; float:right;">★ 0.0</span>
                             </span>
                         </a>
                     </div>
                 </pre>
-            </div>
-        </section>
 
-<!--        <section class="box" >-->
-<!--            <div style="overflow:hidden;">-->
-<!--                <h4 class="button alt fit">신간 리스트</h4>-->
-<!--&lt;!&ndash;                <hr/>&ndash;&gt;-->
-<!--                <pre class="row" style="background: white; line-height: 0.1em; border: none; width:150%; " >-->
-<!--&lt;!&ndash;                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">&ndash;&gt;-->
-<!--                    <div class="col-1 col-2-narrower" th:each="ItemNewAll : ${ItemNewAllList}">-->
-<!--                        <a th:href="@{|/book/${ItemNewAll.isbn}|}">-->
-<!--&lt;!&ndash;                            <span th:text="|${ItemNewAllStat.index+1}위|" style="color: pink; float:left;"></span>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span th:text="|[${ItemNewAll.title}]|" style="color: pink; float:left;"></span>&ndash;&gt;-->
-<!--                            <span class="image left">-->
-<!--                                <img th:src="@{${ItemNewAll.imageUrl}}" alt=""/>-->
-<!--                            </span>-->
-<!--                            <br/>-->
-
-<!--                            <span>-->
-<!--                                &lt;!&ndash;별점이 있을떄&ndash;&gt;-->
-<!--                                <span th:if="${ItemNewAll.avgStarRating != null}" style="color: #FFD700; float:left;"-->
-<!--                                      th:text="|★ ${#numbers.formatDecimal(ItemNewAll.avgStarRating,1,1)}|">-->
-<!--                                </span>-->
-<!--                                &lt;!&ndash; 별점이 없을떄 &ndash;&gt;-->
-<!--                                <span th:unless="${ItemNewAll.avgStarRating != null}" style="color: lightGray; float:left;">★ 0.0</span>-->
-<!--                            </span>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </pre>-->
-<!--            </div>-->
-<!--        </section>-->
-
-        <section class="box">
-            <div style="overflow:hidden;">
-                <h4 class="button alt fit">주목할만한 신간 리스트</h4>
-<!--                <hr/>-->
-                <pre class="row" style="background: white; line-height: 0.1em; border: none; width:150%; ">
-<!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
-                    <div class="col-1 col-2-narrower" th:each="ItemNewSpecial : ${ItemNewSpecialList}" >
-                        <a th:href="@{|/book/${ItemNewSpecial.isbn}|}">
-                            <span th:text="|${ItemNewSpecialStat.index+1}위|" style="color: pink; float:left;"></span>
-                            <span class="image left">
-                                <img th:src="@{${ItemNewSpecial.imageUrl}}" alt=""/>
-                            </span>
-                            <br/>
-
-                            <span>
-                                <!--별점이 있을떄-->
-                                <span th:if="${ItemNewSpecial.avgStarRating != null}" style="color: #FFD700; float:right;"
-                                      th:text="|★ ${#numbers.formatDecimal(ItemNewSpecial.avgStarRating,1,1)}|">
-                                </span>
-                                <!-- 별점이 없을떄 -->
-                                <span th:unless="${ItemNewSpecial.avgStarRating != null}" style="color: lightGray; float:right;">★ 0.0</span>
-                            </span>
-                        </a>
-                    </div>
-                </pre>
             </div>
         </section>
 
 
-
-<!--        &lt;!&ndash;   [책갈피 리스트 부분]     &ndash;&gt;-->
-<!--        <section class="box special">-->
-<!--            <header class="major">-->
-
-<!--                <div class="inner_content">내용1</div>-->
-<!--                <h2 class="inner_content">Introducing the ultimate mobile app aaaaaaaaaaaaaaaaaaaaaaaaaa-->
-<!--                    <br/>-->
-<!--                    for doing stuff with your phone</h2>-->
-<!--                <p class="inner_content">Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc-->
-<!--                    ornare<br/>-->
-<!--                    adipiscing nunc adipiscing. Condimentum turpis massa.</p>-->
-
-<!--            </header>-->
-<!--            <span class="image featured"><img src="images/pic01.jpg" alt=""/></span>-->
-<!--        </section>-->
 
         <!--   [독후감 리스트 부분]     -->
         <!--세션에 로그인 정보가 없경우-->
@@ -191,7 +128,7 @@ function openLoginModal() {
             <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
 
                 <div class="box special">
-                    <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>
+                    <span class="image featured"><img th:src="|/image/${reportInfo.storeFileName}|" alt=""/></span>
                     <!--                    <h3>Sed lorem adipiscing</h3>-->
                     <span style="float:left; color:gray;">
                         <span class="material-symbols-outlined">account_circle</span>
@@ -209,13 +146,14 @@ function openLoginModal() {
 
                     <br/>
                     <br/>
-                    <p align="center" style="font-weight:bold;" th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
+                    <p align="center" style="font-weight:bold;"
+                       th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
                     <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
 
                     <br/>
                     <br/>
                     <p>
-                        <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}" >
+                        <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}">
                             <a th:href="@{|/searchKeyword/${keyword.keyword}|}">
                                 <span th:text="|#${keyword.keyword} |" style="color:skyBlue;"></span>
                             </a>
@@ -233,14 +171,14 @@ function openLoginModal() {
             <div class="col-6 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
 
                 <section class="box special">
-                    <span class="image featured"><img th:src="|image/${reportInfo.storeFileName}|" alt=""/></span>
+                    <span class="image featured"><img th:src="|/image/${reportInfo.storeFileName}|" alt=""/></span>
                     <!--                    <h3>Sed lorem adipiscing</h3>-->
 
                     <span style="float:left; color:gray;">
                         <span class="material-symbols-outlined">account_circle</span>
                         작성자 : <span th:text="${reportInfo.writerId}"></span>
                     </span>
-                    <span style="float:right; color:pink;"  th:each="history : ${historyList}"
+                    <span style="float:right; color:pink;" th:each="history : ${historyList}"
                           th:if="${history.reportId}==${reportInfo.id}">
                         <a th:href="@{|/mainFeedListForm/${reportInfo.id}/favorite/${history.favorite}|}">
                             <span th:if="${history.favorite}" class="material-symbols-outlined"
@@ -258,47 +196,15 @@ function openLoginModal() {
                         </a>
                     </span>
 
-<!--                    <nav id="nav" style="float:right;" th:each="history : ${historyList}"-->
-<!--                         th:if="${history.reportId}==${reportInfo.id}">-->
-<!--                        <ul class="actions">-->
-<!--                            <a th:href="@{|/feedListForm/${reportInfo.id}/favorite/${history.favorite}|}">-->
-<!--                                <li style="float:left;">-->
-<!--                                    <span th:if="${history.favorite}" class="material-symbols-outlined"-->
-<!--                                          style="color:red;">favorite</span>-->
-<!--                                    <span th:unless="${history.favorite}" class="material-symbols-outlined"-->
-<!--                                          style="color:pink;">favorite</span>-->
-<!--                                    <span th:text="${reportInfo.favoriteNum}"></span>-->
-<!--                                </li>-->
-<!--                            </a>-->
-<!--                            <a th:href="@{|/feedListForm/${reportInfo.id}/collection/${history.collection}|}">-->
-<!--                                <li style="float:left;">-->
-<!--                                <span th:if="${history.collection}" class="material-symbols-outlined"-->
-<!--                                      style="color:red; ">bookmark</span>-->
-<!--                                    <span th:unless="${history.collection}" class="material-symbols-outlined"-->
-<!--                                          style="color:pink;">bookmark</span>-->
-<!--                                    <span th:text="${reportInfo.collectionNum}"></span>-->
-<!--                                </li>-->
-<!--                            </a>-->
-<!--                            &lt;!&ndash;                            <li class="icon solid fa-angle-down" style="float:left;">&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                <span class="material-symbols-outlined" style="color:pink;">more_vert</span>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                <ul>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                    <li><a onclick="openLoginModal()">저장</a></li>&ndash;&gt;-->
-<!--                            &lt;!&ndash;&lt;!&ndash;                                    <li th:if="${reportInfo.writeId} == ${#session.getAttribute('loginMember').userId}"><a th:href="|/editReportForm/${reportInfo.id}|">수정</a></li>&ndash;&gt;&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                    <li><a onclick="openLoginModal()">삭제</a></li>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                </ul>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                            </li>&ndash;&gt;-->
-
-<!--                        </ul>-->
-<!--                    </nav>-->
-
                     <br/>
                     <br/>
-                    <p align="center" style="font-weight:bold;" th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
+                    <p align="center" style="font-weight:bold;"
+                       th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
                     <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
                     <br/>
                     <br/>
                     <p>
-                        <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}" >
+                        <span th:each=" keyword : ${keywordList}" th:if="${reportInfo.id} == ${keyword.reportId}">
                             <a th:href="@{|/searchKeyword/${keyword.keyword}|}">
                                 <span th:text="|#${keyword.keyword} |" style="color:skyBlue;"></span>
                             </a>
@@ -312,28 +218,63 @@ function openLoginModal() {
         </div>
 
 
-    </section>
+        <section class="box">
+            <div>
+                <h4>베스트셀러 TOP 10</h4>
+                <hr/>
 
-    <!-- CTA -->
-    <section id="cta">
+                <div class="row">
+                    <div class="col-6 col-12-narrower" th:each="bestseller : ${bestsellerList}">
+                        <a th:href="@{|/book/${bestseller.isbn}|}">
+                            <section class="box special"
+                                     style="border:solid 3px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+                                <span class="image left"><img th:src="@{${bestseller.imageUrl}}" alt=""/></span>
 
-        <h2>Sign up for beta access</h2>
-        <p>Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc.</p>
+                                <p th:if="${bestseller.title.indexOf('-') == -1}">
+                                    <br/>
+                                    <b th:text="|[${bestseller.title}]|"></b><br/>
+                                    <span th:text="${#strings.substringBefore(bestseller.author,'(')}"
+                                          style="color:gray;"></span><br/>
+                                    <!--                                        <br/>-->
+                                    <!--                                별점이 없을떄-->
+                                    <span th:if="${bestseller.avgStarRating == null}" style="color: lightGray;">
+                                          <span>★</span>
+                                          <span>0.0</span>
+                                        </span>
 
-        <form>
-            <div class="row gtr-50 gtr-uniform">
-                <div class="col-8 col-12-mobilep">
-                    <input type="email" name="email" id="email" placeholder="Email Address"/>
-                </div>
-                <div class="col-4 col-12-mobilep">
-                    <input type="submit" value="Sign Up" class="fit"/>
+                                    <!--별점이 있을떄-->
+                                    <span th:if="${bestseller.avgStarRating != null}">
+                                          <span style="color: #FFD700;">★</span>
+                                          <span th:text="${#numbers.formatDecimal(bestseller.avgStarRating,1,1)}"></span>
+                                        </span>
+                                </p>
+
+                                <p th:if="${bestseller.title.indexOf('-') != -1}">
+                                    <br>
+                                    <b th:text="|[${#strings.substringBefore(bestseller.title,'-')}]|"></b><br/>
+                                    <span th:text="${#strings.substringBefore(bestseller.author,'(')}"
+                                          style="color:gray;"></span><br/>
+                                    <!--                                    <br/>-->
+                                    <!--                                    별점이 없을떄-->
+                                    <span th:if="${bestseller.avgStarRating == null}" style="color: lightGray;">
+                                      <span>★</span>
+                                      <span>0.0</span>
+                                    </span>
+
+                                    <!--별점이 있을떄-->
+                                    <span th:if="${bestseller.avgStarRating != null}">
+                                      <span style="color: #FFD700;">★</span>
+                                      <span th:text="${#numbers.formatDecimal(bestseller.avgStarRating,1,1)}"></span>
+                                    </span>
+                                </p>
+                            </section>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </form>
+        </section>
 
     </section>
-
-    </th:block>
 </div>
 
 <!-- Scripts -->
@@ -344,12 +285,6 @@ function openLoginModal() {
 <script src="assets/js/breakpoints.min.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
-<script th:inline="javascript" type="text/javascript" language="JavaScript">
-    $('#BlogBestBtn').click(function(){
-        $('#BlogBestList').removeAttr('style');
-<!--        $('#BlogBestList').attr('class', 'col-1 col-2-narrower');-->
-    })
-</script>
 
 </body>
 

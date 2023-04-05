@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.bookservice.domain.book.Book;
 import project.bookservice.domain.historyOfReportInfo.HistoryOfReportInfo;
 import project.bookservice.domain.member.Member;
@@ -47,24 +48,35 @@ public class HomeController {
     private final KeywordService keywordService;
 
 
-    @GetMapping("/")
-    public String homeLoginV3ArgumentResolver(@SessionAttribute(name=SessionConst.LOGIN_MEMBER,
+    @GetMapping("/main/{listViewStat}")
+    public String homeLoginV3ArgumentResolver(@PathVariable boolean listViewStat,
+                                              @SessionAttribute(name=SessionConst.LOGIN_MEMBER,
             required = false) Member loginMember, Model model) throws ParseException {
         log.info("loginMember {}", loginMember);
-        // BestsellerList
         APIParser apiParser = new ApiSearchBookList(starRatingService);
+
+        ArrayList<Book> bookList = null;
+
+        if(listViewStat == true){
+            // BlogBestList 블로거 베스트 셀러 버튼 눌리면 이 리스트 노출
+            bookList = apiParser.jsonAndXmlParserToArr("BlogBest");
+            model.addAttribute("listViewStat", true);
+        } else{
+            // ItemNewSpecialList 주목할 만한 신간 리스트 버튼 눌리면 이 리스트 노출
+            bookList = apiParser.jsonAndXmlParserToArr("ItemNewSpecial");
+            model.addAttribute("listViewStat", false);
+        }
+
+        // BestsellerList 하단에 박스형식으로 10개 노출
         ArrayList<Book> bestsellerList = apiParser.jsonAndXmlParserToArr("Bestseller");
-  // ItemNewAllList 신간 전체 리스트
+        // ItemNewAllList 신간 전체 리스트
         ArrayList<Book> ItemNewAllList = apiParser.jsonAndXmlParserToArr("ItemNewAll");
-  // ItemNewSpecialList 주목할 만한 신간 리스트
-        ArrayList<Book> ItemNewSpecialList = apiParser.jsonAndXmlParserToArr("ItemNewSpecial");
-  // BlogBestList 블로거 베스트 셀러
-        ArrayList<Book> BlogBestList = apiParser.jsonAndXmlParserToArr("BlogBest");
+
 
         // // 오더바이 좋아요순으로 리밋 4 받아와서 메인 feedList에 뿌리기!!
         List<ReportInfo> reportInfoList = reportInfoService.orderByFavoriteNum();
         List<Keyword> keywordList = keywordService.findAll();
-
+//        log.info("레포트리스트 이미지 이름 ={}" , reportInfoList.get(0).getStoreFileName());
         model.addAttribute("keywordList", keywordList);
         if(loginMember != null){
             List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
@@ -73,10 +85,18 @@ public class HomeController {
         model.addAttribute("reportInfoList", reportInfoList);
         model.addAttribute("bestsellerList", bestsellerList);
         model.addAttribute("ItemNewAllList", ItemNewAllList);
-        model.addAttribute("ItemNewSpecialList", ItemNewSpecialList);
-        model.addAttribute("BlogBestList", BlogBestList);
-//        model.addAttribute("loginMember", loginMember);
+        model.addAttribute("bookList", bookList);
+
         return "basic/main";
+    }
+
+    @GetMapping("/")
+    public String myBookmarkForm(RedirectAttributes redirectAttributes){
+
+        boolean listViewStat=true;
+        redirectAttributes.addAttribute("listViewStat", listViewStat);
+
+        return "redirect:/main/{listViewStat}";
     }
 
     @GetMapping("/mainFeedListForm/{id}/favorite/{favorite}")

@@ -30,9 +30,9 @@ public class SignUpForm {
 //    @Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 숫자만 입력해주세요.")
     private String userPhone;
 
-    @NotNull(message = "생년월일은 필수 입력 값입니다.")
+    @NotBlank(message = "생년월일은 필수 입력 값입니다.")
 //    @Pattern(regexp = "^[0-9]{6}$", message = "생년월일은 6자리로 숫자만 기입해주세요.")
-    private Integer userBirth;
+    private String userBirth;
 
     @NotBlank(message = "성별은 필수 입력 값입니다.")
     private String userGender;
