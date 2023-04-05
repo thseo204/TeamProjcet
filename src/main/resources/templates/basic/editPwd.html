@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+
+<body class="is-preload">
+<link rel="stylesheet" href="/assets/css/errors.css"/>
+
+<div id="page-wrapper">
+    <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
+    <section id="main" class="container medium">
+
+        <div class="box">
+            <form method="post" th:object="${editPwdForm}" id="editPwdForm" >
+                <div class="row gtr-50 gtr-uniform">
+                    <h3 class = "col-12">비밀번호 변경</h3>
+                    <h4 class = "col-12">다른 아이디/사이트에서 사용한 적 없는 비밀번호</h4>
+                    <h4 class = "col-12">이전에 사용한 적 없는 비밀번호가 안전합니다.</h4>
+                    <div class="col-12">
+                        <label for="userPwd">현재 비밀번호</label>
+                        <input type="password" name="userPwd" id="userPwd" th:field="*{userPwd}"
+                               class="form-control"
+                               th:errorclass="field-error">
+                        <div th:if="${message != null}" class="alert alert-danger">
+                            <p th:text="${message}" style="color: #dc3545 !important;"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="newPwd">새 비밀번호</label>
+                        <input type="password" name="newPwd" id="newPwd" th:field="*{newPwd}">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="reNewPwd">새 비밀번호 확인</label>
+                        <input type="password" name="reNewPwd" id="reNewPwd" th:field="*{reNewPwd}"
+                               class="form-control"
+                               th:errorclass="field-error">
+                        <div class="field-error" th:errors="*{newPwd}"/>
+                    </div>
+
+                    <div class="col-12">
+                        <ul class="actions special">
+                            <li><input class="col-6" type="submit" value="확인"/></li>
+                            <li><input onclick="window.location.href = '/profile'; return false;" class="col-6" type="submit" value="취소"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+
+</body>
+
+<th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+</html>
+

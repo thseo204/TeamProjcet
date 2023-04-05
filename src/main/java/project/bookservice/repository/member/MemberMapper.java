@@ -3,6 +3,9 @@ package project.bookservice.repository.member;
 import org.apache.ibatis.annotations.Mapper;
 import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
+import project.bookservice.web.validation.form.EditEmailForm;
+import project.bookservice.web.validation.form.EditInformationForm;
+import project.bookservice.web.validation.form.EditPwdForm;
 import project.bookservice.web.validation.form.SignUpForm;
 
 import java.util.List;
@@ -12,7 +15,7 @@ public interface MemberMapper {
     // 실행할 SQL은 패키지 위치는 이 인터페이스와 동일한 경로로 만들어줘야함.
     void save(SignUpForm signUpForm);
 
-     void update(SignUpForm signUpForm);
+     void update(EditInformationForm editInformationForm);
 
     void editCharIcon(Member loginmember);
 
@@ -31,6 +34,8 @@ public interface MemberMapper {
 
     Member findIdByEmail(String userEMail);
 
-    void editPwd(Member member);
+    void editPwdByRandom(Member member);
+    void editPwd(EditPwdForm editPwdForm);
+    void editEmail(EditEmailForm editEmailForm);
 
 }

@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.bookservice.domain.member.Member;
 import project.bookservice.repository.member.MemberRepository;
+import project.bookservice.web.validation.form.EditEmailForm;
+import project.bookservice.web.validation.form.EditInformationForm;
+import project.bookservice.web.validation.form.EditPwdForm;
 import project.bookservice.web.validation.form.SignUpForm;
 
 import java.util.ArrayList;
@@ -22,8 +25,18 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void update(SignUpForm signUpForm) {
-        memberRepository.update(signUpForm);
+    public void update(EditInformationForm editInformationForm) {
+        memberRepository.update(editInformationForm);
+    }
+
+    @Override
+    public void editPwd(EditPwdForm editPwdForm) {
+        memberRepository.editPwd(editPwdForm);
+    }
+
+    @Override
+    public void editEmail(EditEmailForm editEmailForm) {
+        memberRepository.editEmail(editEmailForm);
     }
 
     @Override

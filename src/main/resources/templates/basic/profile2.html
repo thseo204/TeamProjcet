@@ -1,24 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>독서노트</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <link rel="stylesheet" href="/assets/css/star.css"/>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-    <style>
-        body {
-          background-color: #F5F5F5;
-        }
-
-    </style>
-</head>
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
@@ -28,103 +11,68 @@
       var newWindow = window.open('/myChar', '_blank', 'width=500, height=300', true);
     }
 
+
 </script>
+
 <div id="page-wrapper">
     <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
-    <div class="container" th:object="${loginMember}">
+    <section id="main" class="container medium">
 
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-lg-12">
-                    <div class="row gutters-sm">
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-column align-items-center text-center">
-                                        <img th:if="*{userGender}=='M'"
-                                             src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                             class="rounded-circle" width="150">
-                                        <img th:if="*{userGender}=='F'"
-                                             src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Admin"
-                                             class="rounded-circle" width="150">
-                                        <div class="mt-3">
-                                            <h4 th:text="|ID : *{userId}|"></h4>
-                                            <img th:src="*{userCharIcon}" alt="캐릭터 아이콘" width="40">
-                                            <span th:if="${reportCount < 5}">F 등급 입니다</span>
-                                            <span th:if="${reportCount >= 5 and reportCount <10}">D 등급 입니다</span>
-                                            <span th:if="${reportCount >= 10 and reportCount <20}">C 등급 입니다</span>
-                                            <span th:if="${reportCount >= 20 and reportCount <30}">B 등급 입니다</span>
-                                            <span th:if="${reportCount >= 30 and reportCount <50}">A 등급 입니다</span>
-                                            <span th:if="${reportCount >= 50}">S 등급 입니다</span>
-                                            <br>
-                                            <!--<p class="text-secondary mb-1"></p>-->
-                                            <button class="btn btn-primary" onclick="openWindow();">캐릭터아이콘 변경</button>
-                                            <!--<button class="btn btn-outline-primary">Message</button>-->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <span class="material-symbols-outlined">badge</span>
-                                            <span class="mb-0">Name</span>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary" th:text="*{userName}"></div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <span class="material-symbols-outlined">mail</span>
-                                            <span class="mb-0">Email</span>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary" th:text="*{userEmail}"></div>
-                                    </div>
-                                    <hr>
-
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <span class="material-symbols-outlined">phone_iphone</span>
-                                            <span class="mb-0">Phone</span>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary" th:text="*{userPhone}"></div>
-                                    </div>
-                                    <hr>
-
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <span th:if="*{userGender} == 'M'"
-                                                  class="material-symbols-outlined">male</span>
-                                            <span th:if="*{userGender} == 'F'"
-                                                  class="material-symbols-outlined">female</span>
-                                            <span class="mb-0">Gender</span>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary" th:text="*{userGender}"></div>
-                                    </div>
-                                    <hr>
-
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <!--                                    <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>-->
-                                            <a href="/pwdCheck" class="btn btn-info">회원 정보 수정</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
+        <div class="box" th:object="${loginMember}">
+            <div class="row">
+                <div class="col-6 col-12-mobilep" style="text-align: center;">
+                    <img th:src="*{userCharIcon}" alt="Admin"
+                         class="rounded-circle" width="180">
+                    <div class="mt-3">
+                        <h4 th:text="|ID : *{userId}|"></h4>
+                        <span th:if="${reportCount < 5}">F 등급 입니다</span>
+                        <span th:if="${reportCount >= 5 and reportCount <10}">D 등급 입니다</span>
+                        <span th:if="${reportCount >= 10 and reportCount <20}">C 등급 입니다</span>
+                        <span th:if="${reportCount >= 20 and reportCount <30}">B 등급 입니다</span>
+                        <span th:if="${reportCount >= 30 and reportCount <50}">A 등급 입니다</span>
+                        <span th:if="${reportCount >= 50}">S 등급 입니다</span>
+                        <br>
+                        <!--<p class="text-secondary mb-1"></p>-->
+                        <button class="btn btn-primary" onclick="openWindow();">캐릭터아이콘 변경</button>
+                        <!--<button class="btn btn-outline-primary">Message</button>-->
                     </div>
+                </div>
+
+                <div class="col-6 col-12-mobilep">
+
+                    <span class="material-symbols-outlined">badge</span>
+                    <span class="mb-0">Name</span>&nbsp;&nbsp;&nbsp;
+                    <span th:text="*{userName}"></span><br><br>
+
+                    <span class="material-symbols-outlined">lock</span>
+                    <span class="mb-0">Password</span>&nbsp;&nbsp;&nbsp;
+                    <a href="/editPwd" class="btn btn-info">수정</a>
+                    <br><br>
+
+                    <span class="material-symbols-outlined">mail</span>
+                    <span class="mb-0">Email</span>&nbsp;&nbsp;&nbsp;
+                    <span th:text="*{userEmail}"></span>
+
+                    <a href="/editEmail" class="btn btn-info">수정</a>
+                    <br><br>
+
+                    <span class="material-symbols-outlined">phone_iphone</span>
+                    <span class="mb-0">Phone</span>&nbsp;&nbsp;&nbsp;
+                    <span th:text="*{UserPhone}"></span><br><br>
+
+                    <span th:if="*{userGender} == 'M'"
+                          class="material-symbols-outlined">male</span>
+                    <span th:if="*{userGender} == 'F'"
+                          class="material-symbols-outlined">female</span>
+                    <span class="mb-0">Gender</span> &nbsp;&nbsp;&nbsp;
+                    <span th:text="*{userGender}"></span><br><br>
+
+                    <a href="/pwdCheck" class="btn btn-info">회원 정보 수정</a>
                 </div>
             </div>
         </div>
-
-    </div>
+    </section>
 </div>
-
 <!-- Scripts -->
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/jquery.dropotron.min.js"></script>

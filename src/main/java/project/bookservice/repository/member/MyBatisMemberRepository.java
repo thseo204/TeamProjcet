@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
+import project.bookservice.web.validation.form.EditEmailForm;
+import project.bookservice.web.validation.form.EditInformationForm;
+import project.bookservice.web.validation.form.EditPwdForm;
 import project.bookservice.web.validation.form.SignUpForm;
 
 import java.util.*;
@@ -30,10 +33,10 @@ public class MyBatisMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void update(SignUpForm signUpForm) {
-        log.info("member info={}", signUpForm);
+    public void update(EditInformationForm editInformationForm) {
+        log.info("member info={}", editInformationForm);
 
-        memberMapper.update(signUpForm);
+        memberMapper.update(editInformationForm);
     }
 
     @Override
@@ -89,7 +92,17 @@ public class MyBatisMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void editPwd(Member member) {
-        memberMapper.editPwd(member);
+    public void editPwdByRandom(Member member) {
+        memberMapper.editPwdByRandom(member);
+    }
+
+    @Override
+    public void editPwd(EditPwdForm editPwdForm) {
+        memberMapper.editPwd(editPwdForm);
+    }
+
+    @Override
+    public void editEmail(EditEmailForm editEmailForm) {
+        memberMapper.editEmail(editEmailForm);
     }
 }
