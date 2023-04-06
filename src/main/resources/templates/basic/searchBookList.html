@@ -21,6 +21,7 @@ display:block;
   font-size: 1.2em; /* 예시로 글자 크기를 1.2em으로 설정 */
 }
 
+
 </style>
 
 <body class="is-preload">
@@ -44,11 +45,15 @@ display:block;
                 </button>
             </div>
         </form>
+    </section>
+
+    <section class="box" th:if="${keywordArr != null}">
+        <p>키워드 검색 결과</p>
         <span th:each="keyword : ${keywordArr}">
             <a th:href="@{|/searchKeyword/${keyword}|}">
-        <span th:text="|#${keyword} |" style="font-size:18px; color:skyBlue;"></span>
-      </a>
-    </span>
+                <span th:text="|#${keyword} |" style="font-size:18px; color:skyBlue;"></span>
+            </a>
+         </span>
     </section>
 
     <section class="box" th:if="${randomBook != null}">

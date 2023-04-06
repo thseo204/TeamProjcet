@@ -52,7 +52,10 @@ public class BookController {
     public String BookList(String title,Book book,Model model) throws ParseException {
         log.info("title ={}", title);
         String[] keywordArr = keywordService.findByLikeKeyword(title);
-        model.addAttribute("keywordArr", keywordArr);
+        if(keywordArr.length != 0){
+            model.addAttribute("keywordArr", keywordArr);
+        }
+
             return "basic/searchBookList";
     }
 
