@@ -540,20 +540,22 @@ public class ReportController implements Serializable {
         Book book = booklist.get(0);
         ReportInfo reportInfo = reportInfoService.findById(reportId);
         reportInfo.setContent(form.getContent());
-//        reportInfo.setHashTag(form.getHashTag());
+        reportInfo.setHashTag(form.getHashTag());
         reportInfo.setDisclosure(form.getDisclosure());
         reportInfoService.edit(reportInfo);
 
+        // 해당 레포트가 수정되면 기존에 해당 레포트에 있던 기존 키워드들 삭제 후 다시 저장!!
+        keywordService.deleteKeywords(reportInfo);
+
+        // 해시태그는 keyword 테이블에 저장
         String[] hashTagArr = form.getHashTag().split("#");
         for(int i = 1; i < hashTagArr.length; i++){
             KeywordSaveForm keywordForm = new KeywordSaveForm();
             keywordForm.setKeyword(hashTagArr[i].trim());
             keywordForm.setIsbn(isbn);
             keywordForm.setReportId(reportInfo.getId());
-
-            keywordService.update(keywordForm);
+            keywordService.save(keywordForm);
         }
-
         model.addAttribute("book", book);
         redirectAttributes.addAttribute("id", reportId);
         return "redirect:/bookReportForm/{id}"; // 게시글 수정 후 수정완료하였을 경우

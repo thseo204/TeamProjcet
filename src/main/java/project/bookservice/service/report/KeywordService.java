@@ -1,6 +1,7 @@
 package project.bookservice.service.report;
 
 import project.bookservice.domain.report.Keyword;
+import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.web.validation.form.KeywordSaveForm;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface KeywordService {
     String[] findByLikeKeyword(String keyword);
 
     int countKeyword(String keyword);
+
+    void deleteKeywords(ReportInfo reportInfo);
 }

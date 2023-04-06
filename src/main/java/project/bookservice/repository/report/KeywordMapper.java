@@ -1,7 +1,9 @@
 package project.bookservice.repository.report;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import project.bookservice.domain.report.Keyword;
+import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.web.validation.form.KeywordSaveForm;
 
 import java.util.List;
@@ -18,4 +20,6 @@ public interface KeywordMapper {
     String[] findByLikeKeyword(String keyword);
 
     int countKeyword(String keyword);
+
+    void deleteKeywords(@Param("reportInfo")ReportInfo reportInfo);
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.bookservice.domain.report.Keyword;
+import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.repository.report.KeywordRepository;
 import project.bookservice.web.validation.form.KeywordSaveForm;
 
@@ -48,5 +49,10 @@ public class KeywordServiceImpl implements KeywordService {
     @Override
     public int countKeyword(String keyword) {
         return keywordRepository.countKeyword(keyword);
+    }
+
+    @Override
+    public void deleteKeywords(ReportInfo reportInfo) {
+        keywordRepository.deleteKeywords(reportInfo);
     }
 }

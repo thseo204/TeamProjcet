@@ -223,7 +223,7 @@ function openLoginModal() {
                     <div class="col-6 col-12-narrower" th:each="bestseller : ${bestsellerList}">
                         <a th:href="@{|/book/${bestseller.isbn}|}">
                             <section class="box special"
-                                     style="border:solid 3px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+                                     style="border:solid 5px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
                                 <span class="image left"><img th:src="@{${bestseller.imageUrl}}" alt=""/></span>
 
                                 <p th:if="${bestseller.title.indexOf('-') == -1}">

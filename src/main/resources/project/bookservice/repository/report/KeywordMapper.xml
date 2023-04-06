@@ -8,11 +8,16 @@
         values (#{keyword}, #{isbn}, #{reportId})
     </insert>
 
-    <update id="update">
-        update reportInfo
-        set keyword=#{keyword},
-        where isbn=#{isbn} and report_id=#{reportId}
-    </update>
+<!--    <update id="update">-->
+<!--        update reportInfo-->
+<!--        set keyword=#{keyword},-->
+<!--        where isbn=#{isbn} and report_id=#{reportId}-->
+<!--    </update>-->
+
+    <delete id="deleteKeywords">
+        delete from keyword
+        where isbn=#{reportInfo.isbn} and report_id=#{reportInfo.id}
+    </delete>
 
     <delete id="deleteReport">
         delete from keyword

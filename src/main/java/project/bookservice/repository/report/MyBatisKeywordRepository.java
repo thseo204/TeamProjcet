@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import project.bookservice.domain.report.Keyword;
+import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.web.validation.form.KeywordSaveForm;
 
 import java.util.List;
@@ -47,6 +48,11 @@ public class MyBatisKeywordRepository implements KeywordRepository{
     @Override
     public int countKeyword(String keyword) {
         return keywordMapper.countKeyword(keyword);
+    }
+
+    @Override
+    public void deleteKeywords(ReportInfo reportInfo) {
+        keywordMapper.deleteKeywords(reportInfo);
     }
 
 }
