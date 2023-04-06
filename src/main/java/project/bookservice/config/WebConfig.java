@@ -19,9 +19,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                  "/", "/main", "/main/**", "/joinForm/**", "/findId/**", "/findPwdByEmail/**", "/findIdByEmail/**","/searchBookList", "/loginForm",
+                  "/", "/main", "/main/**", "/joinForm/**", "/findId/**", "/findPwdByEmail/**", "/findIdByEmail/**","/BookList/**", "/loginForm",
                         "/book/**", "/bookReportForm/*", "/feedListForm", "/assets/**", "/image/**", "/callback/naver/**",
-                        "/searchKeyword/*", "/error" ,"/agreementForm", "/joinSuccessForm", "/callback/**", "/error-page/**"
+                        "/searchKeyword/*", "/error" ,"/agreementForm", "/joinSuccessForm", "/callback/**", "/error-page/**",
+                        "/NoSearchWord/**"
                 );
     }
 }
