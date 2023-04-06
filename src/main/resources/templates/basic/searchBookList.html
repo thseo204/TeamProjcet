@@ -22,6 +22,7 @@ display:block;
 }
 
 
+
 </style>
 
 <body class="is-preload">
@@ -34,26 +35,26 @@ display:block;
     </header>
 
     <!-- Table -->
-    <section class="box" style="display: flex; align-items: center;">
-        <form th:action="@{/searchBookList}" method="get" th:Object="${book}" style="flex: 1; width: 80%">
-            <div style="display: flex; align-items: center;">
-                <div class="search" style="flex: 1;">
-                    <input type="text" id="title" name="title" placeholder="검색어 입력">
+    <section class="box" >
+        <form th:action="@{/searchBookList}" method="get" th:Object="${book}">
+            <div class="row gtr-uniform gtr-50">
+                <div class="col-9 col-12-mobilep">
+                    <input type="text" id="title" name="title" placeholder="도서 검색" autocomplete="on"/>
                 </div>
-                <button type="submit" class="button special icon solid fa-search" style="margin-left: 10px;">
-                    검색
-                </button>
+
+                <div class="col-3 col-12-mobilep">
+                    <input type="submit" class="button special icon solid fa-search fit" value="search" />
+                </div>
             </div>
         </form>
-    </section>
-
-    <section class="box" th:if="${keywordArr != null}">
-        <p>키워드 검색 결과</p>
+        <hr/>
+        <!-- 검색 키워드 리스트 출력 -->
+        <h4>| 유사 키워드 검색 결과 |</h4>
         <span th:each="keyword : ${keywordArr}">
-            <a th:href="@{|/searchKeyword/${keyword}|}">
-                <span th:text="|#${keyword} |" style="font-size:18px; color:skyBlue;"></span>
-            </a>
-         </span>
+      <a th:href="@{|/searchKeyword/${keyword}|}">
+        <span th:text="|#${keyword} |" style="font-size:18px; color:skyBlue;"></span>
+      </a>
+    </span>
     </section>
 
     <section class="box" th:if="${randomBook != null}">
