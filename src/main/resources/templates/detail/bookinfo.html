@@ -306,28 +306,7 @@ function openAddForm(isbn){
 
                     <hr/>
 
-                 <!--
-                    <div class="row">
-                        <div class="col-3 col-12-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
-                            <a th:href="@{|/bookReportForm/${bookReportInfo.id}|}">
-                                <section class="box special" style="background-color:#FFFAF0;">
-                                    <span class="image featured">
-                                        <img th:src="|/image/${bookReportInfo.getStoreFileName()}|" alt=""/>
-                                    </span>
-                                    <p th:if="${#strings.length(bookReportInfo.title) > 6}"><b
-                                            th:text="|[${#strings.substring(bookReportInfo.title, 0 , 6)}...]|"></b></p>
-                                    <p th:unless="${#strings.length(bookReportInfo.title) > 6}"><b
-                                            th:text="|[${bookReportInfo.title}]|"></b></p>
-                                    <p th:if="${#strings.length(bookReportInfo.content) > 15}"
-                                       th:text="|${#strings.substring(bookReportInfo.content, 0, 15)} ....|"></p>
-                                    <p th:unless="${#strings.length(bookReportInfo.content) > 15}"
-                                       th:text="|${bookReportInfo.content}|"></p>
-                                </section>
-                            </a>
-                        </div>
-                    </div>
-                    -->
-
+                    <!--
                     <div class="col-30 col-3-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
                         <section class="box" id="my-box" style="background-color:#FFFAF0; width: 80%; margin: 20px auto; display: flex; align-items: center; justify-content: center;
                                                     padding-top: 1em; padding-bottom: 1em; padding-right: -1em; padding-left: -1em;">
@@ -360,6 +339,31 @@ function openAddForm(isbn){
 
                             </a>
                         </section>
+                    </div>
+                    -->
+
+                    <div class="col-12 col-12-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
+                        <a th:href="@{|/bookReportForm/${bookReportInfo.id}|}">
+
+                            <div class="box " style="background-color:#FFFAF0; padding-top:1em;padding-bottom:0.6em; padding-left:0.6em;" >
+                                <div class="box alt" style="background-color:skyBlue;  padding-top:1em; height:100%; " >
+                                    <span class="image features left" ><img th:src="|/image/${bookReportInfo.getStoreFileName()}|" alt="" style="width:150px; padding:0;" /></span>
+                                    <p>
+
+                                        <b><span  th:text="|[${bookReportInfo.title}]|"></span></b><br/>
+                                        <span  th:text="${#strings.length(bookReportInfo.content) > 80} ? |${#strings.substring(bookReportInfo.content, 0, 80)}..| : ${bookReportInfo.content}"></span><br/>
+                                        <span style="float:right;">
+                      <span class="material-symbols-outlined" style="color:pink;">account_circle</span>
+                      <span th:text="|${bookReportInfo.writerId}|" style="color:pink;"></span>
+                    </span>
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </a>
+
+
                     </div>
 
                 </div>

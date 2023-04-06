@@ -124,17 +124,12 @@ display:block;
       <div class="row">
         <div class="col-12 col-12-narrower" th:each="reportInfo : ${reportInfoList}">
           <a th:href="@{|/bookReportForm/${reportInfo.id}|}">
-            <!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
-<!--            <section class="box special" style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;" >-->
-<!--            <section class="box special" style="background-color:#FFFAF0;">-->
-<!--              <div class="image left col-3 col-9-narrower"  style="background-color:green;">-->
-<!--                <span class="image features "><img th:src="|/image/${reportInfo.getStoreFileName()}|" alt="" style="width:150px; padding:0;" /></span>-->
-<!--              </div>-->
+
               <div class="box " style="background-color:#FFFAF0; padding-top:1em;padding-bottom:0.6em; padding-left:0.6em;" >
                 <div class="box alt" style="background-color:skyBlue;  padding-top:1em; height:100%; " >
                   <span class="image features left" ><img th:src="|/image/${reportInfo.getStoreFileName()}|" alt="" style="width:150px; padding:0;" /></span>
                   <p>
-<!--                    <br/>-->
+
                     <b><span  th:text="|[${reportInfo.title}]|"></span></b><br/>
                     <span  th:text="${#strings.length(reportInfo.content) > 80} ? |${#strings.substring(reportInfo.content, 0, 80)}..| : ${reportInfo.content}"></span><br/>
                     <span style="float:right;">
@@ -143,15 +138,9 @@ display:block;
                     </span>
                   </p>
                 </div>
-<!--                <div  class="box" align="right" style="background-color:yellow; padding-top:0; width:70%;">-->
-<!--                  <p>독후기록 내용</p>-->
-<!--                  <p>작성자</p>-->
-<!--                </div>-->
 
               </div>
 
-
-<!--            </section>-->
           </a>
 
 
