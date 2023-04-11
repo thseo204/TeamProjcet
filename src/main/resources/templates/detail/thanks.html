@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="/assets/css/main.css"/>
-  <link rel="stylesheet" href="/assets/css/star.css"/>
-</head>
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
 <body>
 <script>
     function windowClose(){
@@ -15,7 +10,7 @@
 </script>
 
 
-    <h3>소중한 별점 감사합니다 ^^</h3>
+    <h2>소중한 별점 감사합니다 ^^</h2>
     <ul class="actions">
       <li><a th:href="|javascript:windowClose();|" class="button special">확인</a></li>
     </ul>

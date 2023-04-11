@@ -204,6 +204,7 @@ const emailCodeCheck = /*[[${emailCodeCheck}]]*/;
     if(!$('#agree').is(':checked')){
        alert("개인정보 수집 및 이용에 동의하셔야 합니다.");
        $('#agree').focus();
+       return;
     }else{
         $('#joinForm').attr('action', '/joinForm').submit();
     }

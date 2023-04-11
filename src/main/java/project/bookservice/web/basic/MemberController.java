@@ -12,6 +12,7 @@ import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.domain.member.Member;
 import project.bookservice.domain.member.ReportInfoHistoryOfMember;
 import project.bookservice.domain.report.ReportInfo;
+import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.mail.MailService;
 import project.bookservice.service.member.BookmarkCollectionService;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
@@ -23,6 +24,7 @@ import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.SignUpFormValidator;
 import project.bookservice.web.validation.form.BookmarkCollectionSaveForm;
+import project.bookservice.web.validation.form.HistoryOfReportInfoSaveForm;
 import project.bookservice.web.validation.form.SignUpForm;
 
 import javax.validation.Valid;
@@ -42,8 +44,8 @@ public class MemberController {
     private final BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService;
     private final ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService;
     private final BookmarkCollectionService bookmarkCollectionService;
-    private final StarRatingService starRatingService;
     private final MailService mailService;
+    private final HistoryOfReportInfoService historyOfReportInfoService;
     private String ePw; // 이메일 인증 코드
     private boolean availableId, availableEmail, emailCodeCheck;
 
@@ -219,6 +221,14 @@ public class MemberController {
 
         //회원 정보 등록
         memberService.save(signUpForm);
+        // 새 회원에 모든 레포트 히스토리 기본값으로 넣어주기!
+        List<ReportInfo> reportInfoAllList = reportInfoService.findAll();
+        for (ReportInfo reportInfo : reportInfoAllList) {
+            HistoryOfReportInfoSaveForm form = new HistoryOfReportInfoSaveForm();
+            form.setReportId(reportInfo.getId());
+            form.setUserId(signUpForm.getUserId());
+            historyOfReportInfoService.save(form);
+        }
         availableId = false;
         availableEmail = false;
         emailCodeCheck = false;

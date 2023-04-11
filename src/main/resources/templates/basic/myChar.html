@@ -15,46 +15,48 @@
                 <ul class="icons">
                     <li>
                         <a th:href="@{|/editCharIcon/${member.userId}?imagePath=/images/icons/F.png|}">
-                            <img src="/images/icons/F.png" alt="image"  width="30" height="30"/>
+                            <img src="/images/icons/F.png" alt="image"  width="100" height="100"/>
                         </a>
                     </li>
                     <li>
-                        <div th:if="${reportCount >= 5}">
+                        <div th:if="${reportCount >= 2}">
                             <a th:href="@{|/editCharIcon/${member.userId}?imagePath=/images/icons/D.png|}">
-                                <img src="/images/icons/D.png" alt="image"  width="30" height="30"/>
+                                <img src="/images/icons/D.png" alt="image"  width="100" height="100"/>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <div th:if="${reportCount >= 10}">
+                        <div th:if="${reportCount >= 3}">
                             <a th:href="@{|/editCharIcon/${member.userId}?imagePath=/images/icons/C.png|}">
-                                <img src="/images/icons/C.png" alt="image"  width="30" height="30"/>
+                                <img src="/images/icons/C.png" alt="image"  width="100" height="100"/>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <div th:if="${reportCount >= 20}">
+                        <div th:if="${reportCount >= 4}">
                             <a th:href="@{|/editCharIcon/${member.userId}?imagePath=/images/icons/B.png|}">
-                                <img src="/images/icons/B.png" alt="image"  width="30" height="30"/>
+                                <img src="/images/icons/B.png" alt="image"  width="100" height="100"/>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <div th:if="${reportCount >= 30}">
+                        <div th:if="${reportCount >= 5}">
                             <a th:href="@{|/editCharIcon/${member.userId}?imagePath=/images/icons/A.png|}">
-                                <img src="/images/icons/A.png" alt="image"  width="30" height="30"/>
+                                <img src="/images/icons/A.png" alt="image"  width="100" height="100"/>
                             </a>
                         </div>
                     </li>
                     <li>
-                        <div th:if="${reportCount >= 50}">
+                        <div th:if="${reportCount >= 6}">
                             <a th:href="@{|/editCharIcon/${member.userId}?imagePath=/images/icons/S.png|}">
-                                <img src="/images/icons/S.png" alt="image"  width="30" height="30"/>
+                                <img src="/images/icons/S.png" alt="image"  width="100" height="100"/>
                             </a>
                         </div>
                     </li>
                 </ul>
             </div>
+
+
         </section>
     </section>
 </div>

@@ -68,22 +68,18 @@ public class LoginController {
     @GetMapping("/callback/naver")
     public String loginWithNaver(
             @RequestParam(defaultValue = "/") String redirectURL,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String nickname,
             HttpServletRequest request,
             Model model){
 
         Member loginMember = new Member();
-        loginMember.setUserName(nickname);
-        loginMember.setUserId(email);
+
 
         //세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
         HttpSession session = request.getSession();
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
-
         model.addAttribute("loginMember",loginMember);
-        log.info("nickname={}",nickname);
+
         log.info("loginmem={}",loginMember);
 
         // 리디렉션 처리하기
@@ -171,7 +167,6 @@ public class LoginController {
                              @RequestParam("userEmail") String userEmail,
                              @RequestParam("userId") String userId,
                              @RequestParam("userPwd") String userPwd,
-                             @RequestParam("userRePwd") String userRePwd,
                              Model model,
                              RedirectAttributes redirectAttributes) throws MessagingException {
 
@@ -182,7 +177,6 @@ public class LoginController {
         redirectAttributes.addAttribute("userEmail", userEmail);
         redirectAttributes.addAttribute("emailCode", emailCode);
         redirectAttributes.addAttribute("userPwd", userPwd);
-        redirectAttributes.addAttribute("userRePwd", userRePwd);
 
         //이메일 인증코드 일치 검사
         signUpFormValidator.emailCodeCheckValidate(ePw, member.getEmailCode(), bindingResult);

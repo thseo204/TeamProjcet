@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="/assets/css/main.css"/>
-  <link rel="stylesheet" href="/assets/css/star.css"/>
-</head>
+<th:block th:replace="fragments/headInfo :: headInfoFragment"></th:block>
 <body>
 <script>
     function windowClose(){
@@ -29,9 +24,8 @@ var emailCode = document.getElementById('emailCode').value;
 var userId = document.getElementById('userId').value;
 var userEmail = document.getElementById('userEmail').value;
 var userPwd = document.getElementById('userPwd').value;
-var userRePwd = document.getElementById('userRePwd').value;
 
-location.replace("/emailAuthentication/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail + "&userId=" + userId  + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd);
+location.replace("/emailAuthentication/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail + "&userId=" + userId  + "&userPwd=" + userPwd);
 }
 </script>
 <link rel="stylesheet" href="/assets/css/errors.css"/>
@@ -67,7 +61,6 @@ location.replace("/emailAuthentication/emailCode?emailCode=" + emailCode + "&use
     </div>
 
     <input type="hidden" id="userPwd" name="userPwd" th:field="*{userPwd}"/>
-    <input type="hidden" name="userRePwd" id="userRePwd" th:field="*{userRePwd}"/>
   </form>
 </div>
 </body>

@@ -5,6 +5,7 @@
 </th:block>
 
 <body class="is-preload">
+<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 <script>
 function openLoginModal() {
   if (confirm("존재하지 않는 아이디입니다.")) {
@@ -43,13 +44,13 @@ function openLoginModal() {
 </div>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

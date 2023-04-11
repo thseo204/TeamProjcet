@@ -122,8 +122,8 @@
 		-webkit-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 		-ms-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 		transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
-		color: inherit;
-
+		border-bottom: dotted 1px;
+		color: #e89980;
 		text-decoration: none;
 	}
 
@@ -215,10 +215,8 @@
 		padding: 0.5em 0 0.5em 2em;
 	}
 
-
 	pre {
 		-webkit-overflow-scrolling: touch;
-
 		background: #f8f8f8;
 		border-radius: 6px;
 		border: solid 1px #e5e5e5;
@@ -300,9 +298,6 @@
 		.row > .col-1 {
 			width: 8.33333%;
 		}
-        .row > .col-1-5 {
-            width: 10%;
-        }
 
 		.row > .off-1 {
 			margin-left: 8.33333%;
@@ -2152,9 +2147,9 @@
 		padding: 0.75em 1em;
 	}
 
-	input[type="checkbox"],
+	/*input[type="checkbox"],*/
 	input[type="radio"] {
-		moz-appearance: none;
+		-moz-appearance: none;
 		-webkit-appearance: none;
 		-ms-appearance: none;
 		appearance: none;
@@ -2166,7 +2161,7 @@
 		z-index: -1;
 	}
 
-		input[type="checkbox"] + label,
+		/*input[type="checkbox"] + label,*/
 		input[type="radio"] + label {
 			text-decoration: none;
 			color: #777;
@@ -2179,7 +2174,7 @@
 			position: relative;
 		}
 
-			input[type="checkbox"] + label:before,
+			/*input[type="checkbox"] + label:before,*/
 			input[type="radio"] + label:before {
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
@@ -2193,7 +2188,7 @@
 				font-weight: 900;
 			}
 
-			input[type="checkbox"] + label:before,
+			/*input[type="checkbox"] + label:before,*/
 			input[type="radio"] + label:before {
 				background: #f8f8f8;
 				border-radius: 6px;
@@ -2210,7 +2205,7 @@
 				width: 2.25em;
 			}
 
-		input[type="checkbox"]:checked + label:before,
+		/*input[type="checkbox"]:checked + label:before,*/
 		input[type="radio"]:checked + label:before {
 			background: #666;
 			border-color: #666;
@@ -2218,15 +2213,15 @@
 			content: '\f00c';
 		}
 
-		input[type="checkbox"]:focus + label:before,
+		/*input[type="checkbox"]:focus + label:before,*/
 		input[type="radio"]:focus + label:before {
 			border-color: #e89980;
 			box-shadow: 0 0 0 1px #e89980;
 		}
-
+/*
 	input[type="checkbox"] + label:before {
 		border-radius: 6px;
-	}
+	}*/
 
 	input[type="radio"] + label:before {
 		border-radius: 100%;

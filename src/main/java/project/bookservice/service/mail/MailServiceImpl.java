@@ -127,7 +127,7 @@ public class MailServiceImpl implements MailService{
         String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
         String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String NUMBER_CHARS = "0123456789";
-        String SPECIAL_CHARS = "!@#$%^&*()_+-=[]{}|;':\"<>,.?/";
+        String SPECIAL_CHARS = "!@#$%^&*";
 
         // 랜덤 생성기
         Random random = new SecureRandom();

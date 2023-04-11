@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
+    <title>독서노트</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="/assets/css/main2.css"/>
     <link rel="stylesheet" href="/assets/css/star.css"/>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 </head>
-<body>
+<body class="is-preload">
 <div class="card my-4">
-    <h5 class="card-header">별점을 남겨주세요</h5>
+    <h3>별점을 남겨주세요</h3>
     <div class="card-body">
         <form id="comment-form" name="comment-form" method="post" autocomplete="off">
             <div class="review_rating">
@@ -40,42 +45,42 @@
                 <input type="hidden" name="starRating"/>
             </div>
             <br>
-            <div class="col-12">
+            <div class="col-6">
                 <ul class="actions small">
-                    <li><input type="submit" name="save" id="save" value="등록"/></li>
-                    <li><input type="reset" value="취소" class="alt"/></li>
+                    <li><input type="submit" name="save" id="save" value="등록" style="font-size: 14px; padding: 5px 10px;"/></li>
                 </ul>
             </div>
         </form>
         <script>
-                              const checkboxes = document.querySelectorAll('input[name="star"]');
-                              const submitButton = document.querySelector('#save');
+            const checkboxes = document.querySelectorAll('input[name="star"]');
+            const submitButton = document.querySelector('#save');
 
-                              let checkedCount = 0;
-                              checkboxes.forEach((checkbox) => {
-                                      if (checkbox.checked) {
-                                        checkedCount++;
-                                      }
-                                });
+            let checkedCount = 0;
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    checkedCount++;
+                }
+            });
 
-                             document.querySelector('input[name="starRating"]').value = parseInt(checkedCount);
-                              submitButton.addEventListener('click', (event) => {
-                                event.preventDefault();
-                                let checkedCount = 0;
-                                checkboxes.forEach((checkbox) => {
-                                  if (checkbox.checked) {
-                                    checkedCount++;
-                                  }
-                                });
+            document.querySelector('input[name="starRating"]').value = parseInt(checkedCount);
+            submitButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                let checkedCount = 0;
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        checkedCount++;
+                    }
+                });
 
-                                document.querySelector('input[name="starRating"]').value = checkedCount;
-                                document.querySelector('#comment-form').submit();
-                                window.opener.location.reload(); // 부모 창 새로고침
-                              });
+                document.querySelector('input[name="starRating"]').value = checkedCount;
+                document.querySelector('#comment-form').submit();
+                window.opener.location.reload(); // 부모 창 새로고침
+            });
         </script>
     </div>
 </div>
 
 <script src="/assets/js/star.js?ver"></script>
+
 </body>
 </html>

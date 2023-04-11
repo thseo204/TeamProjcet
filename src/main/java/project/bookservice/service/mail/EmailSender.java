@@ -1,8 +1,13 @@
 package project.bookservice.service.mail;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+
 
 public class EmailSender {
 
@@ -17,12 +22,12 @@ public class EmailSender {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("nanovia3@naver.com", "ehdrnsms1!@");
+                        return new PasswordAuthentication("[EmailId]", "[password]");
                     }
                 });
 
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("nanovia3@naver.com"));
+        message.setFrom(new InternetAddress("nanovia100@naver.com"));
         message.setRecipients(Message.RecipientType.TO,
                 InternetAddress.parse(to));
         message.setSubject(subject);

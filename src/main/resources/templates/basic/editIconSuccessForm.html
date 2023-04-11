@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="/assets/css/main.css"/>
-  <link rel="stylesheet" href="/assets/css/star.css"/>
-</head>
+
+<th:block th:replace="fragments/headInfo :: headInfoFragment">
+</th:block>
+
 <body>
 <script>
     function windowClose(){
