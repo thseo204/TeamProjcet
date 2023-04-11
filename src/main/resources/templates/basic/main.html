@@ -144,7 +144,8 @@ function openLoginModal() {
                     <br/>
                     <p align="center" style="font-weight:bold;"
                        th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
-                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+<!--                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>-->
+                    <p th:text="|${#strings.length(reportInfo.content) < 50 ? reportInfo.content : #strings.substring(reportInfo.content, 0, 50) + ' ....'}|"></p>
 
                     <br/>
                     <br/>
@@ -196,7 +197,8 @@ function openLoginModal() {
                     <br/>
                     <p align="center" style="font-weight:bold;"
                        th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
-                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>
+<!--                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>-->
+                    <p th:text="|${#strings.length(reportInfo.content) < 50 ? reportInfo.content : #strings.substring(reportInfo.content, 0, 50) + ' ....'}|"></p>
                     <br/>
                     <br/>
                     <p>
