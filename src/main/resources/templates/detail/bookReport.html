@@ -13,8 +13,6 @@
   'GRAD' 0,
   'opsz' 48
 }
-
-
 </style>
 
 <script>
@@ -23,26 +21,15 @@ function openLoginModal() {
    window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
   }
 }
-
-
 </script>
 
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 
-
 <!-- Main -->
 
 <section id="main" class="container">
-    <!--            <header>-->
-    <!--                <h2>독후기록</h2>-->
-    <!--                <p>...</p>-->
-    <!--            </header>-->
-    <!--    <div class="row">-->
-    <!--        <div class="col-12">-->
-
     <!-- Image -->
-
     <div class="box"
          th:if="${reportInfo.disclosure} or ${reportInfo.writerId} == ${#session.getAttribute('loginMember').userId}">
         <p>
@@ -99,7 +86,6 @@ function openLoginModal() {
             </ul>
         </nav>
 
-
         <!--로그인 세션 정보가 있을 때-->
         <nav id="nav" style="float:right;" th:if="${#session} != null">
             <ul class="actions">
@@ -155,30 +141,11 @@ function openLoginModal() {
 
                 </div>
 
-    <!--            <hr/>-->
     <ul class="actions fit">
         <li><a href="/feedListForm" class="button special fit">FEED LIST</a></li>
         <li><a href="/" class="button fit">HOME</a></li>
     </ul>
-    <!--        </div>-->
-    <!--    </div>-->
-
-
 </section>
-
-
-<!--    &lt;!&ndash; Footer &ndash;&gt;-->
-<!--    <section id="footer">-->
-<!--        <ul class="icons-2">-->
-<!--            <li><a href="#" class="icon-2 brands-2 fa-twitter-2"><span class="label-2">Twitter</span></a></li>-->
-<!--            <li><a href="#" class="icon-2 brands-2 fa-facebook-f-2"><span class="label-2">Facebook</span></a></li>-->
-<!--            <li><a href="#" class="icon-2 brands-2 fa-instagram-2"><span class="label-2">Instagram</span></a></li>-->
-<!--            <li><a href="#" class="icon-2 solid-2 fa-rss-2"><span class="label-2">RSS</span></a></li>-->
-<!--            <li><a href="#" class="icon-2 solid-2 fa-envelope-2"><span class="label-2">Email</span></a></li>-->
-<!--        </ul>-->
-<!--        <p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>-->
-<!--    </section>-->
-
 
 <!-- Scripts -->
 <script src="/assets/js/jquery.min.js"></script>
@@ -189,7 +156,6 @@ function openLoginModal() {
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
 
-<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

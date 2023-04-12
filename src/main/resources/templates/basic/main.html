@@ -15,9 +15,6 @@
 body p {
 display:block;
 }
-
-
-
 </style>
 <script>
 function openLoginModal() {
@@ -25,11 +22,6 @@ function openLoginModal() {
     window.location.href = "/loginForm?redirectURL=" + encodeURIComponent(window.location.pathname);
     }
 }
-
-
-
-
-
 </script>
 <body class="landing is-preload">
 
@@ -52,8 +44,6 @@ function openLoginModal() {
     <!-- Main -->
     <section id="main" class="container">
         <!--   [추천도서 리스트 부분]     -->
-        <!--        <h4 align="left">추천도서</h4>-->
-
         <section class="box">
             <div style="overflow:hidden;">
                 <h4 >
@@ -64,9 +54,7 @@ function openLoginModal() {
                                th:class="${listViewStat} ? 'button special fit  alt' : 'button special fit'">주목할만한 신간 리스트</a></li>
                     </ul>
                 </h4>
-                <!--                <hr/>-->
                 <pre th:if="${listViewStat}" class="row" style="background: white; line-height: 0.1em; border: none; width:150%;">
-<!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
                     <div class="col-1 col-2-narrower" name="BlogBestList"
                          th:each="books : ${bookList}">
                         <a th:href="@{|/book/${books.isbn}|}">
@@ -90,7 +78,6 @@ function openLoginModal() {
                 </pre>
 
                 <pre th:unless="${listViewStat}" class="row" style="background: white; line-height: 0.1em; border: none; width:150%; ">
-<!--                    <div class="col-1 col-2-narrower" th:each="book : ${bookList}" style="width: 10%;">-->
                     <div class="col-1 col-2-narrower" th:each="books : ${bookList}">
                         <a th:href="@{|/book/${books.isbn}|}">
                             <span th:text="|${booksStat.index+1}위|" style="color: pink; float:left;"></span>
@@ -112,7 +99,6 @@ function openLoginModal() {
                         </a>
                     </div>
                 </pre>
-
             </div>
         </section>
 
@@ -125,7 +111,6 @@ function openLoginModal() {
 
                 <div class="box special">
                     <span class="image featured"><img th:src="|/image/${reportInfo.storeFileName}|" alt=""/></span>
-                    <!--                    <h3>Sed lorem adipiscing</h3>-->
                     <span style="float:left; color:gray;">
                         <span class="material-symbols-outlined">account_circle</span>
                         작성자 : <span th:text="${reportInfo.writerId}"></span>
@@ -144,7 +129,6 @@ function openLoginModal() {
                     <br/>
                     <p align="center" style="font-weight:bold;"
                        th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
-<!--                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>-->
                     <p th:text="|${#strings.length(reportInfo.content) < 50 ? reportInfo.content : #strings.substring(reportInfo.content, 0, 50) + ' ....'}|"></p>
 
                     <br/>
@@ -169,7 +153,6 @@ function openLoginModal() {
 
                 <section class="box special">
                     <span class="image featured"><img th:src="|/image/${reportInfo.storeFileName}|" alt=""/></span>
-                    <!--                    <h3>Sed lorem adipiscing</h3>-->
 
                     <span style="float:left; color:gray;">
                         <span class="material-symbols-outlined">account_circle</span>
@@ -197,7 +180,6 @@ function openLoginModal() {
                     <br/>
                     <p align="center" style="font-weight:bold;"
                        th:text="${#strings.contains(reportInfo.title, '(')} ? |[${#strings.substringBefore(reportInfo.title,'(')}]| : |[${reportInfo.title}]|"></p>
-<!--                    <p th:text="|${#strings.substring(reportInfo.content, 0, 50)} ....|"></p>-->
                     <p th:text="|${#strings.length(reportInfo.content) < 50 ? reportInfo.content : #strings.substring(reportInfo.content, 0, 50) + ' ....'}|"></p>
                     <br/>
                     <br/>
@@ -271,7 +253,6 @@ function openLoginModal() {
                 </div>
             </div>
         </section>
-
     </section>
 </div>
 

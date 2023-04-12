@@ -16,15 +16,12 @@ import project.bookservice.service.starRating.StarRatingService;
 
 import java.util.ArrayList;
 
-
 @RequiredArgsConstructor
-public class ApiSearchBookList extends ConnectAPI implements APIParser{
+public class ApiSearchBookList extends ConnectAPI implements APIParser {
 
     public ArrayList<Book> book = new ArrayList<Book>();
 
     private final StarRatingService starRatingService;
-
-
 
     public String getTagvalue(String tag, Element eElement) {
         NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
@@ -35,12 +32,8 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
         return nValue.getNodeValue();
     }
 
-    public void getApiData() {
-
-    }
-
     @Override
-    public ArrayList<Book> jsonAndXmlParserToArr(String bookTitle) throws ParseException {
+    public ArrayList<Book> jsonAndXmlParserToArr(String bookTitle) {
         ArrayList<Book> bookList = new ArrayList<Book>();
 
         String url = responseBodyAboutApi(bookTitle);
@@ -54,26 +47,12 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("item");
 
-//            System.out.println(nList.getLength() + "개의 데이터 발견");
-
-            
-
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
                 MyBatisBookRepository bookRepository = new MyBatisBookRepository();
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-//                    System.out.println(eElement.toString());
-//                    System.out.println();
-//                    System.out.println("책 이미지 : " + getTagvalue("cover", eElement));
-//                    System.out.println("작가 : " + getTagvalue("author", eElement));
-//                    System.out.println("책 링크 : " + getTagvalue("link", eElement));
-//                    System.out.println("책 출판사 : " + getTagvalue("publisher", eElement));
-//                    System.out.println("책 정보 : " + getTagvalue("description", eElement));
-//                    System.out.println("책 제목 : " + getTagvalue("title", eElement));
-//                    System.out.println("책 출판년도 : " + getTagvalue("pubDate", eElement));
-//                    System.out.println();
 
                     String imageUrl = getTagvalue("cover", eElement);
                     String author = getTagvalue("author", eElement);
@@ -84,9 +63,8 @@ public class ApiSearchBookList extends ConnectAPI implements APIParser{
                     String pubDate = getTagvalue("pubDate", eElement);
                     String isbn = getTagvalue("isbn13", eElement);
                     Double avgStarRating = starRatingService.findAvgStarRating(isbn);
-            
-                    Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn,avgStarRating);
-//                    bookRepository.save(book);
+
+                    Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn, avgStarRating);
                     bookList.add(book);
                 }
             }

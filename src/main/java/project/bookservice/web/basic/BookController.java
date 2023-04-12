@@ -2,7 +2,6 @@ package project.bookservice.web.basic;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.bridge.Message;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.bookservice.domain.book.Book;
 import project.bookservice.domain.comment.Comment;
 import project.bookservice.domain.member.BookmarkCollection;
-import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.domain.member.Member;
 
 import project.bookservice.domain.report.ReportInfo;
@@ -22,7 +20,6 @@ import project.bookservice.openapi.APIParser;
 import project.bookservice.openapi.ApiSearchBook;
 import project.bookservice.openapi.ApiSearchBookList;
 
-import project.bookservice.repository.report.ReportInfoRepository;
 import project.bookservice.service.comment.CommentService;
 import project.bookservice.service.member.BookmarkCollectionService;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
@@ -117,17 +114,6 @@ public class BookController {
 			model.addAttribute("keywordArr", keywordArr);
             return "basic/searchBookList";
         }
-    }
-
-    @GetMapping("/main")
-    public String BestSeller(Model model) throws ParseException {
-        String bookTitle = "Bestseller";
-        APIParser apiParser = new ApiSearchBookList(starRatingService);
-        ArrayList<Book> bookList = apiParser.jsonAndXmlParserToArr(bookTitle);
-        model.addAttribute("bookList", bookList);
-
-
-        return "basic/main";
     }
 
     @GetMapping("/book/{isbn}")
@@ -361,9 +347,7 @@ public class BookController {
         bookmarkHistoryOfMemberService.save(form);
         log.info("saveForm={}", form);
         return "redirect:/book/{isbn}";
-
     }
-
 
     @GetMapping("/addCollectionFormAtBookInfo/{isbn}")
     public String addCollection(Model model, BookmarkCollectionSaveForm form,
@@ -387,7 +371,6 @@ public class BookController {
             Model model,
             RedirectAttributes redirectAttributes){
 
-//        String collectionName = (String)model.getAttribute("collectionName");
         BookmarkCollectionSaveForm saveForm = new BookmarkCollectionSaveForm();
         saveForm.setUserId(loginMember.getUserId());
         saveForm.setCollectionName(collectionName);

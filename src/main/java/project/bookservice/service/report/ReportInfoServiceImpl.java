@@ -31,7 +31,6 @@ public class ReportInfoServiceImpl implements ReportInfoService {
 
     @Override
     public ReportInfo findById(Long id) {
-//        reportInfoRepository.findById(id);
         return reportInfoRepository.findById(id);
     }
 
@@ -90,6 +89,7 @@ public class ReportInfoServiceImpl implements ReportInfoService {
     public List<ReportInfo> orderByFavoriteNum() {
         return reportInfoRepository.orderByFavoriteNum();
     }
+
     @Override
     public Integer countByWriterId(String userId) {
         return reportInfoRepository.countByWriterId(userId);

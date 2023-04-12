@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -14,9 +13,6 @@ import javax.validation.constraints.Pattern;
 public class SignUpForm {
 
     private Long id;
-
-//    @NotBlank(message = "아이디는 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{5,20}$", message = "아이디는 5~20자내로 입력해주세요.")
     @NotBlank(message = "아이디는 필수 입력 값 입니다.")
     private String userId;
 
@@ -27,11 +23,9 @@ public class SignUpForm {
     private String userRePwd;
 
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 숫자만 입력해주세요.")
     private String userPhone;
 
     @NotBlank(message = "생년월일은 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[0-9]{6}$", message = "생년월일은 6자리로 숫자만 기입해주세요.")
     private String userBirth;
 
     @NotBlank(message = "성별은 필수 입력 값입니다.")

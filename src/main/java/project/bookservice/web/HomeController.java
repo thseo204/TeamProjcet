@@ -18,14 +18,12 @@ import project.bookservice.domain.report.ReportInfo;
 import project.bookservice.openapi.APIParser;
 import project.bookservice.openapi.ApiSearchBook;
 import project.bookservice.openapi.ApiSearchBookList;
-import project.bookservice.repository.member.MemberRepository;
 
 import project.bookservice.service.historyOfReportInfo.HistoryOfReportInfoService;
 import project.bookservice.service.member.ReportInfoHistoryOfMemberService;
 import project.bookservice.service.report.KeywordService;
 import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.service.starRating.StarRatingService;
-import project.bookservice.web.session.SessionManager;
 import project.bookservice.web.validation.form.ReportInfoHistoryOfMemberSaveForm;
 
 import java.util.ArrayList;
@@ -38,10 +36,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final MemberRepository memberRepository;
-    private final SessionManager sessionManager;
-	 private final StarRatingService starRatingService;
-
+    private final StarRatingService starRatingService;
     private final HistoryOfReportInfoService historyOfReportInfoService;
     private final ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService;
     private final ReportInfoService reportInfoService;
@@ -50,18 +45,18 @@ public class HomeController {
 
     @GetMapping("/main/{listViewStat}")
     public String homeLoginV3ArgumentResolver(@PathVariable boolean listViewStat,
-                                              @SessionAttribute(name=SessionConst.LOGIN_MEMBER,
-            required = false) Member loginMember, Model model) throws ParseException {
+                                              @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
+                                                      required = false) Member loginMember, Model model) throws ParseException {
         log.info("loginMember {}", loginMember);
         APIParser apiParser = new ApiSearchBookList(starRatingService);
 
         ArrayList<Book> bookList = null;
 
-        if(listViewStat == true){
+        if (listViewStat == true) {
             // BlogBestList 블로거 베스트 셀러 버튼 눌리면 이 리스트 노출
             bookList = apiParser.jsonAndXmlParserToArr("BlogBest");
             model.addAttribute("listViewStat", true);
-        } else{
+        } else {
             // ItemNewSpecialList 주목할 만한 신간 리스트 버튼 눌리면 이 리스트 노출
             bookList = apiParser.jsonAndXmlParserToArr("ItemNewSpecial");
             model.addAttribute("listViewStat", false);
@@ -76,9 +71,8 @@ public class HomeController {
         // // 오더바이 좋아요순으로 리밋 4 받아와서 메인 feedList에 뿌리기!!
         List<ReportInfo> reportInfoList = reportInfoService.orderByFavoriteNum();
         List<Keyword> keywordList = keywordService.findAll();
-//        log.info("레포트리스트 이미지 이름 ={}" , reportInfoList.get(0).getStoreFileName());
         model.addAttribute("keywordList", keywordList);
-        if(loginMember != null){
+        if (loginMember != null) {
             List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
             model.addAttribute("historyList", historyList);
         }
@@ -91,9 +85,9 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String myBookmarkForm(RedirectAttributes redirectAttributes){
+    public String myBookmarkForm(RedirectAttributes redirectAttributes) {
 
-        boolean listViewStat=true;
+        boolean listViewStat = true;
         redirectAttributes.addAttribute("listViewStat", listViewStat);
 
         return "redirect:/main/{listViewStat}";
@@ -107,18 +101,15 @@ public class HomeController {
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) throws ParseException {
 
-
         ReportInfo reportInfo = reportInfoService.findById(id);
         log.info("reportInfo={}", reportInfo);
 
-        //Book book = bookRepository.findByIsbnInAPI(reportInfo.getIsbn());
         APIParser apiParser = new ApiSearchBook(starRatingService);
         ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
         Book book = booklist.get(0);
 
         log.info("book={}", book);
 
-//        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
         List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
 
         Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
@@ -135,19 +126,8 @@ public class HomeController {
             reportInfoService.decreaseOfFavoriteNum(reportInfo); // 좋아요 수 1 감소 db 반영
         }
         historyOfReportInfoService.updateFavorite(id, history); // 좋아요 눌린 상태 db 반영
-        //false -> true 로 true -> false
-        if(history.getCollection() == true){
-
-        } else{
-            //
-        }
-
-//        model.addAttribute("history", history);
-//        model.addAttribute("book", book);
-//        model.addAttribute("reportInfo", reportInfo);
 
         return "redirect:/";
-
     }
 
     /**
@@ -171,7 +151,6 @@ public class HomeController {
 
         log.info("book={}", book);
 
-//        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
         List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
 
         Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
@@ -203,15 +182,8 @@ public class HomeController {
             reportInfoHistoryOfMemberService.delete(reportInfoHistoryOfMember);
         }
 
-        // 컬렉션 저장을 reportInfoHistoryOfMember 클래스에 반영 하는 코드
-
         historyOfReportInfoService.updateCollection(id, history); // 좋아요 눌린 상태 db 반영
-        //false -> true 로 true -> false
-//        model.addAttribute("history", history);
-//        model.addAttribute("book", book);
-//        model.addAttribute("reportInfo", reportInfo);
 
         return "redirect:/";
-
     }
 }

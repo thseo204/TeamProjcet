@@ -1,13 +1,7 @@
 package project.bookservice.domain.book;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-
-//@Getter
-//@Setter
-//@Entity
 @Data
 public class Book {
     private Long id;
@@ -20,6 +14,7 @@ public class Book {
     private String pubDate; // 출판연도
     private String isbn; // 책의 key 값
     private Double avgStarRating;
+
     public Book() {
     }
 

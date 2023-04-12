@@ -1,6 +1,7 @@
 package project.bookservice.openapi;
 
 // 네이버 검색 API 예제 - 블로그 검색
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.String;
+
 @Getter
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class ApiSearchBook extends ConnectAPI implements APIParser{
-
-//    private ArrayList<JSONObject> jsonObjectArrayList;
+public class ApiSearchBook extends ConnectAPI implements APIParser {
 
     private final StarRatingService starRatingService;
 
@@ -34,34 +34,29 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
         ArrayList<Book> bookList = new ArrayList<Book>();
         String responseBody = responseBodyAboutApi(bookTitle);
         JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject)parser.parse(responseBody);
+        JSONObject jsonObject = (JSONObject) parser.parse(responseBody);
         JSONArray itemArr = (JSONArray) jsonObject.get("items");
 
-//        System.out.println("itemArr.size() = " + itemArr.size());
-
-        
-        for(int i = 0; i < itemArr.size(); i++){
+        for (int i = 0; i < itemArr.size(); i++) {
 
             MyBatisBookRepository bookRepository = new MyBatisBookRepository();
 
-            JSONObject jsonObject1 = (JSONObject)itemArr.get(i);
-            String imageUrl = (String)jsonObject1.get("image"); // 이미지 링크
-            String author = (String)jsonObject1.get("author"); // 저자
-            String buyUrl = (String)jsonObject1.get("link"); // 구매 링크
-            String publisher = (String)jsonObject1.get("publisher"); // 출판사
-            String description = (String)jsonObject1.get("description");
-            String title = (String)jsonObject1.get("title");
-            String pubDate = (String)jsonObject1.get("pubdate"); // 출판연도
-            String isbn = (String)jsonObject1.get("isbn"); // key값
+            JSONObject jsonObject1 = (JSONObject) itemArr.get(i);
+            String imageUrl = (String) jsonObject1.get("image"); // 이미지 링크
+            String author = (String) jsonObject1.get("author"); // 저자
+            String buyUrl = (String) jsonObject1.get("link"); // 구매 링크
+            String publisher = (String) jsonObject1.get("publisher"); // 출판사
+            String description = (String) jsonObject1.get("description");
+            String title = (String) jsonObject1.get("title");
+            String pubDate = (String) jsonObject1.get("pubdate"); // 출판연도
+            String isbn = (String) jsonObject1.get("isbn"); // key값
             Double avgStarRating = starRatingService.findAvgStarRating(isbn);
-            log.info("avgStarRating ={}",avgStarRating);
+            log.info("avgStarRating ={}", avgStarRating);
 
-            Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn,avgStarRating);
+            Book book = new Book(imageUrl, author, buyUrl, publisher, description, title, pubDate, isbn, avgStarRating);
             bookRepository.save(book);
             bookList.add(book);
         }
-//        object = (JSONObject) itemArr.get(0);
-//        String jsonString = jsonObject.toJSONString();
         return bookList;
     }
 
@@ -75,20 +70,17 @@ public class ApiSearchBook extends ConnectAPI implements APIParser{
         try {
             text = URLEncoder.encode(bookTitle, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("검색어 인코딩 실패",e);
+            throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-
-        String apiURL = "https://openapi.naver.com/v1/search/book?query=" + text+"&display=100";    // JSON 결과
+        String apiURL = "https://openapi.naver.com/v1/search/book?query=" + text + "&display=100";    // JSON 결과
         //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // XML 결과
         System.out.println(text);
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        String responseBody = get(apiURL,requestHeaders);
+        String responseBody = get(apiURL, requestHeaders);
 
-//        System.out.println(responseBody);
         return responseBody;
     }
-
 }

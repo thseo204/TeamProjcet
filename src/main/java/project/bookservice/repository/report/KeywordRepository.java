@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface KeywordRepository {
     void save(KeywordSaveForm form);
+
     void update(KeywordSaveForm form);
+
     void deleteReport(Long reportId);
+
     List<Keyword> findAll();
+
     List<Keyword> findByKeyword(String keyword);
 
     String[] findByLikeKeyword(String keyword);

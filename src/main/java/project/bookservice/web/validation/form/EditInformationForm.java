@@ -12,8 +12,6 @@ public class EditInformationForm {
 
     private Long id;
 
-    //    @NotBlank(message = "아이디는 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{5,20}$", message = "아이디는 5~20자내로 입력해주세요.")
     @NotBlank(message = "아이디는 필수 입력 값 입니다.")
     private String userId;
 
@@ -24,11 +22,9 @@ public class EditInformationForm {
     private String userRePwd;
 
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 숫자만 입력해주세요.")
     private String userPhone;
 
     @NotNull(message = "생년월일은 필수 입력 값입니다.")
-//    @Pattern(regexp = "^[0-9]{6}$", message = "생년월일은 6자리로 숫자만 기입해주세요.")
     private Integer userBirth;
 
     @NotBlank(message = "성별은 필수 입력 값입니다.")

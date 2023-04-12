@@ -11,8 +11,11 @@ import java.util.List;
 @Mapper
 public interface KeywordMapper {
     void save(KeywordSaveForm form);
+
     void update(KeywordSaveForm form);
+
     void deleteReport(Long reportId);
+
     List<Keyword> findAll();
 
     List<Keyword> findByKeyword(String keyword);
@@ -21,5 +24,5 @@ public interface KeywordMapper {
 
     int countKeyword(String keyword);
 
-    void deleteKeywords(@Param("reportInfo")ReportInfo reportInfo);
+    void deleteKeywords(@Param("reportInfo") ReportInfo reportInfo);
 }

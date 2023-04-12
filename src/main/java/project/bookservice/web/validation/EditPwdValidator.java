@@ -7,7 +7,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import project.bookservice.web.validation.form.EditPwdForm;
 
-
 @Slf4j
 @Component
 public class EditPwdValidator implements Validator {

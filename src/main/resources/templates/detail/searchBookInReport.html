@@ -10,9 +10,6 @@
 };
 </script>
 <body class="is-preload">
-<!--<div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>-->
-<!--<link rel="stylesheet" href="assets/css/errors.css"/>-->
-
 <!-- Main -->
 <section id="main" class="container">
     <header>
@@ -30,23 +27,19 @@
                     <input type="submit" class="button special icon solid fa-search fit" value="search" />
                 </div>
             </div>
-
         <hr/>
 
         <div class="table-wrapper">
             <table>
                 <thead>
                 <tr>
-<!--                    <th>이미지</th>-->
                     <th>출판사</th>
                     <th>책제목</th>
                     <th>저자</th>
                 </tr>
                 </thead>
                 <tbody>
-<!--                <p th:text="|검색된 도서 수 : ${#lists.size(bookList)}|"></p>-->
                 <tr th:each="books : ${bookList}">
-<!--                    <td><span><img style="width:30px; height:5px;" th:src="@{${book.imageUrl}}" alt=""/></span></td>-->
                     <td><span th:text="${books.publisher}"></span></td>
                     <td>
                         <a th:href="|javascript:close1('${books.isbn}');|" th:text="${books.title}"></a>
@@ -55,28 +48,12 @@
                 </tr>
 
                 <tfoot>
-<!--                <tr>-->
-<!--&lt;!&ndash;                    <td colspan="2"></td>&ndash;&gt;-->
-<!--                    <td th:text="|검색된 도서 수 : ${#lists.size(bookList)}|">[검색된 도서 수 : ]</td>-->
-<!--                </tr>-->
                 </tfoot>
             </table>
         </div>
         </form>
     </section>
-
 </section>
-
-<!-- Scripts -->
-<!--<script src="assets/js/jquery.min.js"></script>-->
-<!--<script src="assets/js/jquery.dropotron.min.js"></script>-->
-<!--<script src="assets/js/jquery.scrollex.min.js"></script>-->
-<!--<script src="assets/js/browser.min.js"></script>-->
-<!--<script src="assets/js/breakpoints.min.js"></script>-->
-<!--<script src="assets/js/util.js"></script>-->
-<!--<script src="assets/js/main.js"></script>-->
-
-<!--<script src="assets/js/window.js"></script>-->
 
 </body>
 

@@ -8,6 +8,7 @@ import project.bookservice.repository.member.ReportInfoHistoryOfMemberRepository
 import project.bookservice.web.validation.form.ReportInfoHistoryOfMemberSaveForm;
 
 import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor

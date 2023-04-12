@@ -24,7 +24,7 @@ import java.util.Random;
 @Service
 @PropertySource("classpath:email.properties")
 @RequiredArgsConstructor
-public class MailServiceImpl implements MailService{
+public class MailServiceImpl implements MailService {
 
     @Autowired
     JavaMailSender javaMailSender; // Bean 등록해둔 MailConfig를 emailSender 라는 이름으로 autowired
@@ -34,12 +34,13 @@ public class MailServiceImpl implements MailService{
     private String ePw; //인증번호
     @Value("${spring.mail.username}")
     private String id;
+
     @Override
     public void sendMail(Member member) throws MessagingException {
         String randomPwd = randomPwdCreate();
         member.setUserPwd(randomPwd);
         memberRepository.editPwdByRandom(member);
-        String subject="[Reading journal] Password";
+        String subject = "[Reading journal] Password";
         String body = "<h1>Password :" + member.getUserPwd() + "</h1>";
         body += "<p><a href='http://localhost:8000/loginForm'>Go login page</a></p>";
         EmailSender.sendEmail(member.getUserEmail(), subject, body);
@@ -70,7 +71,7 @@ public class MailServiceImpl implements MailService{
         msg += "<div style='font-size:130%'>";
         msg += "CODE : <strong>" + ePw + "</strong></div><br/>"; //메일에 인증번호 넣기
         msg += "</div>";
-        message.setText(msg,"utf-8", "html"); // 내용 charset 타입, subType
+        message.setText(msg, "utf-8", "html"); // 내용 charset 타입, subType
         // 보내는 사람의 이메일 주소, 보내는 사람 이름
         message.setFrom(new InternetAddress(id, "DokSeoNote"));
 
@@ -83,10 +84,10 @@ public class MailServiceImpl implements MailService{
         StringBuffer key = new StringBuffer();
         Random random = new Random();
 
-        for(int i = 0; i < 8; i++){ // 인증코드 8자리
+        for (int i = 0; i < 8; i++) { // 인증코드 8자리
             int index = random.nextInt(3); // 0~2 까지 랜덤, random 값에 따라 아래 switch 문 실행
 
-            switch(index){
+            switch (index) {
                 case 0:
                     key.append((char) ((int) (random.nextInt(26)) + 97));
                     // a~z (ex. 1+97=98 -> (char) 98 = 'b')
@@ -160,8 +161,6 @@ public class MailServiceImpl implements MailService{
                     break;
             }
         }
-
         return passwordBuilder.toString();
     }
-
 }

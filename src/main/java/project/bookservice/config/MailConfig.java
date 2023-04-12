@@ -12,23 +12,6 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:email.properties")
 public class MailConfig {
-//    @Value("${mail.smtp.port}")
-//    private int port;
-//    @Value("${mail.smtp.socketFactory.port}")
-//    private int socketPort;
-//    @Value("${mail.smtp.auth}")
-//    private boolean auth;
-//    @Value("${mail.smtp.starttls.enable}")
-//    private boolean starttls;
-//    @Value("${mail.smtp.starttls.required}")
-//    private boolean startlls_required;
-//    @Value("${mail.smtp.socketFactory.fallback}")
-//    private boolean fallback;
-//    @Value("${AdminMail.id}")
-//    private String id;
-//    @Value("${AdminMail.password}")
-//    private String password;
-
     @Value("${spring.mail.username}")
     private String id;
     @Value("${spring.mail.password}")
@@ -39,7 +22,7 @@ public class MailConfig {
     private int port;
 
     @Bean
-    public JavaMailSender javaMailService(){
+    public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
         javaMailSender.setHost(host); // 네이버로그인 -> 메일 -> 환결설정 -> POP3/IMAP설정 내 SMTP 서버명
@@ -58,7 +41,6 @@ public class MailConfig {
         properties.put("mail.transport.protocol", "smtp"); //프로토콜 설정
         properties.put("mail.smtp.auth", "true"); //smtp 인증
         properties.put("mail.smtp.starttls.enable", "true"); //smtp starttls 사용
-//        properties.put("mail.smtp.starttls.required", startlls_required); //smtp starttls 사용
         properties.setProperty("mail.debug", "true"); //디버그 사용
         properties.put("mail.smtp.tls.trust", "smtp.mailplug.co.kr"); //ssl 인증서버는 naver.com
         properties.put("mail.smtp.tls.enable", "true"); //ssl 사용

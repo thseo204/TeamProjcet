@@ -20,7 +20,7 @@ public class Member {
     public Member() {
     }
 
-    public Member(String userId, String userPwd,String userName, String userGender, Integer userBirth, String userEmail, String userPhone, String userCharIcon) {
+    public Member(String userId, String userPwd, String userName, String userGender, Integer userBirth, String userEmail, String userPhone, String userCharIcon) {
         this.userId = userId;
         this.userPwd = userPwd;
         this.userName = userName;

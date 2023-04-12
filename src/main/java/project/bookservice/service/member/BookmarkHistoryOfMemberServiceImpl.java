@@ -9,7 +9,6 @@ import project.bookservice.web.validation.form.BookmarkHistoryOfMemberSaveForm;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -17,6 +16,7 @@ import java.util.Optional;
 public class BookmarkHistoryOfMemberServiceImpl implements BookmarkHistoryOfMemberService {
 
     private final BookmarkHistoryOfMemberRepository bookmarkHistoryOfMemberRepository;
+
     @Override
     public void save(BookmarkHistoryOfMemberSaveForm form) {
         bookmarkHistoryOfMemberRepository.save(form);

@@ -7,16 +7,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import project.bookservice.domain.member.BookmarkHistoryOfMember;
-import project.bookservice.repository.member.MemberRepository;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
-import project.bookservice.web.validation.form.SignUpForm;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class BookmarkHistoryOfMemberValidator implements Validator {
-
-    private final BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService;
 
     @Override
     public boolean supports(Class<?> clazz) {

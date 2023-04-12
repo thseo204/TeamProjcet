@@ -14,6 +14,7 @@ import java.util.List;
 public class MyBatisReportInfoHistoryOfMemberRepository implements ReportInfoHistoryOfMemberRepository {
 
     private final ReportInfoHistoryOfMemberMapper reportInfoHistoryOfMemberMapper;
+
     @Override
     public void save(ReportInfoHistoryOfMemberSaveForm form) {
         reportInfoHistoryOfMemberMapper.save(form);

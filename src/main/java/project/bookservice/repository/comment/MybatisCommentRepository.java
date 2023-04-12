@@ -10,7 +10,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Repository
-public class MybatisCommentRepository implements CommentRepository{
+public class MybatisCommentRepository implements CommentRepository {
 
     private final CommentMapper commentMapper;
 
@@ -40,6 +40,4 @@ public class MybatisCommentRepository implements CommentRepository{
     public void updateCharIcon(Comment comment) {
         commentMapper.updateCharIcon(comment);
     }
-
-
 }

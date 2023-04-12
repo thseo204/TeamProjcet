@@ -7,7 +7,7 @@ import project.bookservice.repository.starRating.StarRatingRepository;
 
 @Service
 @RequiredArgsConstructor
-public class StarRatingServiceImpl implements StarRatingService{
+public class StarRatingServiceImpl implements StarRatingService {
 
     private final StarRatingRepository starRatingRepository;
 
@@ -18,7 +18,6 @@ public class StarRatingServiceImpl implements StarRatingService{
 
     @Override
     public Double findAvgStarRating(String isbn) {
-
         return starRatingRepository.findAvgStarRating(isbn);
     }
 

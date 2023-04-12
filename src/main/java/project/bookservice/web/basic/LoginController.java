@@ -86,8 +86,6 @@ public class LoginController {
         return "basic/test/callback";
     }
 
-
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,@RequestParam(defaultValue = "/") String redirectURL) {
 
@@ -112,7 +110,6 @@ public class LoginController {
     @GetMapping("/findPwdByEmail")
     public String findPwdByEmail(String userId,Model model) throws MessagingException {
 
-
         // Retrieve the member from the database using the user ID
         Member member = loginService.findId(userId);
         log.info("ID?= {}", member);
@@ -120,7 +117,6 @@ public class LoginController {
             model.addAttribute("message1", "존재하지 않는 아이디 입니다");
             return "basic/findId";
         }
-      //  mailService.sendMail(member);
         model.addAttribute("member",member);
         return "detail/emailAuthentication";
     }
@@ -148,7 +144,6 @@ public class LoginController {
         log.info("인증코드={}", ePw);
 
         Member member = loginService.findId(userId);
-
 
         availableEmail = true; // 이메일 전송 성공 시
         model.addAttribute("availableEmail", availableEmail);
@@ -204,7 +199,6 @@ public class LoginController {
 
         Member member = loginService.findIdByEmail(userEmail);
 
-
         availableEmail = true; // 이메일 전송 성공 시
         model.addAttribute("availableEmail", availableEmail);
         model.addAttribute("member",member);
@@ -229,7 +223,6 @@ public class LoginController {
         redirectAttributes.addAttribute("userEmail", userEmail);
         redirectAttributes.addAttribute("emailCode", emailCode);
 
-
         //이메일 인증코드 일치 검사
         signUpFormValidator.emailCodeCheckValidate(ePw, member.getEmailCode(), bindingResult);
         if(bindingResult.hasErrors()){
@@ -246,13 +239,8 @@ public class LoginController {
         return "/detail/findIdComplete";
     }
 
-
-
     @GetMapping("/newPassword")
     public String newPassword(){
         return "/basic/NewPassword";
     }
-
-
-
 }

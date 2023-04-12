@@ -63,11 +63,6 @@ label img {
   width: 80px;
   transition-duration: 0.2s;
   transform-origin: 50% 50%;
-<!--  filter:grayscale(100%);-->
-}
-
-:checked+label {
-<!--  border-color: none;-->
 }
 
 :checked+label::before {
@@ -101,13 +96,6 @@ label img {
     <section>
         <!-- 저장한 도서 -->
         <section class="box">
-<!--            <div th:if="${existsByHistory} == 0">-->
-<!--                <h4 align="center">-->
-<!--                    <span class="material-symbols-outlined">collections_bookmark</span>-->
-<!--                    해당 컬렉션에 저장된 도서내역이 없습니다.-->
-<!--                </h4>-->
-<!--            </div>-->
-<!--            <div th:unless="${existsByHistory} == 0" class="box alt">-->
             <div class="box alt">
                 <h4>
                     <span th:text="|'${collectionName}' 컬렉션에서 삭제할 도서를 선택하세요.|"></span>
@@ -116,13 +104,6 @@ label img {
                     </a>
                 </h4>
                 <hr/>
-<!--                <div class="row gtr-50 gtr-uniform">-->
-<!--                    <div class="col-3" th:each="bookmark : ${bookmarkList}">-->
-<!--                        <a th:href="@{|/book/${bookmark.isbn}|}">-->
-<!--                            <span class="image fit"><img th:src="@{${bookmark.imageUrl}}" alt=""/></span>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <form th:action method="post" >
                     <div class="box alt">
                         <div class="row gtr-50 gtr-uniform">
@@ -140,9 +121,6 @@ label img {
     </section>
 </section>
 
-
-<!--</section>-->
-
 <!-- Scripts -->
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/jquery.dropotron.min.js"></script>
@@ -152,7 +130,6 @@ label img {
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
 
-<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

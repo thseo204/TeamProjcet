@@ -32,7 +32,6 @@ import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.ReportSaveFormValidator;
 import project.bookservice.web.validation.form.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.Serializable;
@@ -56,7 +55,6 @@ public class ReportController implements Serializable {
     private final KeywordService keywordService;
     private final ReportSaveFormValidator reportSaveFormValidator;
 
-    //    @Value("${file.dir2}")
     @Value("${file.dir}")
     private String fileDir;
 
@@ -65,11 +63,7 @@ public class ReportController implements Serializable {
             @PathVariable Long id,
             Model model, RedirectAttributes redirectAttributes,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER,
-                    required = false) Member loginMember
-//            @Valid @ModelAttribute("member") SignUpForm signUpForm,
-//            String isbn,
-//            BindingResult bindingResult
-    ) throws ParseException {
+                    required = false) Member loginMember) throws ParseException {
 
         ReportInfo reportInfo = reportInfoService.findById(id);
 
@@ -130,7 +124,6 @@ public class ReportController implements Serializable {
             Model model,
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
             Member loginMember) throws ParseException {
-
 
         ReportInfo reportInfo = reportInfoService.findById(id);
         log.info("reportInfo={}", reportInfo);
@@ -356,7 +349,6 @@ public class ReportController implements Serializable {
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
             model.addAttribute("book", book);
-//            model.addAttribute("reportInfo", form);
             return "detail/writeReport";
         }
 
@@ -467,14 +459,12 @@ public class ReportController implements Serializable {
         ReportInfo reportInfo = reportInfoService.findById(id);
         log.info("reportInfo={}", reportInfo);
 
-        //Book book = bookRepository.findByIsbnInAPI(reportInfo.getIsbn());
         APIParser apiParser = new ApiSearchBook(starRatingService);
         ArrayList<Book> booklist = apiParser.jsonAndXmlParserToArr(reportInfo.getIsbn()); //책정보
         Book book = booklist.get(0);
 
         log.info("book={}", book);
 
-//        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
         List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
 
         Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
@@ -582,7 +572,6 @@ public class ReportController implements Serializable {
 
         log.info("book={}", book);
 
-//        Boolean hasHistory = historyOfReportInfoService.hasHistory(loginMember.getUserId(), reportInfo);
         List<HistoryOfReportInfo> historyList = historyOfReportInfoService.findByUserId(loginMember.getUserId());
 
         Optional<HistoryOfReportInfo> historyOptional = historyList.stream()
@@ -615,7 +604,6 @@ public class ReportController implements Serializable {
         }
 
         // 컬렉션 저장을 reportInfoHistoryOfMember 클래스에 반영 하는 코드
-
         historyOfReportInfoService.updateCollection(id, history); // 좋아요 눌린 상태 db 반영
         //false -> true 로 true -> false
         model.addAttribute("history", history);
@@ -625,6 +613,4 @@ public class ReportController implements Serializable {
         return "redirect:/feedListForm";
 
     }
-
-
 }

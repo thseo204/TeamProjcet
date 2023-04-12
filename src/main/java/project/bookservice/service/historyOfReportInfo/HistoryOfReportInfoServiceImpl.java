@@ -11,10 +11,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class HistoryOfReportInfoServiceImpl implements HistoryOfReportInfoService{
+public class HistoryOfReportInfoServiceImpl implements HistoryOfReportInfoService {
 
     private final HistoryOfReportInfoRepository historyOfReportInfoRepository;
-
 
     @Override
     public void save(HistoryOfReportInfoSaveForm historyOfReportInfoSaveForm) {
@@ -41,6 +40,4 @@ public class HistoryOfReportInfoServiceImpl implements HistoryOfReportInfoServic
     public void updateCollection(Long reportId, HistoryOfReportInfo history) {
         historyOfReportInfoRepository.updateCollection(reportId, history);
     }
-
-
 }

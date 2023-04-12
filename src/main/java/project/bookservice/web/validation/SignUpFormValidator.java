@@ -34,11 +34,6 @@ public class SignUpFormValidator implements Validator {
         if(signUpForm.getUserEmail().isEmpty()){
             bindingResult.rejectValue("userEmail","invalid.email.null", "");
         }
-//        // 아이디 중복 검증
-//        if(memberRepository.existsByUserId(signUpForm.getUserId()) == 1){
-//            log.info("아이디 중복검증={}", signUpForm.getUserId());
-//            bindingResult.rejectValue("userId", "invalid.id", "이미 사용중인 아이디 입니다.");
-//        }
         //비밀번호 일치 검증
         if(!signUpForm.getUserPwd().equals(signUpForm.getUserRePwd())){
             bindingResult.rejectValue("userPwd", "invalid.pwd", "비밀번호가 일치하지 않습니다.");
@@ -87,6 +82,4 @@ public class SignUpFormValidator implements Validator {
             bindingResult.rejectValue("emailCode", "invalid.ePw.null", "인증번호를 입력해주세요.");
         }
     }
-
-
 }

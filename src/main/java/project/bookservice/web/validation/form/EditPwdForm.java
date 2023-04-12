@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 public class EditPwdForm {
 
     private Long id;
-
     private String userId;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")

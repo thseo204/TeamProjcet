@@ -176,7 +176,6 @@ function openAddForm(isbn){
                 </ul>
             </nav>
 
-
             <br><br>
             <ul class="actions fit">
                 <li><a th:href="@{|/book/${book.isbn}/bookInfo/true|}" class="button special fit alt">책 정보</a></li>
@@ -237,15 +236,11 @@ function openAddForm(isbn){
                                       <input type="submit" value="수정완료"/>
                                     </form>
                                   </span>
-
                             </span>
                             <hr>
                         </li>
                     </ul>
-
                 </section>
-
-
 
                 <!-- Comments Form -->
                 <div>
@@ -309,43 +304,6 @@ function openAddForm(isbn){
                     </h4>
 
                     <hr/>
-
-                    <!--
-                    <div class="col-30 col-3-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
-                        <section class="box" id="my-box" style="background-color:#FFFAF0; width: 80%; margin: 20px auto; display: flex; align-items: center; justify-content: center;
-                                                    padding-top: 1em; padding-bottom: 1em; padding-right: -1em; padding-left: -1em;">
-                            <a th:href="@{|/bookReportForm/${bookReportInfo.id}|}">
-                                <span class="image left">
-                                    <br>
-                                    <img th:src="|/image/${bookReportInfo.getStoreFileName()}|"
-                                         style="width:80px; height:90px;"
-                                         alt=""/>
-                                </span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                <span style="display: inline-block; text-align: center; max-width: 100%; white-space: nowrap;">
-                                    <span th:utext="${bookReportInfo.date}"></span><br>
-                                    <span th:if="${#strings.length(bookReportInfo.content) > 13}">
-                                        <b th:utext="|${#strings.substring(bookReportInfo.content, 0, 13)}|" style="word-wrap: break-word;"></b>
-                                    </span><br>
-                                    <span th:if="${#strings.length(bookReportInfo.content) > 26}">
-                                        <b th:utext="|${#strings.substring(bookReportInfo.content, 13, 26)}|" style="word-wrap: break-word;"></b>
-                                    </span><br>
-                                    <span th:if="${#strings.length(bookReportInfo.content) > 39}">
-                                        <b th:utext="|${#strings.substring(bookReportInfo.content, 26, 39)} ...|" style="word-wrap: break-word;"></b>
-                                    </span>
-                                    <span th:unless="${#strings.length(bookReportInfo.content) > 13}" >
-                                        <b th:utext="|${bookReportInfo.content}|" style="word-wrap: break-word;"></b>
-                                    </span>
-                                </span>
-
-
-
-                            </a>
-                        </section>
-                    </div>
-                    -->
-
                     <div class="col-12 col-12-narrower" th:each="bookReportInfo : ${bookReportInfoList}">
                         <a th:href="@{|/bookReportForm/${bookReportInfo.id}|}">
 
@@ -362,21 +320,13 @@ function openAddForm(isbn){
                     </span>
                                     </p>
                                 </div>
-
                             </div>
-
                         </a>
-
-
                     </div>
-
                 </div>
             </section> <!--독후감 박스 끝-->
-
-
         </section>
     </section>
-
 </div>
 
 <!-- Scripts -->
@@ -388,7 +338,6 @@ function openAddForm(isbn){
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/star.js?ver"></script>
-
 
 </body>
 

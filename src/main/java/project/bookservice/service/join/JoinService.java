@@ -14,10 +14,9 @@ public class JoinService {
     /**
      * @return null 이면 회원가입 가능한 아이디
      */
-    public Member idCheck(String memberId){
+    public Member idCheck(String memberId) {
         return memberRepository.findById(memberId)
                 .filter(m -> m.getUserId().equals(memberId))
                 .orElse(null);
     }
-
 }

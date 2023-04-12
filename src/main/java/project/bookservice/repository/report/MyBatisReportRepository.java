@@ -3,12 +3,9 @@ package project.bookservice.repository.report;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import project.bookservice.domain.historyOfReportInfo.HistoryOfReportInfo;
 import project.bookservice.domain.report.ReportInfo;
-import project.bookservice.web.validation.form.ReportForm;
 import project.bookservice.web.validation.form.ReportSaveForm;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +16,7 @@ public class MyBatisReportRepository implements ReportInfoRepository {
     // 매퍼에 위임하는 코드
 
     private final ReportInfoMapper reportInfoMapper;
+
     @Override
     public ReportSaveForm save(ReportSaveForm reportSaveForm) {
         log.info("reportInfo info={}", reportSaveForm);
@@ -43,7 +41,7 @@ public class MyBatisReportRepository implements ReportInfoRepository {
 
         Optional<ReportInfo> optionalReportInfo = reportInfoMapper.findById(id);
         ReportInfo reportInfo = null;
-        if(optionalReportInfo.isPresent()){
+        if (optionalReportInfo.isPresent()) {
             reportInfo = optionalReportInfo.get();
         }
         return reportInfo;
@@ -75,6 +73,7 @@ public class MyBatisReportRepository implements ReportInfoRepository {
     public List<ReportInfo> findAll() {
         return reportInfoMapper.findAll();
     }
+
     /**
      * 좋아요 수 증감
      */
@@ -87,6 +86,7 @@ public class MyBatisReportRepository implements ReportInfoRepository {
     public void decreaseOfFavoriteNum(ReportInfo reportInfo) {
         reportInfoMapper.decreaseOfFavoriteNum(reportInfo);
     }
+
     /**
      * 컬렉션 저장 수 증감
      */
@@ -104,6 +104,7 @@ public class MyBatisReportRepository implements ReportInfoRepository {
     public List<ReportInfo> orderByFavoriteNum() {
         return reportInfoMapper.orderByFavoriteNum();
     }
+
     @Override
     public Integer countByWriterId(String userId) {
         return reportInfoMapper.countByWriterId(userId);

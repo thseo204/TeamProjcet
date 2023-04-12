@@ -7,6 +7,7 @@ import project.bookservice.domain.starRating.StarRating;
 public interface StarRatingMapper {
 
     void saveStarRating(StarRating starRating);
+
     Double findAvgStarRating(String isbn);
 
     Boolean findByUserId(StarRating starRating);

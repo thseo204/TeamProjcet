@@ -9,16 +9,13 @@
 <body>
 <script>
     function windowClose(){
-
         window.close();
 };
 </script>
-
 
 <h3 th:text="${#strings.concat(member.userEmail, ', 이메일로 가입된 아이디는 ', member.userId, '입니다.')}"></h3>
 <ul class="actions">
   <li><a th:href="|javascript:windowClose();|" class="button special">확인</a></li>
 </ul>
-
 </body>
 </html>

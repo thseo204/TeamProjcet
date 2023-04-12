@@ -44,17 +44,8 @@ function openLoginModal() {
 
                     </div>
                 </form>
-
                 <hr/>
 
-<!--                <h3>-->
-<!--                    도서제목 : <span th:text="${book.title}"></span>-->
-<!--                    <span class="alt">-->
-<!--                        <label for="attachFile">-->
-<!--                            <span class="material-symbols-outlined">image</span>-->
-<!--                        </label>-->
-<!--                    </span>-->
-<!--                </h3>-->
                 <form method="post" th:action th:object="${reportInfo}">
                     <h3>
                         도서제목 : <span th:text="${book.title}"></span>
@@ -80,9 +71,6 @@ function openLoginModal() {
                             <input type="radio" id="disclosure-false" th:field="*{disclosure}" th:value="false" name="disclosure">
                             <label for="disclosure-false">비공개</label>
                         </div>
-<!--                        <div>-->
-<!--                            작성자 : <input type="text" name="userId"/>-->
-<!--                        </div>-->
                         <div class="col-12">
                             <ul class="actions">
                                 <li><input type="submit" value="수정완료" /></li>
@@ -91,10 +79,7 @@ function openLoginModal() {
                         </div>
                     </div>
                 </form>
-
-
             </section>
-
         </div>
     </div>
 
@@ -109,15 +94,14 @@ function openLoginModal() {
 </section>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.dropotron.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
 
-<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

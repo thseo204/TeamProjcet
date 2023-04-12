@@ -60,14 +60,11 @@
                 <table>
                     <thead>
                     <tr>
-                        <!--                            <th>생성일</th>-->
                         <th style="text-align:center;">컬렉션명 [생성일]</th>
-                        <!--                            <th>도서수</th>-->
                     </tr>
                     </thead>
                     <tbody th:each="myCollection : ${myCollectionList}">
                     <tr>
-                        <!--                            <td><span th:text="${myCollection.date}"></span></td>-->
                         <td style="text-align:center;">
                             <a class="special fit alt" th:href="@{|/collectionListForm/${myCollection.collectionName}|}">
                                 <span th:text="|${myCollection.collectionName} [${myCollection.date}]|"></span>
@@ -75,11 +72,9 @@
                         </td>
                     </tr>
                     </tbody>
-
                 </table>
             </div>
         </section>
-
     </section>
 </section>
 
@@ -95,7 +90,6 @@
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
 
-<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

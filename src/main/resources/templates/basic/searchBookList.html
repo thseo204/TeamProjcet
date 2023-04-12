@@ -20,9 +20,6 @@ display:block;
 .pagination a {
   font-size: 1.2em; /* 예시로 글자 크기를 1.2em으로 설정 */
 }
-
-
-
 </style>
 
 <body class="is-preload">
@@ -63,7 +60,7 @@ display:block;
         <h4 th:text="|이번주 베스트셀러 ${randomNumber} 위|"></h4>
         <a th:href="@{|/book/${randomBook.isbn}|}">
             <section class="box special"
-                     style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+                     style="border:solid 5px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
                 <span class="image left"><img th:src="@{${randomBook.imageUrl}}" alt=""
                                               style="width:85px; height:125px;"/></span>
 
@@ -72,7 +69,6 @@ display:block;
                     <b th:text="|[${randomBook.title}]|"></b><br/>
                     <span th:text="${#strings.substringBefore(randomBook.author,'(')}"
                           style="color:gray;"></span><br/>
-                    <!--                                        <br/>-->
                     <!--                                별점이 없을떄-->
                     <span th:if="${randomBook.avgStarRating == null}" style="color: lightGray;">
                                             <span>★</span>
@@ -91,7 +87,6 @@ display:block;
                     <b th:text="|[${#strings.substringBefore(randomBook.title,'-')}]|"></b><br/>
                     <span th:text="${#strings.substringBefore(randomBook.author,'(')}"
                           style="color:gray;"></span><br/>
-                    <!--                                    <br/>-->
                     <!--                                    별점이 없을떄-->
                     <span th:if="${randomBook.avgStarRating == null}" style="color: lightGray;">
                                         <span>★</span>
@@ -115,13 +110,10 @@ display:block;
             <hr/>
 
             <div class="row">
-                <!--                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">-->
-                <!--                    <div class="col-6 gtr-25" th:each="book : ${bookList}">-->
                 <div class="col-6 col-12-narrower" th:each="book : ${bookList}">
                     <a th:href="@{|/book/${book.isbn}|}">
-                        <!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
                         <section class="box special"
-                                 style="padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
+                                 style="border:solid 5px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;">
                             <span class="image left"><img th:src="@{${book.imageUrl}}" alt=""
                                                           style="width:85px; height:125px;"/></span>
 
@@ -130,7 +122,6 @@ display:block;
                                 <b th:text="|[${book.title}]|"></b><br/>
                                 <span th:text="${#strings.substringBefore(book.author,'(')}"
                                       style="color:gray;"></span><br/>
-                                <!--                                        <br/>-->
                                 <!--                                별점이 없을떄-->
                                 <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
                                             <span>★</span>
@@ -149,7 +140,6 @@ display:block;
                                 <b th:text="|[${#strings.substringBefore(book.title,'-')}]|"></b><br/>
                                 <span th:text="${#strings.substringBefore(book.author,'(')}"
                                       style="color:gray;"></span><br/>
-                                <!--                                    <br/>-->
                                 <!--                                    별점이 없을떄-->
                                 <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
                                         <span>★</span>

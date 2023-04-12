@@ -17,10 +17,8 @@ import project.bookservice.service.mail.MailService;
 import project.bookservice.service.member.BookmarkCollectionService;
 import project.bookservice.service.member.BookmarkHistoryOfMemberService;
 import project.bookservice.service.member.MemberService;
-import project.bookservice.service.join.JoinService;
 import project.bookservice.service.member.ReportInfoHistoryOfMemberService;
 import project.bookservice.service.report.ReportInfoService;
-import project.bookservice.service.starRating.StarRatingService;
 import project.bookservice.web.SessionConst;
 import project.bookservice.web.validation.SignUpFormValidator;
 import project.bookservice.web.validation.form.BookmarkCollectionSaveForm;
@@ -38,7 +36,6 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
-    private final JoinService joinService;
     private final SignUpFormValidator signUpFormValidator;
     private final ReportInfoService reportInfoService;
     private final BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService;
@@ -194,17 +191,11 @@ public class MemberController {
             return "/basic/joinForm";
         }
 
-
-
         //이메일 중복 검사, 비빌버호 일치 검증
         signUpFormValidator.validate(signUpForm, bindingResult);
-        // 아이디 중복확인 및 이메일 인증 검증
-//        signUpFormValidator.availableValidate(availableId, emailCodeCheck, bindingResult);
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
-//            availableEmail = true; // 이메일 전송 성공 시
-//            model.addAttribute("availableEmail", availableEmail);
             return "/basic/joinForm";
         }
 
@@ -262,7 +253,6 @@ public class MemberController {
             Model model,
             RedirectAttributes redirectAttributes){
 
-//        String collectionName = (String)model.getAttribute("collectionName");
         BookmarkCollectionSaveForm saveForm = new BookmarkCollectionSaveForm();
         saveForm.setUserId(loginMember.getUserId());
         saveForm.setCollectionName(collectionName);
@@ -277,8 +267,7 @@ public class MemberController {
     @GetMapping("/myBookmarkForm/{bookAndReport}")
     public String bookAndReportForm(@PathVariable boolean bookAndReport,
                                     @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                    Member loginMember, Model model,
-                                    RedirectAttributes redirectAttributes) {
+                                    Member loginMember, Model model) {
 
         int existsByHistory = 0;
         if (bookAndReport == true) {
@@ -286,7 +275,6 @@ public class MemberController {
             int existsByMyHistory = bookmarkCollectionService.existsCollection(loginMember.getUserId());
             if(existsByMyHistory > 0){
                 List<BookmarkCollection> myCollectionList = bookmarkCollectionService.collectionList(loginMember.getUserId());
-//                Optional<BookmarkHistoryOfMember> myCollectionList = myBookCollectionList.stream().distinct().filter(m -> m.getCollectionName() != null).findAny();
                 for (BookmarkCollection bookmarkCollection : myCollectionList) {
                     log.info("bookmarkCollection={}", bookmarkCollection);
                 }
@@ -295,8 +283,6 @@ public class MemberController {
             existsByHistory = bookmarkHistoryOfMemberService.existsByHistory(loginMember.getUserId());
             if (existsByHistory > 0) {
                 List<BookmarkHistoryOfMember> bookmarkList = bookmarkHistoryOfMemberService.findByUserIdDistinctIsbn(loginMember.getUserId());
-//                bookmarkList.stream().distinct().collect(Collectors.toList());////
-
 
                 model.addAttribute("bookmarkList", bookmarkList);
             }
@@ -304,7 +290,6 @@ public class MemberController {
             model.addAttribute("existsByHistory", existsByHistory);
             model.addAttribute("bookAndReport", true);
             return "detail/myBookmark";
-//            return "redirect:/myBookmark/{bookAndReport}";
 
         } else {
             int existsByMyHistory = reportInfoService.existsReportInfo(loginMember.getUserId());
@@ -319,23 +304,20 @@ public class MemberController {
                 for (ReportInfoHistoryOfMember reportInfoHistoryOfMember : reportInfoList) {
                     log.info("reportInfoHistoryOfMember={}", reportInfoHistoryOfMember);
                 }
-
             }
             model.addAttribute("existsByMyHistory", existsByMyHistory);
             model.addAttribute("existsByHistory", existsByHistory);
             model.addAttribute("bookAndReport", false);
         }
         return "detail/myBookmark";
-//        return "redirect:/myBookmark/{bookAndReport}";
     }
 
     @PostMapping("/myBookmarkForm/true/{collectionName}")
     public String addBookInCollection(@PathVariable String collectionName,
                                       @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                                      Member loginMember, Model model,
                                       @RequestParam(value = "cb") List<Long> checkboxList,
                                       RedirectAttributes redirectAttributes) {
-//        List<Long> checkboxList = (List<Long>) model.getAttribute("cb[]");
+
         log.info("collectionName={}", collectionName);
         Map<String, String> updateCollectionName = new HashMap<>();
         for (Long checkId : checkboxList) {

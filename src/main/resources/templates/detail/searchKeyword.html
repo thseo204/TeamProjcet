@@ -16,8 +16,6 @@
 body p {
 display:block;
 }
-
-
 </style>
 
 <body class="is-preload">
@@ -42,19 +40,10 @@ display:block;
         </div>
       </div>
     </form>
-<!--    <hr/>-->
-<!--    &lt;!&ndash; 검색 키워드 리스트 출력 &ndash;&gt;-->
-<!--    <h4>| 유사 키워드 검색 결과 |</h4>-->
-<!--    <span th:each="keyword : ${keywordArr}">-->
-<!--      <a th:href="@{|/keywordSearch/${keyword}|}">-->
-<!--        <span th:text="|#${keyword} |" style="font-size:18px; color:skyBlue;"></span>-->
-<!--      </a>-->
-<!--    </span>-->
   </section>
 
   <section class="box">
     <div>
-<!--      <h4 th:text="| '#${keyword}' 태그된 도서 |"></h4>-->
       <h4>
         <span th:text="|'#${keyword}'|" style="color:blue;"></span> 이/가 태그된 도서
         <span th:text="|[${bookList.size}개 검색]|" style="color:gray; float:right;"></span>
@@ -62,11 +51,8 @@ display:block;
       <hr/>
 
       <div class="row">
-        <!--                    <div class="col-6 col-12-narrower" th:each="book : ${bookList}">-->
-        <!--                    <div class="col-6 gtr-25" th:each="book : ${bookList}">-->
         <div class="col-6 col-12-narrower" th:each="book : ${bookList}">
           <a th:href="@{|/book/${book.isbn}|}">
-            <!--                            <section class="box special" style="background-color:#FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 1em;padding-left: 1em;" >-->
             <section class="box special" style="border:solid 3px #FFFAF0; padding-top: 0.5em; padding-bottom: 3em;padding-right: 0.5em;padding-left: 1em;" >
               <span class="image left"><img th:src="@{${book.imageUrl}}" alt="" style="width:85px; height:125px;"/></span>
 
@@ -74,7 +60,6 @@ display:block;
                 <br/>
                 <b th:text="|[${book.title}]|"></b><br/>
                 <span th:text="${#strings.substringBefore(book.author,'(')}" style="color:gray;"></span><br/>
-                <!--                                        <br/>-->
                 <!--                                별점이 없을떄-->
                 <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
                                             <span >★</span>
@@ -93,7 +78,6 @@ display:block;
                 <b th:text="|[${#strings.substringBefore(book.title,'-')}]|"></b><br/>
                 <span th:text="${#strings.substringBefore(book.author,'(')}"
                       style="color:gray;"></span><br/>
-                <!--                                    <br/>-->
                 <!--                                    별점이 없을떄-->
                 <span th:if="${book.avgStarRating == null}" style="color: lightGray;">
                                         <span>★</span>
@@ -138,12 +122,8 @@ display:block;
                     </span>
                   </p>
                 </div>
-
               </div>
-
           </a>
-
-
         </div>
       </div>
     </div>
@@ -158,8 +138,6 @@ display:block;
 <script src="/assets/js/breakpoints.min.js"></script>
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/main.js"></script>
-
-
 
 </body>
 

@@ -1,8 +1,5 @@
 package project.bookservice.repository.member;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
-import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
 import project.bookservice.web.validation.form.EditEmailForm;
 import project.bookservice.web.validation.form.EditInformationForm;
@@ -14,7 +11,8 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
-	 Member save(Member member);
+    Member save(Member member);
+
     SignUpForm save(SignUpForm signUpForm);
 
     void update(EditInformationForm editInformationForm);
@@ -22,11 +20,13 @@ public interface MemberRepository {
     void editCharIcon(Member loginmember);
 
     List<Member> findAll();
+
     Optional<Member> findById(String memberId);
 
     int existsByUserEmail(String email);
+
     int existsByUserId(String userId);
-	
+
 
     Optional<Member> findByLoginId(String userId);
 
@@ -37,6 +37,6 @@ public interface MemberRepository {
     void editPwdByRandom(Member member);
 
     void editPwd(EditPwdForm editPwdForm);
-    void editEmail(EditEmailForm editEmailForm);
 
+    void editEmail(EditEmailForm editEmailForm);
 }

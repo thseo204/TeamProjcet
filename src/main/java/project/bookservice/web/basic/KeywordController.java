@@ -15,10 +15,8 @@ import project.bookservice.openapi.ApiSearchBook;
 import project.bookservice.service.report.KeywordService;
 import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.service.starRating.StarRatingService;
-import project.bookservice.service.starRating.StarRatingServiceImpl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +30,6 @@ public class KeywordController {
     @GetMapping("/searchKeyword/{keyword}")
     public String keywordSearch(@PathVariable String keyword,
                                 Model model) throws ParseException {
-
 
         List<Keyword> keywordList = keywordService.findByKeyword(keyword);
 
@@ -59,18 +56,9 @@ public class KeywordController {
     @GetMapping("/searchKeyword")
     public String keywordSearchForm(@RequestParam String keyword,
                                     RedirectAttributes redirectAttributes){
-//
-//        if(keyword== null){
-//            //키워드 검색어를 입력하지 않은 경우 DB에 있는 키워드 중 랜덤으로 검색하여 보여주기
-//            List<Keyword> keywordList = keywordService.findAll();
-//            Collections.shuffle(keywordList);
-//            Keyword randomKeyword = keywordList.get(0);
-//            log.info("randomKeyword={}" , randomKeyword);
-//            redirectAttributes.addAttribute("keyword", randomKeyword);
-//            return "redirect:/searchKeyword/{keyword}";
-//        }
         log.info("keyword={}" , keyword);
         redirectAttributes.addAttribute("keyword", keyword);
+
         return "redirect:/searchKeyword/{keyword}";
     }
 

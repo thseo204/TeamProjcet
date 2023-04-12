@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import project.bookservice.domain.comment.Comment;
 import project.bookservice.domain.member.Member;
 import project.bookservice.service.comment.CommentService;
-import project.bookservice.service.report.ReportInfoService;
 import project.bookservice.web.SessionConst;
 
 @Slf4j
@@ -17,7 +16,6 @@ import project.bookservice.web.SessionConst;
 public class CommentController {
 
     private final CommentService commentService;
-    private final ReportInfoService reportInfoService;
 
     @GetMapping("/deleteComment/{isbn}/{id}")
     public String deleteComment(@PathVariable Long id) {

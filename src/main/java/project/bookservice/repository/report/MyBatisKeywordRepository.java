@@ -12,9 +12,10 @@ import java.util.List;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MyBatisKeywordRepository implements KeywordRepository{
+public class MyBatisKeywordRepository implements KeywordRepository {
 
     private final KeywordMapper keywordMapper;
+
     @Override
     public void save(KeywordSaveForm form) {
         keywordMapper.save(form);

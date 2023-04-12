@@ -24,9 +24,6 @@ dependencies {
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	//JdbcTemplate 추가
-//	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-
 	//MyBatis 추가
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
 
@@ -49,20 +46,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.2.0'
 
-	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 
-	// https://mvnrepository.com/artifact/com.github.scribejava/scribejava-apis
 	runtimeOnly group: 'com.github.scribejava', name: 'scribejava-apis', version: '8.3.3'
-// https://mvnrepository.com/artifact/com.github.scribejava/scribejava-core
 	implementation group: 'com.github.scribejava', name: 'scribejava-core', version: '8.3.3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
-
-
-
 }
 
 

@@ -33,7 +33,6 @@ import java.util.Objects;
 public class PorfileController {
 
     private final SignUpFormValidator signUpFormValidator;
-    private final LoginService loginService;
     private final MailService mailService;
     private final EditInformationValidator editInformationValidator;
     private final EditPwdValidator editPwdValidator;
@@ -140,12 +139,10 @@ public class PorfileController {
             return "/basic/editPwd";
         }
 
-
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "/basic/editPwd";
         }
-
 
         // 비빌버호 일치 검증
         editPwdValidator.validate(editPwdForm, bindingResult);
@@ -211,7 +208,6 @@ public class PorfileController {
         model.addAttribute("editEmailForm", editEmailForm);
 
         redirectAttributes.addAttribute("emailCode", emailCode);
-//        redirectAttributes.addAttribute("userEmail", userEmail);
         redirectAttributes.addAttribute("newEmail", newEmail);
 
         signUpFormValidator.emailCodeCheckValidate(ePw, editEmailForm.getEmailCode(), bindingResult);
@@ -248,8 +244,6 @@ public class PorfileController {
             availableEmail = true; // 이메일 전송 성공 시
 
         model.addAttribute("availableEmail", availableEmail);
-//        editEmailForm.setNewEmail(newEmail);
-//        editEmailForm.setUserEmail(loginMember.getUserEmail());
 
         log.info("editEmailForm ={}", editEmailForm);
         log.info("loginMember ={}", loginMember);

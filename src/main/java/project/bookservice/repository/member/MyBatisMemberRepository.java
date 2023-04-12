@@ -3,7 +3,6 @@ package project.bookservice.repository.member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import project.bookservice.domain.login.LoginForm;
 import project.bookservice.domain.member.Member;
 import project.bookservice.web.validation.form.EditEmailForm;
 import project.bookservice.web.validation.form.EditInformationForm;
@@ -49,11 +48,6 @@ public class MyBatisMemberRepository implements MemberRepository {
         return memberMapper.findAll();
     }
 
-//    @Override
-//    public void update(Long itemId, ItemUpdateDto updateParam) {
-//        itemMapper.update(itemId, updateParam);
-//    }
-
     @Override
     public Optional<Member> findById(String userId) {
         log.info("userId info={}", userId);
@@ -70,7 +64,6 @@ public class MyBatisMemberRepository implements MemberRepository {
     @Override
     public int existsByUserId(String userId) {
         log.info("existsByUserId info={}", userId);
-//        boolean byUserId = memberMapper.findByUserId(userId);
         return memberMapper.findByUserId(userId);
     }
 

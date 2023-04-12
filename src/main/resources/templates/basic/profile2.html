@@ -10,8 +10,6 @@
    function openWindow() {
       var newWindow = window.open('/myChar', '_blank', 'width=500, height=300', true);
     }
-
-
 </script>
 
 <div id="page-wrapper">
@@ -32,9 +30,7 @@
                         <span th:if="${reportCount >= 4 and reportCount <5}">A 등급 입니다</span>
                         <span th:if="${reportCount >= 5}">S 등급 입니다</span>
                         <br>
-                        <!--<p class="text-secondary mb-1"></p>-->
                         <button class="btn btn-primary" onclick="openWindow();">캐릭터아이콘 변경</button>
-                        <!--<button class="btn btn-outline-primary">Message</button>-->
                     </div>
                 </div>
 
@@ -66,8 +62,6 @@
                           class="material-symbols-outlined">female</span>
                     <span class="mb-0">Gender</span> &nbsp;&nbsp;&nbsp;
                     <span th:text="*{userGender}"></span><br><br>
-
-<!--                    <a href="/pwdCheck" class="btn btn-info">회원 정보 수정</a>-->
                 </div>
             </div>
         </div>

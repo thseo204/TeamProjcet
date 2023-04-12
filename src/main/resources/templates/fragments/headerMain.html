@@ -13,9 +13,6 @@
           <li>
             <a th:href="@{/BookList}">도서검색</a>
           </li>
-<!--          <li>-->
-<!--            <a href="#" class="icon solid fa-angle-down">마이페이지</a>-->
-<!--          </li>-->
           <li><a th:href="@{/loginForm(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그인</a></li>
           <li><a href="/joinForm" class="button">회원가입</a></li>
         </ul>
@@ -42,13 +39,11 @@
             <a th:if="${#session.getAttribute('loginMember').userName} != null" href="#" th:text="|${#session.getAttribute('loginMember').userName} 님 환영합니다.|"></a>
           </li>
           <li>
-            <!--<a th:href="@{/logout(redirectURL=${#httpServletRequest.requestURI})}" class="button">로그아웃</a>-->
              <a th:href="@{/logout}" class="button">로그아웃</a>
           </li>
         </ul>
       </nav>
     </div>
-
   </header>
 </th:block>
 </html>

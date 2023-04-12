@@ -9,13 +9,12 @@ import project.bookservice.web.validation.form.EditInformationForm;
 import project.bookservice.web.validation.form.EditPwdForm;
 import project.bookservice.web.validation.form.SignUpForm;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
@@ -63,10 +62,4 @@ public class MemberServiceImpl implements MemberService{
     public int existsByUserId(String userId) {
         return memberRepository.existsByUserId(userId);
     }
-//
-//    @Override
-//    public List<Item> findItems(ItemSearchCond cond) {
-//        return itemRepository.findAll(cond);
-//    }
-
 }

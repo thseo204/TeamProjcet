@@ -25,7 +25,6 @@ function openLoginModal() {
 <body class="is-preload">
 <div th:replace="~{fragments/headerMain :: headerMainFragment('')}"></div>
 
-
 <!-- Main -->
 <!--로그인 세션정보 없을때-->
 <section id="main" class="container" th:if="${#session} == null">
@@ -39,7 +38,6 @@ function openLoginModal() {
             </a>
         </p>
     </header>
-
 
     <div class="box" th:each="reportInfo : ${reportInfoList}">
 
@@ -63,7 +61,6 @@ function openLoginModal() {
             </a>
         </span>
 
-        <!--        <h3> 도서제목 : </h3>-->
         <br/>
         <br/>
         <h4><b th:text="|도서제목: ${reportInfo.title}"|></b></h4>
@@ -77,8 +74,6 @@ function openLoginModal() {
                 </a>
             </span>
         </p>
-
-<!--        <p th:text="${reportInfo.hashTag}"></p>-->
     </div>
 </section>
 
@@ -94,9 +89,7 @@ function openLoginModal() {
         </p>
     </header>
 
-
     <div class="box" th:each="reportInfo : ${reportInfoList}">
-
             <span class="image featured">
                 <a th:href="|/bookReportForm/${reportInfo.id}|">
                     <img th:src="|/image/${reportInfo.storeFileName}|" alt=""/>
@@ -127,9 +120,6 @@ function openLoginModal() {
             </a>
         </span>
 
-
-
-        <!--        <h3> 도서제목 : </h3>-->
         <br/>
         <br/>
         <h4><b th:text="|도서제목: ${reportInfo.title}"|></b></h4>
@@ -155,7 +145,6 @@ function openLoginModal() {
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
 
-<!--<script src="assets/js/imageUpload.js"></script>-->
 </body>
 
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>

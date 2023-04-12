@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface BookmarkCollectionMapper {
     void save(BookmarkCollectionSaveForm form);
+
     int existsCollection(String userId);
+
     List<BookmarkCollection> collectionList(String userId);
 }

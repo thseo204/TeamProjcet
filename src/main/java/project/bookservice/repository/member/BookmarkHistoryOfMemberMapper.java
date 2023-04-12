@@ -1,7 +1,6 @@
 package project.bookservice.repository.member;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import project.bookservice.domain.member.BookmarkHistoryOfMember;
 import project.bookservice.web.validation.form.BookmarkHistoryOfMemberSaveForm;
 
@@ -16,8 +15,11 @@ public interface BookmarkHistoryOfMemberMapper {
     List<BookmarkHistoryOfMember> findAll();
 
     int existsByHistory(String userId); // List로 불러오기 전 히스토리가 있는지 체크하기 위한 쿼리
+
     int existsByHistoryOfCollection(Map<String, String> selectToUserIdCollectionName); // 해당 유저의 컬렉션에 List로 불러오기 전 히스토리가 있는지 체크하기 위한 쿼리
+
     int existsByIsbn(Map<String, String> selectToUserIdCollectionNameIsbn);
+
     List<BookmarkHistoryOfMember> findByUserId(String userId);
 
     List<BookmarkHistoryOfMember> findByUserIdDistinctIsbn(String userId);

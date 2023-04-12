@@ -8,5 +8,4 @@ public class BookmarkCollection {
     private String user_id;
     private String date;
     private String collectionName;
-
 }

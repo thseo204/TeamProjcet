@@ -12,9 +12,11 @@ import java.util.List;
 public interface HistoryOfReportInfoMapper {
     // 실행할 SQL은 패키지 위치는 이 인터페이스와 동일한 경로로 만들어줘야함.
     void save(HistoryOfReportInfoSaveForm historyOfReportInfoSaveForm);
+
     List<HistoryOfReportInfo> findByUserId(String userId);
 
     Boolean hasHistory(@Param("userId") String userId, @Param("reportInfoParam") ReportInfo reportInfo);
+
     void updateFavorite(@Param("reportId") Long id, @Param("historyParam") HistoryOfReportInfo history);
 
     void updateCollection(@Param("reportId") Long id, @Param("historyParam") HistoryOfReportInfo history);

@@ -31,12 +31,10 @@ import project.bookservice.service.starRating.StarRatingServiceImpl;
 @Configuration
 @RequiredArgsConstructor
 public class MyBatisConfig {
-
     private final MemberMapper memberMapper;
     private final CommentMapper commentMapper;
-
     private final ReportInfoMapper reportInfoMapper;
-		private final StarRatingMapper starRatingMapper;
+    private final StarRatingMapper starRatingMapper;
     private final HistoryOfReportInfoMapper historyOfReportInfoMapper;
     private final ReportInfoHistoryOfMemberMapper reportInfoHistoryOfMemberMapper;
     private final BookmarkHistoryOfMemberMapper bookmarkHistoryOfMemberMapper;
@@ -44,44 +42,47 @@ public class MyBatisConfig {
     private final KeywordMapper keywordMapper;
 
     @Bean
-    public MemberService memberService(){
+    public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
-    public MyBatisMemberRepository memberRepository(){
+    public MyBatisMemberRepository memberRepository() {
         return new MyBatisMemberRepository(memberMapper);
     }
 
     @Bean
-    public CommentService commentService(){
+    public CommentService commentService() {
         return new CommentServiceImpl(commentRepository());
     }
 
     @Bean
-    public CommentRepository commentRepository(){
+    public CommentRepository commentRepository() {
         return new MybatisCommentRepository(commentMapper);
     }
 
     @Bean
-    public ReportInfoService reportInfoService(){
+    public ReportInfoService reportInfoService() {
         return new ReportInfoServiceImpl(reportInfoRepository());
     }
+
     @Bean
-    public ReportInfoRepository reportInfoRepository(){
+    public ReportInfoRepository reportInfoRepository() {
         return new MyBatisReportRepository(reportInfoMapper);
     }
 
     @Bean
-    public HistoryOfReportInfoService historyOfReportInfoService(){
+    public HistoryOfReportInfoService historyOfReportInfoService() {
         return new HistoryOfReportInfoServiceImpl(historyOfReportInfoRepository());
     }
+
     @Bean
-    public HistoryOfReportInfoRepository historyOfReportInfoRepository(){
+    public HistoryOfReportInfoRepository historyOfReportInfoRepository() {
         return new MyBatisHistoryOfReportInfoRepository(historyOfReportInfoMapper);
     }
-	   @Bean
-    public StarRatingService starRatingService(){
+
+    @Bean
+    public StarRatingService starRatingService() {
         return new StarRatingServiceImpl(starRatingRepository());
     }
 
@@ -91,36 +92,42 @@ public class MyBatisConfig {
     }
 
     @Bean
-    public ReportInfoHistoryOfMemberRepository reportInfoHistoryOfMemberRepository(){
+    public ReportInfoHistoryOfMemberRepository reportInfoHistoryOfMemberRepository() {
         return new MyBatisReportInfoHistoryOfMemberRepository(reportInfoHistoryOfMemberMapper);
     }
+
     @Bean
-    public ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService(){
+    public ReportInfoHistoryOfMemberService reportInfoHistoryOfMemberService() {
         return new ReportInfoHistoryOfMemberServiceImpl(reportInfoHistoryOfMemberRepository());
     }
+
     @Bean
-    public BookmarkHistoryOfMemberRepository bookmarkHistoryOfMemberRepository(){
+    public BookmarkHistoryOfMemberRepository bookmarkHistoryOfMemberRepository() {
         return new MyBatisBookmarkHistoryOfMemberRepository(bookmarkHistoryOfMemberMapper);
     }
+
     @Bean
-    public BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService(){
+    public BookmarkHistoryOfMemberService bookmarkHistoryOfMemberService() {
         return new BookmarkHistoryOfMemberServiceImpl(bookmarkHistoryOfMemberRepository());
     }
+
     @Bean
-    public BookmarkCollectionRepository bookmarkCollectionRepository(){
+    public BookmarkCollectionRepository bookmarkCollectionRepository() {
         return new MyBatisBookmarkCollectionRepository(bookmarkCollectionMapper);
     }
+
     @Bean
-    public BookmarkCollectionService bookmarkCollectionService(){
+    public BookmarkCollectionService bookmarkCollectionService() {
         return new BookmarkCollectionServiceImpl(bookmarkCollectionRepository());
     }
 
     @Bean
-    public KeywordRepository keywordRepository(){
+    public KeywordRepository keywordRepository() {
         return new MyBatisKeywordRepository(keywordMapper);
     }
+
     @Bean
-    public KeywordService keywordService(){
+    public KeywordService keywordService() {
         return new KeywordServiceImpl(keywordRepository());
     }
 }

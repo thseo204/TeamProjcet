@@ -10,12 +10,10 @@ public interface MailService {
 
     void sendMail(Member member) throws MessagingException;
 
-
     // 메일 내용 작성
     MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException;
 
     String createKey();// 랜덤 인증 코드 전송
-
 
     /**
      * sendSimpleMessage 의 매개변수로 들어온 to 는 곧 이메일 주소가 되고,

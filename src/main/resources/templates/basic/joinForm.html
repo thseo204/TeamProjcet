@@ -6,8 +6,6 @@
 <script type="text/javascript">
 function checkId(){
 var userId = document.getElementById('userId').value;
-
-<!--location.replace("/joinForm/idCheck");-->
 location.replace("/joinForm/idCheck?userId=" + userId);
 }
 
@@ -26,7 +24,6 @@ location.replace("/joinForm/mail?userEmail=" + userEmail + "&userId=" + userId +
 if(!userEmail.equals(null)){
     alert('인증번호가 전송되었습니다.');
 }
-
 }
 
 function checkEmailCode(){
@@ -40,7 +37,6 @@ var userBirth = document.getElementById('userBirth').value;
 var userName = document.getElementById('userName').value;
 var userEmail = document.getElementById('userEmail').value;
 
-<!--location.replace("/joinForm/emailCode?emailCode=" + emailCode);-->
 location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + userEmail + "&userId=" + userId + "&userPwd=" + userPwd + "&userRePwd=" + userRePwd + "&userPhone=" + userPhone
 + "&userBirth=" + userBirth + "&userName=" + userName );
 }
@@ -76,34 +72,25 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
 
                     <div class="col-12">
                         <input type="password" id="userPwd" th:field="*{userPwd}" placeholder="Password"/>
-                        <!--						<div class="field-error" th:errors="*{userPwd}"/>-->
                     </div>
                     <div class="col-12">
                         <input type="password" id="userRePwd" th:field="*{userRePwd}" placeholder="RePassword"/>
                         <div class="field-error" th:each="error, stat :${#fields.errors('userPwd')}"
                              th:if="${stat.first}" th:text="${error}"/>
-
-                        <!--						<div class="field-error" th:errors="*{userPwd}"/>-->
                     </div>
                     <div class="col-12">
                         <input type="text" id="userPhone" th:field="*{userPhone}" placeholder="Phone"/>
                         <div class="field-error" th:each="error, stat :${#fields.errors('userPhone')}"
                              th:if="${stat.first}" th:text="${error}"/>
-
-                        <!--						<div class="field-error" th:errors="*{userPhone}"/>-->
                     </div>
                     <div class="col-12">
                         <input type="text" id="userBirth" th:field="*{userBirth}" placeholder="Birth yymmdd"/>
                         <div class="field-error" th:each="error, stat :${#fields.errors('userBirth')}"
                              th:if="${stat.first}" th:text="${error}"/>
-
-                        <!--						<div class="field-error" th:errors="*{userBirth}"/>-->
                     </div>
                     <div class="col-4 col-8-narrower">
                         <input type="radio" id="man" th:field="*{userGender}" value="M">
                         <label for="man">남</label>
-
-
                     </div>
                     <div class="col-4 col-8-narrower">
                         <input type="radio" id="woman" th:field="*{userGender}" value="F">
@@ -126,9 +113,7 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                     </div>
                     <div class="col-3 col-12-mobilep">
                         <a class="button alt" href="javascript:checkEmail();">인증번호 전송</a>
-                        <!--						<a class="button" id="checkEmail" href="javascript:checkEmail();" >인증번호 전송</a>-->
                     </div>
-                    <!--                    <br/>-->
                     <div class="field-error" th:each="error, stat :${#fields.errors('userEmail')}"
                          th:if="${stat.first}" th:text="${error}"/>
                     <br/>
@@ -136,7 +121,6 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                     <br/>
                     <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">
                         <div class="col-9" align="center">
-                            <!--                            <label for="emailCode" id="emailCodeTxt" >인증번호 8자리를 입력해주세요</label>-->
                             <input type="text" name="emailCode" id="emailCode" th:field="*{emailCode}"
                                    placeholder="인증번호 8자리를 입력해주세요" th:errorclass="field-error"/>
                             <div class="field-error" th:each="error, stat :${#fields.errors('emailCode')}"
@@ -165,7 +149,6 @@ location.replace("/joinForm/emailCode?emailCode=" + emailCode + "&userEmail=" + 
                     <div class="col-12">
                         <ul class="actions special">
                             <li><input type="submit" id="joinBtn" name="joinBtn" value="회원가입"/></li>
-
                         </ul>
                     </div>
                 </div>

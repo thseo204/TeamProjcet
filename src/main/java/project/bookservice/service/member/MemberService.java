@@ -12,22 +12,19 @@ import java.util.Optional;
 public interface MemberService {
     SignUpForm save(SignUpForm signUpForm);
 
-   void update(EditInformationForm editInformationForm);
+    void update(EditInformationForm editInformationForm);
 
-   void editPwd(EditPwdForm editPwdForm);
+    void editPwd(EditPwdForm editPwdForm);
 
-   void editEmail(EditEmailForm editEmailForm);
+    void editEmail(EditEmailForm editEmailForm);
 
-   void editCharIcon(Member loginmember);
+    void editCharIcon(Member loginmember);
 
     Optional<Member> findById(String memberId);
+
     List<Member> findAll();
+
     int existsByEmail(String email);
 
     int existsByUserId(String userId);
-
-
-
-
-//    List<Member> findItems(ItemSearchCond itemSearch);
 }

@@ -42,7 +42,6 @@ location.replace("/emailAuthentication/emailCode?emailCode=" + emailCode + "&use
     </div>
     <div class="col-3 col-12-mobilep">
       <a class="button alt" href="javascript:checkEmail();">인증번호 전송</a>
-      <!--						<a class="button" id="checkEmail" href="javascript:checkEmail();" >인증번호 전송</a>-->
     </div>
 
     <div class="col-12 special" th:style="${not #fields.hasErrors('userEmail')} and ${availableEmail} == true ? 'display:block;' : 'display:none;'">

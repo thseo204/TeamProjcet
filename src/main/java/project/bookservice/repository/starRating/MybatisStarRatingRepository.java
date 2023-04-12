@@ -8,9 +8,10 @@ import project.bookservice.domain.starRating.StarRating;
 @Slf4j
 @RequiredArgsConstructor
 @Repository
-public class MybatisStarRatingRepository implements StarRatingRepository{
+public class MybatisStarRatingRepository implements StarRatingRepository {
 
     private final StarRatingMapper starRatingMapper;
+
     @Override
     public StarRating saveStarRating(StarRating starRating) {
         log.info("StarRatingMapper class={}", starRating);
